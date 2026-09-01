@@ -13,7 +13,7 @@ source dependency.
 
 Build and validate the boundary that exists today:
 
-```console
+```bash
 cargo test --workspace --locked
 aep artifact validate --strict
 ```
