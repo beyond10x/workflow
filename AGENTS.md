@@ -11,7 +11,7 @@
 
 ## Boundary
 
-This private repository owns workflow definitions, immutable revisions, activation, triggers,
+This public repository owns workflow definitions, immutable revisions, activation, triggers,
 runs, leases, step state and workflow evidence. Connector credentials, agents, engineering
 artifacts, identities and sandboxes remain with their owning services.
 

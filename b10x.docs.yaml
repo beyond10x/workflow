@@ -1,0 +1,34 @@
+schema: b10x-docs/v2
+repository:
+  id: workflow
+  url: https://github.com/beyond10x/workflow
+surfaces:
+  - id: docs
+    name: Workflow
+    summary: Public service and library boundary for workflow definitions, immutable revisions, triggers, durable runs, leases, cancellation, and evidence.
+    kind: service-docs
+    canonicalUrl: https://github.com/beyond10x/workflow#readme
+    maturity: experimental
+    availability: published
+    discoverability: public
+    audiences: [evaluator, developer, operator]
+    journeys: [build-agents, operate-services]
+    capabilities: [workflow-definitions, durable-runs, triggers, execution-evidence]
+    sections:
+      - {label: Overview, url: https://github.com/beyond10x/workflow#readme, kind: docs}
+      - {label: Source, url: https://github.com/beyond10x/workflow, kind: source}
+    relationships:
+      - {target: aep/docs, kind: uses, label: Governs engineering planning and execution artifacts}
+      - {target: agent-platform/docs, kind: uses, label: Runs product-neutral agent tasks}
+      - {target: connectors/docs, kind: uses, label: Executes governed external operations}
+      - {target: identity/docs, kind: uses, label: Resolves current attributable authority}
+      - {target: eventlog/docs, kind: uses, label: Persists workflow state and evidence}
+    adoption:
+      label: Build the domain crate
+      url: https://github.com/beyond10x/workflow#readme
+      mode: source-build
+      estimatedMinutes: 5
+      prerequisites: [Rust toolchain]
+      outcome: Build and test the current workflow domain boundary and inspect its governed delivery plan.
+    accent: "#ff9070"
+    shell: {integration: portable, revision: 73aefe1ca268cc853ed38fb23478454496462a03}
