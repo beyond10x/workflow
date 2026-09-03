@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/workflow.definition.InvokeNode",
+  "x-ess-provenance": {
+    "system": "workflow",
+    "specification_version": "v1",
+    "source_digest": "6a79078047815754e0dda89f285e08689037af0adfd4277dfcc305f1d003df1b",
+    "contract_digest": "a229b62e2d74a6962e948d4eab698e419cb90e3bac3c212ed0211d6e25848ccc",
+    "regenerate": "ess generate"
+  },
+  "$defs": {
+    "workflow.definition.InvokeNode": {
+      "title": "InvokeNode",
+      "x-ess-name": "workflow.definition.InvokeNode",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "agent": {
+          "type": "string"
+        },
+        "instruction": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "agent",
+        "instruction"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

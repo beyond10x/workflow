@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/workflow.definition.EmitNode",
+  "x-ess-provenance": {
+    "system": "workflow",
+    "specification_version": "v1",
+    "source_digest": "6a79078047815754e0dda89f285e08689037af0adfd4277dfcc305f1d003df1b",
+    "contract_digest": "af24857688380a0ad0ae5408401f3a27240d8cea1457a730f669a4199447fe4b",
+    "regenerate": "ess generate"
+  },
+  "$defs": {
+    "workflow.definition.EmitNode": {
+      "title": "EmitNode",
+      "x-ess-name": "workflow.definition.EmitNode",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "event": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "event"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

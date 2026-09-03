@@ -1,0 +1,793 @@
+{
+  "format": "service-client-plan/2",
+  "service": "workflow",
+  "delivery": {
+    "kind": "identity_http",
+    "audience": "urn:b10x:workflow"
+  },
+  "ess_source_digest": "6a79078047815754e0dda89f285e08689037af0adfd4277dfcc305f1d003df1b",
+  "realm_policy": "optional",
+  "authentication": "session",
+  "operations": [
+    {
+      "operation": "activate_revision",
+      "scope": "workflows.manage",
+      "semantic_ref": "workflow.definition.ActivateRevision",
+      "kind": "intent",
+      "inputs": [
+        {
+          "name": "expected_version",
+          "type_ref": "Integer",
+          "optional": false,
+          "source": {
+            "kind": "expected_version"
+          }
+        },
+        {
+          "name": "idempotency_key",
+          "type_ref": "String",
+          "optional": false,
+          "source": {
+            "kind": "idempotency"
+          }
+        },
+        {
+          "name": "revision_id",
+          "type_ref": "workflow.definition.RevisionId",
+          "optional": false,
+          "source": {
+            "kind": "command"
+          }
+        },
+        {
+          "name": "workflow_id",
+          "type_ref": "workflow.definition.WorkflowId",
+          "optional": false,
+          "source": {
+            "kind": "command"
+          }
+        }
+      ],
+      "result": {
+        "kind": "intent",
+        "emitted_events": [
+          "workflow.definition.RevisionActivated"
+        ]
+      }
+    },
+    {
+      "operation": "add_node",
+      "scope": "workflows.manage",
+      "semantic_ref": "workflow.definition.AddNode",
+      "kind": "intent",
+      "inputs": [
+        {
+          "name": "definition",
+          "type_ref": "workflow.definition.NodeDefinition",
+          "optional": false,
+          "source": {
+            "kind": "command"
+          }
+        },
+        {
+          "name": "draft_id",
+          "type_ref": "workflow.definition.DraftId",
+          "optional": false,
+          "source": {
+            "kind": "command"
+          }
+        },
+        {
+          "name": "expected_version",
+          "type_ref": "Integer",
+          "optional": false,
+          "source": {
+            "kind": "expected_version"
+          }
+        },
+        {
+          "name": "idempotency_key",
+          "type_ref": "String",
+          "optional": false,
+          "source": {
+            "kind": "idempotency"
+          }
+        },
+        {
+          "name": "workflow_id",
+          "type_ref": "workflow.definition.WorkflowId",
+          "optional": false,
+          "source": {
+            "kind": "command"
+          }
+        }
+      ],
+      "result": {
+        "kind": "intent",
+        "emitted_events": [
+          "workflow.definition.NodeAdded"
+        ]
+      }
+    },
+    {
+      "operation": "connect_nodes",
+      "scope": "workflows.manage",
+      "semantic_ref": "workflow.definition.ConnectNodes",
+      "kind": "intent",
+      "inputs": [
+        {
+          "name": "draft_id",
+          "type_ref": "workflow.definition.DraftId",
+          "optional": false,
+          "source": {
+            "kind": "command"
+          }
+        },
+        {
+          "name": "expected_version",
+          "type_ref": "Integer",
+          "optional": false,
+          "source": {
+            "kind": "expected_version"
+          }
+        },
+        {
+          "name": "idempotency_key",
+          "type_ref": "String",
+          "optional": false,
+          "source": {
+            "kind": "idempotency"
+          }
+        },
+        {
+          "name": "source_node_id",
+          "type_ref": "workflow.definition.NodeId",
+          "optional": false,
+          "source": {
+            "kind": "command"
+          }
+        },
+        {
+          "name": "target_node_id",
+          "type_ref": "workflow.definition.NodeId",
+          "optional": false,
+          "source": {
+            "kind": "command"
+          }
+        },
+        {
+          "name": "workflow_id",
+          "type_ref": "workflow.definition.WorkflowId",
+          "optional": false,
+          "source": {
+            "kind": "command"
+          }
+        }
+      ],
+      "result": {
+        "kind": "intent",
+        "emitted_events": [
+          "workflow.definition.NodesConnected"
+        ]
+      }
+    },
+    {
+      "operation": "create_draft",
+      "scope": "workflows.manage",
+      "semantic_ref": "workflow.definition.CreateDraft",
+      "kind": "intent",
+      "inputs": [
+        {
+          "name": "based_on_revision_id",
+          "type_ref": "Optional<workflow.definition.RevisionId>",
+          "optional": true,
+          "source": {
+            "kind": "command"
+          }
+        },
+        {
+          "name": "expected_version",
+          "type_ref": "Integer",
+          "optional": false,
+          "source": {
+            "kind": "expected_version"
+          }
+        },
+        {
+          "name": "idempotency_key",
+          "type_ref": "String",
+          "optional": false,
+          "source": {
+            "kind": "idempotency"
+          }
+        },
+        {
+          "name": "name",
+          "type_ref": "String",
+          "optional": false,
+          "source": {
+            "kind": "command"
+          }
+        },
+        {
+          "name": "workflow_id",
+          "type_ref": "workflow.definition.WorkflowId",
+          "optional": false,
+          "source": {
+            "kind": "command"
+          }
+        }
+      ],
+      "result": {
+        "kind": "intent",
+        "emitted_events": [
+          "workflow.definition.DraftCreated"
+        ]
+      }
+    },
+    {
+      "operation": "create_workflow",
+      "scope": "workflows.manage",
+      "semantic_ref": "workflow.definition.CreateWorkflow",
+      "kind": "intent",
+      "inputs": [
+        {
+          "name": "idempotency_key",
+          "type_ref": "String",
+          "optional": false,
+          "source": {
+            "kind": "idempotency"
+          }
+        },
+        {
+          "name": "name",
+          "type_ref": "String",
+          "optional": false,
+          "source": {
+            "kind": "command"
+          }
+        },
+        {
+          "name": "scopes",
+          "type_ref": "workflow.definition.ScopeBindings",
+          "optional": false,
+          "source": {
+            "kind": "command"
+          }
+        }
+      ],
+      "result": {
+        "kind": "intent",
+        "emitted_events": [
+          "workflow.definition.WorkflowCreated"
+        ]
+      }
+    },
+    {
+      "operation": "discard_draft",
+      "scope": "workflows.manage",
+      "semantic_ref": "workflow.definition.DiscardDraft",
+      "kind": "intent",
+      "inputs": [
+        {
+          "name": "draft_id",
+          "type_ref": "workflow.definition.DraftId",
+          "optional": false,
+          "source": {
+            "kind": "command"
+          }
+        },
+        {
+          "name": "expected_version",
+          "type_ref": "Integer",
+          "optional": false,
+          "source": {
+            "kind": "expected_version"
+          }
+        },
+        {
+          "name": "idempotency_key",
+          "type_ref": "String",
+          "optional": false,
+          "source": {
+            "kind": "idempotency"
+          }
+        },
+        {
+          "name": "workflow_id",
+          "type_ref": "workflow.definition.WorkflowId",
+          "optional": false,
+          "source": {
+            "kind": "command"
+          }
+        }
+      ],
+      "result": {
+        "kind": "intent",
+        "emitted_events": [
+          "workflow.definition.DraftDiscarded"
+        ]
+      }
+    },
+    {
+      "operation": "disconnect_nodes",
+      "scope": "workflows.manage",
+      "semantic_ref": "workflow.definition.DisconnectNodes",
+      "kind": "intent",
+      "inputs": [
+        {
+          "name": "draft_id",
+          "type_ref": "workflow.definition.DraftId",
+          "optional": false,
+          "source": {
+            "kind": "command"
+          }
+        },
+        {
+          "name": "edge_id",
+          "type_ref": "workflow.definition.EdgeId",
+          "optional": false,
+          "source": {
+            "kind": "command"
+          }
+        },
+        {
+          "name": "expected_version",
+          "type_ref": "Integer",
+          "optional": false,
+          "source": {
+            "kind": "expected_version"
+          }
+        },
+        {
+          "name": "idempotency_key",
+          "type_ref": "String",
+          "optional": false,
+          "source": {
+            "kind": "idempotency"
+          }
+        },
+        {
+          "name": "workflow_id",
+          "type_ref": "workflow.definition.WorkflowId",
+          "optional": false,
+          "source": {
+            "kind": "command"
+          }
+        }
+      ],
+      "result": {
+        "kind": "intent",
+        "emitted_events": [
+          "workflow.definition.NodesDisconnected"
+        ]
+      }
+    },
+    {
+      "operation": "get_draft",
+      "scope": "workflows.read",
+      "semantic_ref": "workflow.definition.DraftById",
+      "kind": "query",
+      "inputs": [
+        {
+          "name": "draft_id",
+          "type_ref": "workflow.definition.DraftId",
+          "optional": false,
+          "source": {
+            "kind": "selector",
+            "view_field": "draft_id"
+          }
+        },
+        {
+          "name": "workflow_id",
+          "type_ref": "workflow.definition.WorkflowId",
+          "optional": false,
+          "source": {
+            "kind": "selector",
+            "view_field": "workflow_id"
+          }
+        }
+      ],
+      "result": {
+        "kind": "query",
+        "fields": {
+          "based_on_revision_id": "Optional<workflow.definition.RevisionId>",
+          "draft_id": "workflow.definition.DraftId",
+          "name": "String",
+          "owner": "workflow.definition.OwnerRef",
+          "scopes": "workflow.definition.ScopeBindings",
+          "state": "workflow.definition.WorkflowDraft.State",
+          "workflow_id": "workflow.definition.WorkflowId"
+        }
+      },
+      "pagination": {
+        "envelope": "$page",
+        "maximum_limit": 1000,
+        "opaque_cursor": true
+      }
+    },
+    {
+      "operation": "get_revision",
+      "scope": "workflows.read",
+      "semantic_ref": "workflow.definition.RevisionById",
+      "kind": "query",
+      "inputs": [
+        {
+          "name": "revision_id",
+          "type_ref": "workflow.definition.RevisionId",
+          "optional": false,
+          "source": {
+            "kind": "selector",
+            "view_field": "revision_id"
+          }
+        },
+        {
+          "name": "workflow_id",
+          "type_ref": "workflow.definition.WorkflowId",
+          "optional": false,
+          "source": {
+            "kind": "selector",
+            "view_field": "workflow_id"
+          }
+        }
+      ],
+      "result": {
+        "kind": "query",
+        "fields": {
+          "digest": "String",
+          "draft_id": "workflow.definition.DraftId",
+          "edge_count": "Integer",
+          "edges": "List<workflow.definition.EdgeSnapshot>",
+          "node_count": "Integer",
+          "nodes": "List<workflow.definition.NodeSnapshot>",
+          "owner": "workflow.definition.OwnerRef",
+          "revision_id": "workflow.definition.RevisionId",
+          "scopes": "workflow.definition.ScopeBindings",
+          "state": "workflow.definition.WorkflowRevision.State",
+          "workflow_id": "workflow.definition.WorkflowId"
+        }
+      },
+      "pagination": {
+        "envelope": "$page",
+        "maximum_limit": 1000,
+        "opaque_cursor": true
+      }
+    },
+    {
+      "operation": "get_workflow",
+      "scope": "workflows.read",
+      "semantic_ref": "workflow.definition.WorkflowById",
+      "kind": "query",
+      "inputs": [
+        {
+          "name": "workflow_id",
+          "type_ref": "workflow.definition.WorkflowId",
+          "optional": false,
+          "source": {
+            "kind": "selector",
+            "view_field": "workflow_id"
+          }
+        }
+      ],
+      "result": {
+        "kind": "query",
+        "fields": {
+          "active_revision_id": "Optional<workflow.definition.RevisionId>",
+          "name": "String",
+          "owner": "workflow.definition.OwnerRef",
+          "scopes": "workflow.definition.ScopeBindings",
+          "state": "workflow.definition.Workflow.State",
+          "workflow_id": "workflow.definition.WorkflowId"
+        }
+      },
+      "pagination": {
+        "envelope": "$page",
+        "maximum_limit": 1000,
+        "opaque_cursor": true
+      }
+    },
+    {
+      "operation": "list_drafts",
+      "scope": "workflows.read",
+      "semantic_ref": "workflow.definition.Drafts",
+      "kind": "query",
+      "inputs": [
+        {
+          "name": "workflow_id",
+          "type_ref": "workflow.definition.WorkflowId",
+          "optional": false,
+          "source": {
+            "kind": "selector",
+            "view_field": "workflow_id"
+          }
+        }
+      ],
+      "result": {
+        "kind": "query",
+        "fields": {
+          "based_on_revision_id": "Optional<workflow.definition.RevisionId>",
+          "draft_id": "workflow.definition.DraftId",
+          "name": "String",
+          "owner": "workflow.definition.OwnerRef",
+          "scopes": "workflow.definition.ScopeBindings",
+          "state": "workflow.definition.WorkflowDraft.State",
+          "workflow_id": "workflow.definition.WorkflowId"
+        }
+      },
+      "pagination": {
+        "envelope": "$page",
+        "maximum_limit": 1000,
+        "opaque_cursor": true
+      }
+    },
+    {
+      "operation": "list_revisions",
+      "scope": "workflows.read",
+      "semantic_ref": "workflow.definition.Revisions",
+      "kind": "query",
+      "inputs": [
+        {
+          "name": "workflow_id",
+          "type_ref": "workflow.definition.WorkflowId",
+          "optional": false,
+          "source": {
+            "kind": "selector",
+            "view_field": "workflow_id"
+          }
+        }
+      ],
+      "result": {
+        "kind": "query",
+        "fields": {
+          "digest": "String",
+          "draft_id": "workflow.definition.DraftId",
+          "edge_count": "Integer",
+          "edges": "List<workflow.definition.EdgeSnapshot>",
+          "node_count": "Integer",
+          "nodes": "List<workflow.definition.NodeSnapshot>",
+          "owner": "workflow.definition.OwnerRef",
+          "revision_id": "workflow.definition.RevisionId",
+          "scopes": "workflow.definition.ScopeBindings",
+          "state": "workflow.definition.WorkflowRevision.State",
+          "workflow_id": "workflow.definition.WorkflowId"
+        }
+      },
+      "pagination": {
+        "envelope": "$page",
+        "maximum_limit": 1000,
+        "opaque_cursor": true
+      }
+    },
+    {
+      "operation": "list_workflows",
+      "scope": "workflows.read",
+      "semantic_ref": "workflow.definition.Workflows",
+      "kind": "query",
+      "inputs": [],
+      "result": {
+        "kind": "query",
+        "fields": {
+          "active_revision_id": "Optional<workflow.definition.RevisionId>",
+          "name": "String",
+          "owner": "workflow.definition.OwnerRef",
+          "scopes": "workflow.definition.ScopeBindings",
+          "state": "workflow.definition.Workflow.State",
+          "workflow_id": "workflow.definition.WorkflowId"
+        }
+      },
+      "pagination": {
+        "envelope": "$page",
+        "maximum_limit": 1000,
+        "opaque_cursor": true
+      }
+    },
+    {
+      "operation": "publish_draft",
+      "scope": "workflows.manage",
+      "semantic_ref": "workflow.definition.PublishDraft",
+      "kind": "intent",
+      "inputs": [
+        {
+          "name": "draft_id",
+          "type_ref": "workflow.definition.DraftId",
+          "optional": false,
+          "source": {
+            "kind": "command"
+          }
+        },
+        {
+          "name": "expected_version",
+          "type_ref": "Integer",
+          "optional": false,
+          "source": {
+            "kind": "expected_version"
+          }
+        },
+        {
+          "name": "idempotency_key",
+          "type_ref": "String",
+          "optional": false,
+          "source": {
+            "kind": "idempotency"
+          }
+        },
+        {
+          "name": "workflow_id",
+          "type_ref": "workflow.definition.WorkflowId",
+          "optional": false,
+          "source": {
+            "kind": "command"
+          }
+        }
+      ],
+      "result": {
+        "kind": "intent",
+        "emitted_events": [
+          "workflow.definition.RevisionPublished"
+        ]
+      }
+    },
+    {
+      "operation": "remove_node",
+      "scope": "workflows.manage",
+      "semantic_ref": "workflow.definition.RemoveNode",
+      "kind": "intent",
+      "inputs": [
+        {
+          "name": "draft_id",
+          "type_ref": "workflow.definition.DraftId",
+          "optional": false,
+          "source": {
+            "kind": "command"
+          }
+        },
+        {
+          "name": "expected_version",
+          "type_ref": "Integer",
+          "optional": false,
+          "source": {
+            "kind": "expected_version"
+          }
+        },
+        {
+          "name": "idempotency_key",
+          "type_ref": "String",
+          "optional": false,
+          "source": {
+            "kind": "idempotency"
+          }
+        },
+        {
+          "name": "node_id",
+          "type_ref": "workflow.definition.NodeId",
+          "optional": false,
+          "source": {
+            "kind": "command"
+          }
+        },
+        {
+          "name": "workflow_id",
+          "type_ref": "workflow.definition.WorkflowId",
+          "optional": false,
+          "source": {
+            "kind": "command"
+          }
+        }
+      ],
+      "result": {
+        "kind": "intent",
+        "emitted_events": [
+          "workflow.definition.NodeRemoved"
+        ]
+      }
+    },
+    {
+      "operation": "replace_node",
+      "scope": "workflows.manage",
+      "semantic_ref": "workflow.definition.ReplaceNode",
+      "kind": "intent",
+      "inputs": [
+        {
+          "name": "definition",
+          "type_ref": "workflow.definition.NodeDefinition",
+          "optional": false,
+          "source": {
+            "kind": "command"
+          }
+        },
+        {
+          "name": "draft_id",
+          "type_ref": "workflow.definition.DraftId",
+          "optional": false,
+          "source": {
+            "kind": "command"
+          }
+        },
+        {
+          "name": "expected_version",
+          "type_ref": "Integer",
+          "optional": false,
+          "source": {
+            "kind": "expected_version"
+          }
+        },
+        {
+          "name": "idempotency_key",
+          "type_ref": "String",
+          "optional": false,
+          "source": {
+            "kind": "idempotency"
+          }
+        },
+        {
+          "name": "node_id",
+          "type_ref": "workflow.definition.NodeId",
+          "optional": false,
+          "source": {
+            "kind": "command"
+          }
+        },
+        {
+          "name": "workflow_id",
+          "type_ref": "workflow.definition.WorkflowId",
+          "optional": false,
+          "source": {
+            "kind": "command"
+          }
+        }
+      ],
+      "result": {
+        "kind": "intent",
+        "emitted_events": [
+          "workflow.definition.NodeReplaced"
+        ]
+      }
+    },
+    {
+      "operation": "validate_draft",
+      "scope": "workflows.manage",
+      "semantic_ref": "workflow.definition.ValidateDraft",
+      "kind": "intent",
+      "inputs": [
+        {
+          "name": "draft_id",
+          "type_ref": "workflow.definition.DraftId",
+          "optional": false,
+          "source": {
+            "kind": "command"
+          }
+        },
+        {
+          "name": "expected_version",
+          "type_ref": "Integer",
+          "optional": false,
+          "source": {
+            "kind": "expected_version"
+          }
+        },
+        {
+          "name": "idempotency_key",
+          "type_ref": "String",
+          "optional": false,
+          "source": {
+            "kind": "idempotency"
+          }
+        },
+        {
+          "name": "workflow_id",
+          "type_ref": "workflow.definition.WorkflowId",
+          "optional": false,
+          "source": {
+            "kind": "command"
+          }
+        }
+      ],
+      "result": {
+        "kind": "intent",
+        "emitted_events": [
+          "workflow.definition.DraftValidated"
+        ]
+      }
+    }
+  ]
+}

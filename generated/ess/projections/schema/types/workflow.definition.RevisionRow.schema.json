@@ -1,0 +1,500 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/workflow.definition.RevisionRow",
+  "x-ess-provenance": {
+    "system": "workflow",
+    "specification_version": "v1",
+    "source_digest": "6a79078047815754e0dda89f285e08689037af0adfd4277dfcc305f1d003df1b",
+    "contract_digest": "1b3b4ff55ed23aa6a5a2b4a09ae5fba301f26b0ea431aa17d314df610e4b122d",
+    "regenerate": "ess generate"
+  },
+  "$defs": {
+    "workflow.definition.CallNode": {
+      "title": "CallNode",
+      "x-ess-name": "workflow.definition.CallNode",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "connector": {
+          "type": "string"
+        },
+        "operation": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "connector",
+        "operation"
+      ],
+      "additionalProperties": false
+    },
+    "workflow.definition.CompleteNode": {
+      "title": "CompleteNode",
+      "x-ess-name": "workflow.definition.CompleteNode",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "workflow.definition.ComputeNode": {
+      "title": "ComputeNode",
+      "x-ess-name": "workflow.definition.ComputeNode",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "expression": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "expression"
+      ],
+      "additionalProperties": false
+    },
+    "workflow.definition.DraftId": {
+      "title": "DraftId",
+      "x-ess-name": "workflow.definition.DraftId",
+      "x-ess-kind": "newtype",
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+    },
+    "workflow.definition.EdgeId": {
+      "title": "EdgeId",
+      "x-ess-name": "workflow.definition.EdgeId",
+      "x-ess-kind": "newtype",
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+    },
+    "workflow.definition.EdgeSnapshot": {
+      "title": "EdgeSnapshot",
+      "x-ess-name": "workflow.definition.EdgeSnapshot",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "edge_id": {
+          "$ref": "#/$defs/workflow.definition.EdgeId"
+        },
+        "draft_id": {
+          "$ref": "#/$defs/workflow.definition.DraftId"
+        },
+        "source_node_id": {
+          "$ref": "#/$defs/workflow.definition.NodeId"
+        },
+        "target_node_id": {
+          "$ref": "#/$defs/workflow.definition.NodeId"
+        }
+      },
+      "required": [
+        "edge_id",
+        "draft_id",
+        "source_node_id",
+        "target_node_id"
+      ],
+      "additionalProperties": false
+    },
+    "workflow.definition.EmitNode": {
+      "title": "EmitNode",
+      "x-ess-name": "workflow.definition.EmitNode",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "event": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "event"
+      ],
+      "additionalProperties": false
+    },
+    "workflow.definition.InvokeNode": {
+      "title": "InvokeNode",
+      "x-ess-name": "workflow.definition.InvokeNode",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "agent": {
+          "type": "string"
+        },
+        "instruction": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "agent",
+        "instruction"
+      ],
+      "additionalProperties": false
+    },
+    "workflow.definition.JudgeNode": {
+      "title": "JudgeNode",
+      "x-ess-name": "workflow.definition.JudgeNode",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "condition": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "condition"
+      ],
+      "additionalProperties": false
+    },
+    "workflow.definition.NodeDefinition": {
+      "title": "NodeDefinition",
+      "x-ess-name": "workflow.definition.NodeDefinition",
+      "x-ess-kind": "union",
+      "oneOf": [
+        {
+          "title": "call",
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "const": "call"
+            },
+            "value": {
+              "$ref": "#/$defs/workflow.definition.CallNode"
+            }
+          },
+          "required": [
+            "kind",
+            "value"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "title": "complete",
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "const": "complete"
+            },
+            "value": {
+              "$ref": "#/$defs/workflow.definition.CompleteNode"
+            }
+          },
+          "required": [
+            "kind",
+            "value"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "title": "compute",
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "const": "compute"
+            },
+            "value": {
+              "$ref": "#/$defs/workflow.definition.ComputeNode"
+            }
+          },
+          "required": [
+            "kind",
+            "value"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "title": "emit",
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "const": "emit"
+            },
+            "value": {
+              "$ref": "#/$defs/workflow.definition.EmitNode"
+            }
+          },
+          "required": [
+            "kind",
+            "value"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "title": "invoke",
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "const": "invoke"
+            },
+            "value": {
+              "$ref": "#/$defs/workflow.definition.InvokeNode"
+            }
+          },
+          "required": [
+            "kind",
+            "value"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "title": "judge",
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "const": "judge"
+            },
+            "value": {
+              "$ref": "#/$defs/workflow.definition.JudgeNode"
+            }
+          },
+          "required": [
+            "kind",
+            "value"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "title": "read",
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "const": "read"
+            },
+            "value": {
+              "$ref": "#/$defs/workflow.definition.ReadNode"
+            }
+          },
+          "required": [
+            "kind",
+            "value"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "title": "wait",
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "const": "wait"
+            },
+            "value": {
+              "$ref": "#/$defs/workflow.definition.WaitNode"
+            }
+          },
+          "required": [
+            "kind",
+            "value"
+          ],
+          "additionalProperties": false
+        }
+      ],
+      "x-ess-union-tag": "kind"
+    },
+    "workflow.definition.NodeId": {
+      "title": "NodeId",
+      "x-ess-name": "workflow.definition.NodeId",
+      "x-ess-kind": "newtype",
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+    },
+    "workflow.definition.NodeSnapshot": {
+      "title": "NodeSnapshot",
+      "x-ess-name": "workflow.definition.NodeSnapshot",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "node_id": {
+          "$ref": "#/$defs/workflow.definition.NodeId"
+        },
+        "draft_id": {
+          "$ref": "#/$defs/workflow.definition.DraftId"
+        },
+        "definition": {
+          "$ref": "#/$defs/workflow.definition.NodeDefinition"
+        }
+      },
+      "required": [
+        "node_id",
+        "draft_id",
+        "definition"
+      ],
+      "additionalProperties": false
+    },
+    "workflow.definition.OwnerRef": {
+      "title": "OwnerRef",
+      "x-ess-name": "workflow.definition.OwnerRef",
+      "x-ess-kind": "newtype",
+      "type": "string"
+    },
+    "workflow.definition.PrincipalRef": {
+      "title": "PrincipalRef",
+      "x-ess-name": "workflow.definition.PrincipalRef",
+      "x-ess-kind": "newtype",
+      "type": "string"
+    },
+    "workflow.definition.ProjectRef": {
+      "title": "ProjectRef",
+      "x-ess-name": "workflow.definition.ProjectRef",
+      "x-ess-kind": "newtype",
+      "type": "string"
+    },
+    "workflow.definition.ReadNode": {
+      "title": "ReadNode",
+      "x-ess-name": "workflow.definition.ReadNode",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "connector": {
+          "type": "string"
+        },
+        "operation": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "connector",
+        "operation"
+      ],
+      "additionalProperties": false
+    },
+    "workflow.definition.RevisionId": {
+      "title": "RevisionId",
+      "x-ess-name": "workflow.definition.RevisionId",
+      "x-ess-kind": "newtype",
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+    },
+    "workflow.definition.RevisionRow": {
+      "title": "RevisionRow",
+      "x-ess-name": "workflow.definition.RevisionRow",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "revision_id": {
+          "$ref": "#/$defs/workflow.definition.RevisionId"
+        },
+        "workflow_id": {
+          "$ref": "#/$defs/workflow.definition.WorkflowId"
+        },
+        "draft_id": {
+          "$ref": "#/$defs/workflow.definition.DraftId"
+        },
+        "nodes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/workflow.definition.NodeSnapshot"
+          }
+        },
+        "edges": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/workflow.definition.EdgeSnapshot"
+          }
+        },
+        "digest": {
+          "type": "string"
+        },
+        "node_count": {
+          "type": "integer"
+        },
+        "edge_count": {
+          "type": "integer"
+        },
+        "owner": {
+          "$ref": "#/$defs/workflow.definition.OwnerRef"
+        },
+        "scopes": {
+          "$ref": "#/$defs/workflow.definition.ScopeBindings"
+        },
+        "state": {
+          "$ref": "#/$defs/workflow.definition.WorkflowRevision.State"
+        }
+      },
+      "required": [
+        "revision_id",
+        "workflow_id",
+        "draft_id",
+        "nodes",
+        "edges",
+        "digest",
+        "node_count",
+        "edge_count",
+        "owner",
+        "scopes",
+        "state"
+      ],
+      "additionalProperties": false
+    },
+    "workflow.definition.ScopeBindings": {
+      "title": "ScopeBindings",
+      "x-ess-name": "workflow.definition.ScopeBindings",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "principal": {
+          "$ref": "#/$defs/workflow.definition.PrincipalRef"
+        },
+        "team": {
+          "$ref": "#/$defs/workflow.definition.TeamRef"
+        },
+        "project": {
+          "$ref": "#/$defs/workflow.definition.ProjectRef"
+        }
+      },
+      "additionalProperties": false
+    },
+    "workflow.definition.TeamRef": {
+      "title": "TeamRef",
+      "x-ess-name": "workflow.definition.TeamRef",
+      "x-ess-kind": "newtype",
+      "type": "string"
+    },
+    "workflow.definition.WaitNode": {
+      "title": "WaitNode",
+      "x-ess-name": "workflow.definition.WaitNode",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "duration": {
+          "type": "string",
+          "format": "duration"
+        }
+      },
+      "required": [
+        "duration"
+      ],
+      "additionalProperties": false
+    },
+    "workflow.definition.WorkflowId": {
+      "title": "WorkflowId",
+      "x-ess-name": "workflow.definition.WorkflowId",
+      "x-ess-kind": "newtype",
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+    },
+    "workflow.definition.WorkflowRevision.State": {
+      "title": "State",
+      "x-ess-name": "workflow.definition.WorkflowRevision.State",
+      "x-ess-kind": "enum",
+      "type": "string",
+      "enum": [
+        "Published"
+      ]
+    }
+  }
+}

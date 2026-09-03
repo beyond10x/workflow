@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/workflow.definition.PrincipalRef",
+  "x-ess-provenance": {
+    "system": "workflow",
+    "specification_version": "v1",
+    "source_digest": "6a79078047815754e0dda89f285e08689037af0adfd4277dfcc305f1d003df1b",
+    "contract_digest": "ad52a58d33a5509d165a4101e86f80e494719899ab9f023457082f26b127cdae",
+    "regenerate": "ess generate"
+  },
+  "$defs": {
+    "workflow.definition.PrincipalRef": {
+      "title": "PrincipalRef",
+      "x-ess-name": "workflow.definition.PrincipalRef",
+      "x-ess-kind": "newtype",
+      "type": "string"
+    }
+  }
+}

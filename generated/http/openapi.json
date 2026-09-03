@@ -1,0 +1,2210 @@
+{
+  "components": {
+    "schemas": {
+      "MutationReceipt": {
+        "additionalProperties": false,
+        "properties": {
+          "events": {
+            "items": {
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "outcome": {
+            "type": "string"
+          },
+          "replayed": {
+            "type": "boolean"
+          },
+          "through_version": {
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "outcome",
+          "events",
+          "through_version",
+          "replayed"
+        ],
+        "type": "object"
+      },
+      "Problem": {
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "detail": {
+            "type": "string"
+          },
+          "status": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "code",
+          "status",
+          "detail"
+        ],
+        "type": "object"
+      }
+    },
+    "securitySchemes": {
+      "identityBearer": {
+        "bearerFormat": "opaque",
+        "scheme": "bearer",
+        "type": "http"
+      }
+    }
+  },
+  "info": {
+    "title": "workflow generated service",
+    "version": "1"
+  },
+  "openapi": "3.1.0",
+  "paths": {
+    "/healthz": {
+      "get": {
+        "operationId": "health",
+        "responses": {
+          "204": {
+            "description": "healthy"
+          }
+        }
+      }
+    },
+    "/readyz": {
+      "get": {
+        "operationId": "ready",
+        "responses": {
+          "204": {
+            "description": "ready"
+          }
+        }
+      }
+    },
+    "/v1/intents/activate_revision": {
+      "post": {
+        "operationId": "activate_revision",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "properties": {
+                  "expected_version": {
+                    "type": "integer"
+                  },
+                  "idempotency_key": {
+                    "type": "string"
+                  },
+                  "revision_id": {},
+                  "workflow_id": {}
+                },
+                "required": [
+                  "expected_version",
+                  "idempotency_key",
+                  "revision_id",
+                  "workflow_id"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MutationReceipt"
+                }
+              }
+            },
+            "description": "accepted"
+          },
+          "400": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "invalid input"
+          },
+          "401": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "forbidden"
+          },
+          "409": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "service invariant refused the operation"
+          },
+          "503": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "service unavailable"
+          }
+        },
+        "security": [
+          {
+            "identityBearer": [
+              "workflows.manage"
+            ]
+          }
+        ],
+        "x-b10x-scope": "workflows.manage",
+        "x-b10x-semantic-ref": "workflow.definition.ActivateRevision"
+      }
+    },
+    "/v1/intents/add_node": {
+      "post": {
+        "operationId": "add_node",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "properties": {
+                  "definition": {},
+                  "draft_id": {},
+                  "expected_version": {
+                    "type": "integer"
+                  },
+                  "idempotency_key": {
+                    "type": "string"
+                  },
+                  "workflow_id": {}
+                },
+                "required": [
+                  "definition",
+                  "draft_id",
+                  "expected_version",
+                  "idempotency_key",
+                  "workflow_id"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MutationReceipt"
+                }
+              }
+            },
+            "description": "accepted"
+          },
+          "400": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "invalid input"
+          },
+          "401": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "forbidden"
+          },
+          "409": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "service invariant refused the operation"
+          },
+          "503": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "service unavailable"
+          }
+        },
+        "security": [
+          {
+            "identityBearer": [
+              "workflows.manage"
+            ]
+          }
+        ],
+        "x-b10x-scope": "workflows.manage",
+        "x-b10x-semantic-ref": "workflow.definition.AddNode"
+      }
+    },
+    "/v1/intents/connect_nodes": {
+      "post": {
+        "operationId": "connect_nodes",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "properties": {
+                  "draft_id": {},
+                  "expected_version": {
+                    "type": "integer"
+                  },
+                  "idempotency_key": {
+                    "type": "string"
+                  },
+                  "source_node_id": {},
+                  "target_node_id": {},
+                  "workflow_id": {}
+                },
+                "required": [
+                  "draft_id",
+                  "expected_version",
+                  "idempotency_key",
+                  "source_node_id",
+                  "target_node_id",
+                  "workflow_id"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MutationReceipt"
+                }
+              }
+            },
+            "description": "accepted"
+          },
+          "400": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "invalid input"
+          },
+          "401": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "forbidden"
+          },
+          "409": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "service invariant refused the operation"
+          },
+          "503": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "service unavailable"
+          }
+        },
+        "security": [
+          {
+            "identityBearer": [
+              "workflows.manage"
+            ]
+          }
+        ],
+        "x-b10x-scope": "workflows.manage",
+        "x-b10x-semantic-ref": "workflow.definition.ConnectNodes"
+      }
+    },
+    "/v1/intents/create_draft": {
+      "post": {
+        "operationId": "create_draft",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "properties": {
+                  "based_on_revision_id": {
+                    "nullable": true
+                  },
+                  "expected_version": {
+                    "type": "integer"
+                  },
+                  "idempotency_key": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "workflow_id": {}
+                },
+                "required": [
+                  "expected_version",
+                  "idempotency_key",
+                  "name",
+                  "workflow_id"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MutationReceipt"
+                }
+              }
+            },
+            "description": "accepted"
+          },
+          "400": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "invalid input"
+          },
+          "401": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "forbidden"
+          },
+          "409": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "service invariant refused the operation"
+          },
+          "503": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "service unavailable"
+          }
+        },
+        "security": [
+          {
+            "identityBearer": [
+              "workflows.manage"
+            ]
+          }
+        ],
+        "x-b10x-scope": "workflows.manage",
+        "x-b10x-semantic-ref": "workflow.definition.CreateDraft"
+      }
+    },
+    "/v1/intents/create_workflow": {
+      "post": {
+        "operationId": "create_workflow",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "properties": {
+                  "idempotency_key": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "scopes": {}
+                },
+                "required": [
+                  "idempotency_key",
+                  "name",
+                  "scopes"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MutationReceipt"
+                }
+              }
+            },
+            "description": "accepted"
+          },
+          "400": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "invalid input"
+          },
+          "401": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "forbidden"
+          },
+          "409": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "service invariant refused the operation"
+          },
+          "503": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "service unavailable"
+          }
+        },
+        "security": [
+          {
+            "identityBearer": [
+              "workflows.manage"
+            ]
+          }
+        ],
+        "x-b10x-scope": "workflows.manage",
+        "x-b10x-semantic-ref": "workflow.definition.CreateWorkflow"
+      }
+    },
+    "/v1/intents/discard_draft": {
+      "post": {
+        "operationId": "discard_draft",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "properties": {
+                  "draft_id": {},
+                  "expected_version": {
+                    "type": "integer"
+                  },
+                  "idempotency_key": {
+                    "type": "string"
+                  },
+                  "workflow_id": {}
+                },
+                "required": [
+                  "draft_id",
+                  "expected_version",
+                  "idempotency_key",
+                  "workflow_id"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MutationReceipt"
+                }
+              }
+            },
+            "description": "accepted"
+          },
+          "400": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "invalid input"
+          },
+          "401": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "forbidden"
+          },
+          "409": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "service invariant refused the operation"
+          },
+          "503": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "service unavailable"
+          }
+        },
+        "security": [
+          {
+            "identityBearer": [
+              "workflows.manage"
+            ]
+          }
+        ],
+        "x-b10x-scope": "workflows.manage",
+        "x-b10x-semantic-ref": "workflow.definition.DiscardDraft"
+      }
+    },
+    "/v1/intents/disconnect_nodes": {
+      "post": {
+        "operationId": "disconnect_nodes",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "properties": {
+                  "draft_id": {},
+                  "edge_id": {},
+                  "expected_version": {
+                    "type": "integer"
+                  },
+                  "idempotency_key": {
+                    "type": "string"
+                  },
+                  "workflow_id": {}
+                },
+                "required": [
+                  "draft_id",
+                  "edge_id",
+                  "expected_version",
+                  "idempotency_key",
+                  "workflow_id"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MutationReceipt"
+                }
+              }
+            },
+            "description": "accepted"
+          },
+          "400": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "invalid input"
+          },
+          "401": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "forbidden"
+          },
+          "409": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "service invariant refused the operation"
+          },
+          "503": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "service unavailable"
+          }
+        },
+        "security": [
+          {
+            "identityBearer": [
+              "workflows.manage"
+            ]
+          }
+        ],
+        "x-b10x-scope": "workflows.manage",
+        "x-b10x-semantic-ref": "workflow.definition.DisconnectNodes"
+      }
+    },
+    "/v1/intents/publish_draft": {
+      "post": {
+        "operationId": "publish_draft",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "properties": {
+                  "draft_id": {},
+                  "expected_version": {
+                    "type": "integer"
+                  },
+                  "idempotency_key": {
+                    "type": "string"
+                  },
+                  "workflow_id": {}
+                },
+                "required": [
+                  "draft_id",
+                  "expected_version",
+                  "idempotency_key",
+                  "workflow_id"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MutationReceipt"
+                }
+              }
+            },
+            "description": "accepted"
+          },
+          "400": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "invalid input"
+          },
+          "401": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "forbidden"
+          },
+          "409": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "service invariant refused the operation"
+          },
+          "503": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "service unavailable"
+          }
+        },
+        "security": [
+          {
+            "identityBearer": [
+              "workflows.manage"
+            ]
+          }
+        ],
+        "x-b10x-scope": "workflows.manage",
+        "x-b10x-semantic-ref": "workflow.definition.PublishDraft"
+      }
+    },
+    "/v1/intents/remove_node": {
+      "post": {
+        "operationId": "remove_node",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "properties": {
+                  "draft_id": {},
+                  "expected_version": {
+                    "type": "integer"
+                  },
+                  "idempotency_key": {
+                    "type": "string"
+                  },
+                  "node_id": {},
+                  "workflow_id": {}
+                },
+                "required": [
+                  "draft_id",
+                  "expected_version",
+                  "idempotency_key",
+                  "node_id",
+                  "workflow_id"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MutationReceipt"
+                }
+              }
+            },
+            "description": "accepted"
+          },
+          "400": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "invalid input"
+          },
+          "401": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "forbidden"
+          },
+          "409": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "service invariant refused the operation"
+          },
+          "503": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "service unavailable"
+          }
+        },
+        "security": [
+          {
+            "identityBearer": [
+              "workflows.manage"
+            ]
+          }
+        ],
+        "x-b10x-scope": "workflows.manage",
+        "x-b10x-semantic-ref": "workflow.definition.RemoveNode"
+      }
+    },
+    "/v1/intents/replace_node": {
+      "post": {
+        "operationId": "replace_node",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "properties": {
+                  "definition": {},
+                  "draft_id": {},
+                  "expected_version": {
+                    "type": "integer"
+                  },
+                  "idempotency_key": {
+                    "type": "string"
+                  },
+                  "node_id": {},
+                  "workflow_id": {}
+                },
+                "required": [
+                  "definition",
+                  "draft_id",
+                  "expected_version",
+                  "idempotency_key",
+                  "node_id",
+                  "workflow_id"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MutationReceipt"
+                }
+              }
+            },
+            "description": "accepted"
+          },
+          "400": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "invalid input"
+          },
+          "401": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "forbidden"
+          },
+          "409": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "service invariant refused the operation"
+          },
+          "503": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "service unavailable"
+          }
+        },
+        "security": [
+          {
+            "identityBearer": [
+              "workflows.manage"
+            ]
+          }
+        ],
+        "x-b10x-scope": "workflows.manage",
+        "x-b10x-semantic-ref": "workflow.definition.ReplaceNode"
+      }
+    },
+    "/v1/intents/validate_draft": {
+      "post": {
+        "operationId": "validate_draft",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "properties": {
+                  "draft_id": {},
+                  "expected_version": {
+                    "type": "integer"
+                  },
+                  "idempotency_key": {
+                    "type": "string"
+                  },
+                  "workflow_id": {}
+                },
+                "required": [
+                  "draft_id",
+                  "expected_version",
+                  "idempotency_key",
+                  "workflow_id"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MutationReceipt"
+                }
+              }
+            },
+            "description": "accepted"
+          },
+          "400": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "invalid input"
+          },
+          "401": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "forbidden"
+          },
+          "409": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "service invariant refused the operation"
+          },
+          "503": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "service unavailable"
+          }
+        },
+        "security": [
+          {
+            "identityBearer": [
+              "workflows.manage"
+            ]
+          }
+        ],
+        "x-b10x-scope": "workflows.manage",
+        "x-b10x-semantic-ref": "workflow.definition.ValidateDraft"
+      }
+    },
+    "/v1/queries/get_draft": {
+      "post": {
+        "operationId": "get_draft",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "properties": {
+                  "$page": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "cursor": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "limit": {
+                        "maximum": 1000,
+                        "minimum": 1,
+                        "type": "integer"
+                      }
+                    },
+                    "required": [
+                      "limit"
+                    ],
+                    "type": "object"
+                  },
+                  "draft_id": {},
+                  "workflow_id": {}
+                },
+                "required": [
+                  "draft_id",
+                  "workflow_id"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "items": {
+                      "items": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "based_on_revision_id": {
+                            "nullable": true
+                          },
+                          "draft_id": {},
+                          "name": {
+                            "type": "string"
+                          },
+                          "owner": {},
+                          "scopes": {},
+                          "state": {},
+                          "workflow_id": {}
+                        },
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "next_cursor": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "partial": {
+                      "type": "boolean"
+                    },
+                    "through_version": {
+                      "minimum": 0,
+                      "type": [
+                        "integer",
+                        "null"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "items",
+                    "through_version",
+                    "next_cursor",
+                    "partial"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "accepted"
+          },
+          "400": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "invalid input"
+          },
+          "401": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "forbidden"
+          },
+          "409": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "service invariant refused the operation"
+          },
+          "503": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "service unavailable"
+          }
+        },
+        "security": [
+          {
+            "identityBearer": [
+              "workflows.read"
+            ]
+          }
+        ],
+        "x-b10x-scope": "workflows.read",
+        "x-b10x-semantic-ref": "workflow.definition.DraftById"
+      }
+    },
+    "/v1/queries/get_revision": {
+      "post": {
+        "operationId": "get_revision",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "properties": {
+                  "$page": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "cursor": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "limit": {
+                        "maximum": 1000,
+                        "minimum": 1,
+                        "type": "integer"
+                      }
+                    },
+                    "required": [
+                      "limit"
+                    ],
+                    "type": "object"
+                  },
+                  "revision_id": {},
+                  "workflow_id": {}
+                },
+                "required": [
+                  "revision_id",
+                  "workflow_id"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "items": {
+                      "items": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "digest": {
+                            "type": "string"
+                          },
+                          "draft_id": {},
+                          "edge_count": {
+                            "type": "integer"
+                          },
+                          "edges": {
+                            "items": {},
+                            "type": "array"
+                          },
+                          "node_count": {
+                            "type": "integer"
+                          },
+                          "nodes": {
+                            "items": {},
+                            "type": "array"
+                          },
+                          "owner": {},
+                          "revision_id": {},
+                          "scopes": {},
+                          "state": {},
+                          "workflow_id": {}
+                        },
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "next_cursor": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "partial": {
+                      "type": "boolean"
+                    },
+                    "through_version": {
+                      "minimum": 0,
+                      "type": [
+                        "integer",
+                        "null"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "items",
+                    "through_version",
+                    "next_cursor",
+                    "partial"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "accepted"
+          },
+          "400": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "invalid input"
+          },
+          "401": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "forbidden"
+          },
+          "409": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "service invariant refused the operation"
+          },
+          "503": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "service unavailable"
+          }
+        },
+        "security": [
+          {
+            "identityBearer": [
+              "workflows.read"
+            ]
+          }
+        ],
+        "x-b10x-scope": "workflows.read",
+        "x-b10x-semantic-ref": "workflow.definition.RevisionById"
+      }
+    },
+    "/v1/queries/get_workflow": {
+      "post": {
+        "operationId": "get_workflow",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "properties": {
+                  "$page": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "cursor": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "limit": {
+                        "maximum": 1000,
+                        "minimum": 1,
+                        "type": "integer"
+                      }
+                    },
+                    "required": [
+                      "limit"
+                    ],
+                    "type": "object"
+                  },
+                  "workflow_id": {}
+                },
+                "required": [
+                  "workflow_id"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "items": {
+                      "items": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "active_revision_id": {
+                            "nullable": true
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "owner": {},
+                          "scopes": {},
+                          "state": {},
+                          "workflow_id": {}
+                        },
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "next_cursor": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "partial": {
+                      "type": "boolean"
+                    },
+                    "through_version": {
+                      "minimum": 0,
+                      "type": [
+                        "integer",
+                        "null"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "items",
+                    "through_version",
+                    "next_cursor",
+                    "partial"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "accepted"
+          },
+          "400": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "invalid input"
+          },
+          "401": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "forbidden"
+          },
+          "409": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "service invariant refused the operation"
+          },
+          "503": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "service unavailable"
+          }
+        },
+        "security": [
+          {
+            "identityBearer": [
+              "workflows.read"
+            ]
+          }
+        ],
+        "x-b10x-scope": "workflows.read",
+        "x-b10x-semantic-ref": "workflow.definition.WorkflowById"
+      }
+    },
+    "/v1/queries/list_drafts": {
+      "post": {
+        "operationId": "list_drafts",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "properties": {
+                  "$page": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "cursor": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "limit": {
+                        "maximum": 1000,
+                        "minimum": 1,
+                        "type": "integer"
+                      }
+                    },
+                    "required": [
+                      "limit"
+                    ],
+                    "type": "object"
+                  },
+                  "workflow_id": {}
+                },
+                "required": [
+                  "workflow_id"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "items": {
+                      "items": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "based_on_revision_id": {
+                            "nullable": true
+                          },
+                          "draft_id": {},
+                          "name": {
+                            "type": "string"
+                          },
+                          "owner": {},
+                          "scopes": {},
+                          "state": {},
+                          "workflow_id": {}
+                        },
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "next_cursor": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "partial": {
+                      "type": "boolean"
+                    },
+                    "through_version": {
+                      "minimum": 0,
+                      "type": [
+                        "integer",
+                        "null"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "items",
+                    "through_version",
+                    "next_cursor",
+                    "partial"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "accepted"
+          },
+          "400": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "invalid input"
+          },
+          "401": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "forbidden"
+          },
+          "409": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "service invariant refused the operation"
+          },
+          "503": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "service unavailable"
+          }
+        },
+        "security": [
+          {
+            "identityBearer": [
+              "workflows.read"
+            ]
+          }
+        ],
+        "x-b10x-scope": "workflows.read",
+        "x-b10x-semantic-ref": "workflow.definition.Drafts"
+      }
+    },
+    "/v1/queries/list_revisions": {
+      "post": {
+        "operationId": "list_revisions",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "properties": {
+                  "$page": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "cursor": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "limit": {
+                        "maximum": 1000,
+                        "minimum": 1,
+                        "type": "integer"
+                      }
+                    },
+                    "required": [
+                      "limit"
+                    ],
+                    "type": "object"
+                  },
+                  "workflow_id": {}
+                },
+                "required": [
+                  "workflow_id"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "items": {
+                      "items": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "digest": {
+                            "type": "string"
+                          },
+                          "draft_id": {},
+                          "edge_count": {
+                            "type": "integer"
+                          },
+                          "edges": {
+                            "items": {},
+                            "type": "array"
+                          },
+                          "node_count": {
+                            "type": "integer"
+                          },
+                          "nodes": {
+                            "items": {},
+                            "type": "array"
+                          },
+                          "owner": {},
+                          "revision_id": {},
+                          "scopes": {},
+                          "state": {},
+                          "workflow_id": {}
+                        },
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "next_cursor": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "partial": {
+                      "type": "boolean"
+                    },
+                    "through_version": {
+                      "minimum": 0,
+                      "type": [
+                        "integer",
+                        "null"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "items",
+                    "through_version",
+                    "next_cursor",
+                    "partial"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "accepted"
+          },
+          "400": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "invalid input"
+          },
+          "401": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "forbidden"
+          },
+          "409": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "service invariant refused the operation"
+          },
+          "503": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "service unavailable"
+          }
+        },
+        "security": [
+          {
+            "identityBearer": [
+              "workflows.read"
+            ]
+          }
+        ],
+        "x-b10x-scope": "workflows.read",
+        "x-b10x-semantic-ref": "workflow.definition.Revisions"
+      }
+    },
+    "/v1/queries/list_workflows": {
+      "post": {
+        "operationId": "list_workflows",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "properties": {
+                  "$page": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "cursor": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "limit": {
+                        "maximum": 1000,
+                        "minimum": 1,
+                        "type": "integer"
+                      }
+                    },
+                    "required": [
+                      "limit"
+                    ],
+                    "type": "object"
+                  }
+                },
+                "required": [],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "items": {
+                      "items": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "active_revision_id": {
+                            "nullable": true
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "owner": {},
+                          "scopes": {},
+                          "state": {},
+                          "workflow_id": {}
+                        },
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "next_cursor": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "partial": {
+                      "type": "boolean"
+                    },
+                    "through_version": {
+                      "minimum": 0,
+                      "type": [
+                        "integer",
+                        "null"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "items",
+                    "through_version",
+                    "next_cursor",
+                    "partial"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "accepted"
+          },
+          "400": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "invalid input"
+          },
+          "401": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "forbidden"
+          },
+          "409": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "service invariant refused the operation"
+          },
+          "503": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "service unavailable"
+          }
+        },
+        "security": [
+          {
+            "identityBearer": [
+              "workflows.read"
+            ]
+          }
+        ],
+        "x-b10x-scope": "workflows.read",
+        "x-b10x-semantic-ref": "workflow.definition.Workflows"
+      }
+    }
+  },
+  "x-b10x-audience": "urn:b10x:workflow"
+}

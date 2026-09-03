@@ -1,0 +1,834 @@
+# generated from workflow v1
+# model digest 6a79078047815754e0dda89f285e08689037af0adfd4277dfcc305f1d003df1b
+# contract digest 1034b8b30e99ddae8a2b3cd77210415fc49664a647fe32ea455eb904c1d4fd58
+# do not edit: regenerate with `ess generate`
+asyncapi: 3.0.0
+info:
+  title: workflow-service
+  version: v1
+  description: |-
+    `workflow-service` in the `workflow` specification.
+
+    Owns workflow definitions, draft graphs, immutable revisions, and activation.
+
+    Tenant-partitioned workflow definitions with mutable draft graphs, canonical immutable revisions, and explicit activation.
+
+    The specification declares no transport, so each address below is a name and not a topic on a named broker. Servers, protocol bindings, security schemes, message keys, partitioning, retention and ordering are absent because the model does not state them.
+  x-ess-component: workflow-service
+  x-ess-provenance:
+    system: workflow
+    specification_version: v1
+    source_digest: 6a79078047815754e0dda89f285e08689037af0adfd4277dfcc305f1d003df1b
+    contract_digest: 1034b8b30e99ddae8a2b3cd77210415fc49664a647fe32ea455eb904c1d4fd58
+defaultContentType: application/json
+channels:
+  workflow.definition.DraftCreated:
+    address: workflow.definition.DraftCreated
+    title: DraftCreated
+    messages:
+      workflow.definition.DraftCreated:
+        $ref: '#/components/messages/workflow.definition.DraftCreated'
+    x-ess-event: workflow.definition.DraftCreated
+    x-ess-address-source: qualified-name
+  workflow.definition.DraftDiscarded:
+    address: workflow.definition.DraftDiscarded
+    title: DraftDiscarded
+    messages:
+      workflow.definition.DraftDiscarded:
+        $ref: '#/components/messages/workflow.definition.DraftDiscarded'
+    x-ess-event: workflow.definition.DraftDiscarded
+    x-ess-address-source: qualified-name
+  workflow.definition.DraftValidated:
+    address: workflow.definition.DraftValidated
+    title: DraftValidated
+    messages:
+      workflow.definition.DraftValidated:
+        $ref: '#/components/messages/workflow.definition.DraftValidated'
+    x-ess-event: workflow.definition.DraftValidated
+    x-ess-address-source: qualified-name
+  workflow.definition.NodeAdded:
+    address: workflow.definition.NodeAdded
+    title: NodeAdded
+    messages:
+      workflow.definition.NodeAdded:
+        $ref: '#/components/messages/workflow.definition.NodeAdded'
+    x-ess-event: workflow.definition.NodeAdded
+    x-ess-address-source: qualified-name
+  workflow.definition.NodeRemoved:
+    address: workflow.definition.NodeRemoved
+    title: NodeRemoved
+    messages:
+      workflow.definition.NodeRemoved:
+        $ref: '#/components/messages/workflow.definition.NodeRemoved'
+    x-ess-event: workflow.definition.NodeRemoved
+    x-ess-address-source: qualified-name
+  workflow.definition.NodeReplaced:
+    address: workflow.definition.NodeReplaced
+    title: NodeReplaced
+    messages:
+      workflow.definition.NodeReplaced:
+        $ref: '#/components/messages/workflow.definition.NodeReplaced'
+    x-ess-event: workflow.definition.NodeReplaced
+    x-ess-address-source: qualified-name
+  workflow.definition.NodesConnected:
+    address: workflow.definition.NodesConnected
+    title: NodesConnected
+    messages:
+      workflow.definition.NodesConnected:
+        $ref: '#/components/messages/workflow.definition.NodesConnected'
+    x-ess-event: workflow.definition.NodesConnected
+    x-ess-address-source: qualified-name
+  workflow.definition.NodesDisconnected:
+    address: workflow.definition.NodesDisconnected
+    title: NodesDisconnected
+    messages:
+      workflow.definition.NodesDisconnected:
+        $ref: '#/components/messages/workflow.definition.NodesDisconnected'
+    x-ess-event: workflow.definition.NodesDisconnected
+    x-ess-address-source: qualified-name
+  workflow.definition.RevisionActivated:
+    address: workflow.definition.RevisionActivated
+    title: RevisionActivated
+    messages:
+      workflow.definition.RevisionActivated:
+        $ref: '#/components/messages/workflow.definition.RevisionActivated'
+    x-ess-event: workflow.definition.RevisionActivated
+    x-ess-address-source: qualified-name
+  workflow.definition.RevisionPublished:
+    address: workflow.definition.RevisionPublished
+    title: RevisionPublished
+    messages:
+      workflow.definition.RevisionPublished:
+        $ref: '#/components/messages/workflow.definition.RevisionPublished'
+    x-ess-event: workflow.definition.RevisionPublished
+    x-ess-address-source: qualified-name
+  workflow.definition.WorkflowCreated:
+    address: workflow.definition.WorkflowCreated
+    title: WorkflowCreated
+    messages:
+      workflow.definition.WorkflowCreated:
+        $ref: '#/components/messages/workflow.definition.WorkflowCreated'
+    x-ess-event: workflow.definition.WorkflowCreated
+    x-ess-address-source: qualified-name
+operations:
+  send.workflow.definition.DraftCreated:
+    action: send
+    channel:
+      $ref: '#/channels/workflow.definition.DraftCreated'
+    title: Publish DraftCreated
+    summary: Publishes `workflow.definition.DraftCreated`.
+    description: |-
+      Nothing in this specification reacts to `workflow.definition.DraftCreated`.
+      `workflow.definition.CreateDraft` emits it on `created`, which creates a `workflow.definition.WorkflowDraft` in `Active`. It carries the new instance's identity in `draft_id`.
+    messages:
+    - $ref: '#/channels/workflow.definition.DraftCreated/messages/workflow.definition.DraftCreated'
+  send.workflow.definition.DraftDiscarded:
+    action: send
+    channel:
+      $ref: '#/channels/workflow.definition.DraftDiscarded'
+    title: Publish DraftDiscarded
+    summary: Publishes `workflow.definition.DraftDiscarded`.
+    description: |-
+      Nothing in this specification reacts to `workflow.definition.DraftDiscarded`.
+      `workflow.definition.DiscardDraft` emits it on `discarded`, which moves a `workflow.definition.WorkflowDraft` to `Discarded` along `discard`.
+    messages:
+    - $ref: '#/channels/workflow.definition.DraftDiscarded/messages/workflow.definition.DraftDiscarded'
+  send.workflow.definition.DraftValidated:
+    action: send
+    channel:
+      $ref: '#/channels/workflow.definition.DraftValidated'
+    title: Publish DraftValidated
+    summary: Publishes `workflow.definition.DraftValidated`.
+    description: |-
+      Nothing in this specification reacts to `workflow.definition.DraftValidated`.
+      `workflow.definition.ValidateDraft` emits it on `validated`, which changes a `workflow.definition.WorkflowDraft` without moving it.
+    messages:
+    - $ref: '#/channels/workflow.definition.DraftValidated/messages/workflow.definition.DraftValidated'
+  send.workflow.definition.NodeAdded:
+    action: send
+    channel:
+      $ref: '#/channels/workflow.definition.NodeAdded'
+    title: Publish NodeAdded
+    summary: Publishes `workflow.definition.NodeAdded`.
+    description: |-
+      Nothing in this specification reacts to `workflow.definition.NodeAdded`.
+      `workflow.definition.AddNode` emits it on `added`, which creates a `workflow.definition.DraftNode` in `Active`. It carries the new instance's identity in `node_id`.
+    messages:
+    - $ref: '#/channels/workflow.definition.NodeAdded/messages/workflow.definition.NodeAdded'
+  send.workflow.definition.NodeRemoved:
+    action: send
+    channel:
+      $ref: '#/channels/workflow.definition.NodeRemoved'
+    title: Publish NodeRemoved
+    summary: Publishes `workflow.definition.NodeRemoved`.
+    description: |-
+      Nothing in this specification reacts to `workflow.definition.NodeRemoved`.
+      `workflow.definition.RemoveNode` emits it on `removed`, which moves a `workflow.definition.DraftNode` to `Removed` along `remove`.
+    messages:
+    - $ref: '#/channels/workflow.definition.NodeRemoved/messages/workflow.definition.NodeRemoved'
+  send.workflow.definition.NodeReplaced:
+    action: send
+    channel:
+      $ref: '#/channels/workflow.definition.NodeReplaced'
+    title: Publish NodeReplaced
+    summary: Publishes `workflow.definition.NodeReplaced`.
+    description: |-
+      Nothing in this specification reacts to `workflow.definition.NodeReplaced`.
+      `workflow.definition.ReplaceNode` emits it on `replaced`, which changes a `workflow.definition.DraftNode` without moving it.
+    messages:
+    - $ref: '#/channels/workflow.definition.NodeReplaced/messages/workflow.definition.NodeReplaced'
+  send.workflow.definition.NodesConnected:
+    action: send
+    channel:
+      $ref: '#/channels/workflow.definition.NodesConnected'
+    title: Publish NodesConnected
+    summary: Publishes `workflow.definition.NodesConnected`.
+    description: |-
+      Nothing in this specification reacts to `workflow.definition.NodesConnected`.
+      `workflow.definition.ConnectNodes` emits it on `connected`, which creates a `workflow.definition.DraftEdge` in `Active`. It carries the new instance's identity in `edge_id`.
+    messages:
+    - $ref: '#/channels/workflow.definition.NodesConnected/messages/workflow.definition.NodesConnected'
+  send.workflow.definition.NodesDisconnected:
+    action: send
+    channel:
+      $ref: '#/channels/workflow.definition.NodesDisconnected'
+    title: Publish NodesDisconnected
+    summary: Publishes `workflow.definition.NodesDisconnected`.
+    description: |-
+      Nothing in this specification reacts to `workflow.definition.NodesDisconnected`.
+      `workflow.definition.DisconnectNodes` emits it on `disconnected`, which moves a `workflow.definition.DraftEdge` to `Disconnected` along `disconnect`.
+    messages:
+    - $ref: '#/channels/workflow.definition.NodesDisconnected/messages/workflow.definition.NodesDisconnected'
+  send.workflow.definition.RevisionActivated:
+    action: send
+    channel:
+      $ref: '#/channels/workflow.definition.RevisionActivated'
+    title: Publish RevisionActivated
+    summary: Publishes `workflow.definition.RevisionActivated`.
+    description: |-
+      Nothing in this specification reacts to `workflow.definition.RevisionActivated`.
+      `workflow.definition.ActivateRevision` emits it on `activated`, which changes a `workflow.definition.Workflow` without moving it.
+    messages:
+    - $ref: '#/channels/workflow.definition.RevisionActivated/messages/workflow.definition.RevisionActivated'
+  send.workflow.definition.RevisionPublished:
+    action: send
+    channel:
+      $ref: '#/channels/workflow.definition.RevisionPublished'
+    title: Publish RevisionPublished
+    summary: Publishes `workflow.definition.RevisionPublished`.
+    description: |-
+      Nothing in this specification reacts to `workflow.definition.RevisionPublished`.
+      `workflow.definition.PublishDraft` emits it on `published`, which creates a `workflow.definition.WorkflowRevision` in `Published`. It carries the new instance's identity in `revision_id`.
+    messages:
+    - $ref: '#/channels/workflow.definition.RevisionPublished/messages/workflow.definition.RevisionPublished'
+  send.workflow.definition.WorkflowCreated:
+    action: send
+    channel:
+      $ref: '#/channels/workflow.definition.WorkflowCreated'
+    title: Publish WorkflowCreated
+    summary: Publishes `workflow.definition.WorkflowCreated`.
+    description: |-
+      Nothing in this specification reacts to `workflow.definition.WorkflowCreated`.
+      `workflow.definition.CreateWorkflow` emits it on `created`, which creates a `workflow.definition.Workflow` in `Active`. It carries the new instance's identity in `workflow_id`.
+    messages:
+    - $ref: '#/channels/workflow.definition.WorkflowCreated/messages/workflow.definition.WorkflowCreated'
+components:
+  messages:
+    workflow.definition.DraftCreated:
+      name: workflow.definition.DraftCreated
+      title: DraftCreated
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/event.workflow.definition.DraftCreated'
+    workflow.definition.DraftDiscarded:
+      name: workflow.definition.DraftDiscarded
+      title: DraftDiscarded
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/event.workflow.definition.DraftDiscarded'
+    workflow.definition.DraftValidated:
+      name: workflow.definition.DraftValidated
+      title: DraftValidated
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/event.workflow.definition.DraftValidated'
+    workflow.definition.NodeAdded:
+      name: workflow.definition.NodeAdded
+      title: NodeAdded
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/event.workflow.definition.NodeAdded'
+    workflow.definition.NodeRemoved:
+      name: workflow.definition.NodeRemoved
+      title: NodeRemoved
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/event.workflow.definition.NodeRemoved'
+    workflow.definition.NodeReplaced:
+      name: workflow.definition.NodeReplaced
+      title: NodeReplaced
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/event.workflow.definition.NodeReplaced'
+    workflow.definition.NodesConnected:
+      name: workflow.definition.NodesConnected
+      title: NodesConnected
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/event.workflow.definition.NodesConnected'
+    workflow.definition.NodesDisconnected:
+      name: workflow.definition.NodesDisconnected
+      title: NodesDisconnected
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/event.workflow.definition.NodesDisconnected'
+    workflow.definition.RevisionActivated:
+      name: workflow.definition.RevisionActivated
+      title: RevisionActivated
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/event.workflow.definition.RevisionActivated'
+    workflow.definition.RevisionPublished:
+      name: workflow.definition.RevisionPublished
+      title: RevisionPublished
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/event.workflow.definition.RevisionPublished'
+    workflow.definition.WorkflowCreated:
+      name: workflow.definition.WorkflowCreated
+      title: WorkflowCreated
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/event.workflow.definition.WorkflowCreated'
+  schemas:
+    event.workflow.definition.DraftCreated:
+      title: DraftCreated payload
+      x-ess-name: workflow.definition.DraftCreated
+      x-ess-kind: event-payload
+      type: object
+      properties:
+        draft_id:
+          $ref: '#/components/schemas/type.workflow.definition.DraftId'
+        workflow_id:
+          $ref: '#/components/schemas/type.workflow.definition.WorkflowId'
+        name:
+          type: string
+        based_on_revision_id:
+          $ref: '#/components/schemas/type.workflow.definition.RevisionId'
+        owner:
+          $ref: '#/components/schemas/type.workflow.definition.OwnerRef'
+        scopes:
+          $ref: '#/components/schemas/type.workflow.definition.ScopeBindings'
+      required:
+      - draft_id
+      - workflow_id
+      - name
+      - owner
+      - scopes
+      additionalProperties: false
+    event.workflow.definition.DraftDiscarded:
+      title: DraftDiscarded payload
+      x-ess-name: workflow.definition.DraftDiscarded
+      x-ess-kind: event-payload
+      type: object
+      properties:
+        workflow_id:
+          $ref: '#/components/schemas/type.workflow.definition.WorkflowId'
+        draft_id:
+          $ref: '#/components/schemas/type.workflow.definition.DraftId'
+      required:
+      - workflow_id
+      - draft_id
+      additionalProperties: false
+    event.workflow.definition.DraftValidated:
+      title: DraftValidated payload
+      x-ess-name: workflow.definition.DraftValidated
+      x-ess-kind: event-payload
+      type: object
+      properties:
+        workflow_id:
+          $ref: '#/components/schemas/type.workflow.definition.WorkflowId'
+        draft_id:
+          $ref: '#/components/schemas/type.workflow.definition.DraftId'
+      required:
+      - workflow_id
+      - draft_id
+      additionalProperties: false
+    event.workflow.definition.NodeAdded:
+      title: NodeAdded payload
+      x-ess-name: workflow.definition.NodeAdded
+      x-ess-kind: event-payload
+      type: object
+      properties:
+        node_id:
+          $ref: '#/components/schemas/type.workflow.definition.NodeId'
+        workflow_id:
+          $ref: '#/components/schemas/type.workflow.definition.WorkflowId'
+        draft_id:
+          $ref: '#/components/schemas/type.workflow.definition.DraftId'
+        definition:
+          $ref: '#/components/schemas/type.workflow.definition.NodeDefinition'
+      required:
+      - node_id
+      - workflow_id
+      - draft_id
+      - definition
+      additionalProperties: false
+    event.workflow.definition.NodeRemoved:
+      title: NodeRemoved payload
+      x-ess-name: workflow.definition.NodeRemoved
+      x-ess-kind: event-payload
+      type: object
+      properties:
+        workflow_id:
+          $ref: '#/components/schemas/type.workflow.definition.WorkflowId'
+        draft_id:
+          $ref: '#/components/schemas/type.workflow.definition.DraftId'
+        node_id:
+          $ref: '#/components/schemas/type.workflow.definition.NodeId'
+      required:
+      - workflow_id
+      - draft_id
+      - node_id
+      additionalProperties: false
+    event.workflow.definition.NodeReplaced:
+      title: NodeReplaced payload
+      x-ess-name: workflow.definition.NodeReplaced
+      x-ess-kind: event-payload
+      type: object
+      properties:
+        workflow_id:
+          $ref: '#/components/schemas/type.workflow.definition.WorkflowId'
+        draft_id:
+          $ref: '#/components/schemas/type.workflow.definition.DraftId'
+        node_id:
+          $ref: '#/components/schemas/type.workflow.definition.NodeId'
+        definition:
+          $ref: '#/components/schemas/type.workflow.definition.NodeDefinition'
+      required:
+      - workflow_id
+      - draft_id
+      - node_id
+      - definition
+      additionalProperties: false
+    event.workflow.definition.NodesConnected:
+      title: NodesConnected payload
+      x-ess-name: workflow.definition.NodesConnected
+      x-ess-kind: event-payload
+      type: object
+      properties:
+        edge_id:
+          $ref: '#/components/schemas/type.workflow.definition.EdgeId'
+        workflow_id:
+          $ref: '#/components/schemas/type.workflow.definition.WorkflowId'
+        draft_id:
+          $ref: '#/components/schemas/type.workflow.definition.DraftId'
+        source_node_id:
+          $ref: '#/components/schemas/type.workflow.definition.NodeId'
+        target_node_id:
+          $ref: '#/components/schemas/type.workflow.definition.NodeId'
+      required:
+      - edge_id
+      - workflow_id
+      - draft_id
+      - source_node_id
+      - target_node_id
+      additionalProperties: false
+    event.workflow.definition.NodesDisconnected:
+      title: NodesDisconnected payload
+      x-ess-name: workflow.definition.NodesDisconnected
+      x-ess-kind: event-payload
+      type: object
+      properties:
+        workflow_id:
+          $ref: '#/components/schemas/type.workflow.definition.WorkflowId'
+        draft_id:
+          $ref: '#/components/schemas/type.workflow.definition.DraftId'
+        edge_id:
+          $ref: '#/components/schemas/type.workflow.definition.EdgeId'
+      required:
+      - workflow_id
+      - draft_id
+      - edge_id
+      additionalProperties: false
+    event.workflow.definition.RevisionActivated:
+      title: RevisionActivated payload
+      x-ess-name: workflow.definition.RevisionActivated
+      x-ess-kind: event-payload
+      type: object
+      properties:
+        workflow_id:
+          $ref: '#/components/schemas/type.workflow.definition.WorkflowId'
+        active_revision_id:
+          $ref: '#/components/schemas/type.workflow.definition.RevisionId'
+      required:
+      - workflow_id
+      - active_revision_id
+      additionalProperties: false
+    event.workflow.definition.RevisionPublished:
+      title: RevisionPublished payload
+      x-ess-name: workflow.definition.RevisionPublished
+      x-ess-kind: event-payload
+      type: object
+      properties:
+        revision_id:
+          $ref: '#/components/schemas/type.workflow.definition.RevisionId'
+        workflow_id:
+          $ref: '#/components/schemas/type.workflow.definition.WorkflowId'
+        draft_id:
+          $ref: '#/components/schemas/type.workflow.definition.DraftId'
+        nodes:
+          type: array
+          items:
+            $ref: '#/components/schemas/type.workflow.definition.NodeSnapshot'
+        edges:
+          type: array
+          items:
+            $ref: '#/components/schemas/type.workflow.definition.EdgeSnapshot'
+        digest:
+          type: string
+        node_count:
+          type: integer
+        edge_count:
+          type: integer
+        owner:
+          $ref: '#/components/schemas/type.workflow.definition.OwnerRef'
+        scopes:
+          $ref: '#/components/schemas/type.workflow.definition.ScopeBindings'
+      required:
+      - revision_id
+      - workflow_id
+      - draft_id
+      - nodes
+      - edges
+      - digest
+      - node_count
+      - edge_count
+      - owner
+      - scopes
+      additionalProperties: false
+    event.workflow.definition.WorkflowCreated:
+      title: WorkflowCreated payload
+      x-ess-name: workflow.definition.WorkflowCreated
+      x-ess-kind: event-payload
+      type: object
+      properties:
+        workflow_id:
+          $ref: '#/components/schemas/type.workflow.definition.WorkflowId'
+        name:
+          type: string
+        owner:
+          $ref: '#/components/schemas/type.workflow.definition.OwnerRef'
+        scopes:
+          $ref: '#/components/schemas/type.workflow.definition.ScopeBindings'
+      required:
+      - workflow_id
+      - name
+      - owner
+      - scopes
+      additionalProperties: false
+    type.workflow.definition.CallNode:
+      title: CallNode
+      x-ess-name: workflow.definition.CallNode
+      x-ess-kind: struct
+      type: object
+      properties:
+        connector:
+          type: string
+        operation:
+          type: string
+      required:
+      - connector
+      - operation
+      additionalProperties: false
+    type.workflow.definition.CompleteNode:
+      title: CompleteNode
+      x-ess-name: workflow.definition.CompleteNode
+      x-ess-kind: struct
+      type: object
+      properties:
+        result:
+          type: string
+      required:
+      - result
+      additionalProperties: false
+    type.workflow.definition.ComputeNode:
+      title: ComputeNode
+      x-ess-name: workflow.definition.ComputeNode
+      x-ess-kind: struct
+      type: object
+      properties:
+        expression:
+          type: string
+      required:
+      - expression
+      additionalProperties: false
+    type.workflow.definition.DraftId:
+      title: DraftId
+      x-ess-name: workflow.definition.DraftId
+      x-ess-kind: newtype
+      type: string
+      format: uuid
+      pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+    type.workflow.definition.EdgeId:
+      title: EdgeId
+      x-ess-name: workflow.definition.EdgeId
+      x-ess-kind: newtype
+      type: string
+      format: uuid
+      pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+    type.workflow.definition.EdgeSnapshot:
+      title: EdgeSnapshot
+      x-ess-name: workflow.definition.EdgeSnapshot
+      x-ess-kind: struct
+      type: object
+      properties:
+        edge_id:
+          $ref: '#/components/schemas/type.workflow.definition.EdgeId'
+        draft_id:
+          $ref: '#/components/schemas/type.workflow.definition.DraftId'
+        source_node_id:
+          $ref: '#/components/schemas/type.workflow.definition.NodeId'
+        target_node_id:
+          $ref: '#/components/schemas/type.workflow.definition.NodeId'
+      required:
+      - edge_id
+      - draft_id
+      - source_node_id
+      - target_node_id
+      additionalProperties: false
+    type.workflow.definition.EmitNode:
+      title: EmitNode
+      x-ess-name: workflow.definition.EmitNode
+      x-ess-kind: struct
+      type: object
+      properties:
+        event:
+          type: string
+      required:
+      - event
+      additionalProperties: false
+    type.workflow.definition.InvokeNode:
+      title: InvokeNode
+      x-ess-name: workflow.definition.InvokeNode
+      x-ess-kind: struct
+      type: object
+      properties:
+        agent:
+          type: string
+        instruction:
+          type: string
+      required:
+      - agent
+      - instruction
+      additionalProperties: false
+    type.workflow.definition.JudgeNode:
+      title: JudgeNode
+      x-ess-name: workflow.definition.JudgeNode
+      x-ess-kind: struct
+      type: object
+      properties:
+        condition:
+          type: string
+      required:
+      - condition
+      additionalProperties: false
+    type.workflow.definition.NodeDefinition:
+      title: NodeDefinition
+      x-ess-name: workflow.definition.NodeDefinition
+      x-ess-kind: union
+      oneOf:
+      - title: call
+        type: object
+        properties:
+          kind:
+            type: string
+            const: call
+          value:
+            $ref: '#/components/schemas/type.workflow.definition.CallNode'
+        required:
+        - kind
+        - value
+        additionalProperties: false
+      - title: complete
+        type: object
+        properties:
+          kind:
+            type: string
+            const: complete
+          value:
+            $ref: '#/components/schemas/type.workflow.definition.CompleteNode'
+        required:
+        - kind
+        - value
+        additionalProperties: false
+      - title: compute
+        type: object
+        properties:
+          kind:
+            type: string
+            const: compute
+          value:
+            $ref: '#/components/schemas/type.workflow.definition.ComputeNode'
+        required:
+        - kind
+        - value
+        additionalProperties: false
+      - title: emit
+        type: object
+        properties:
+          kind:
+            type: string
+            const: emit
+          value:
+            $ref: '#/components/schemas/type.workflow.definition.EmitNode'
+        required:
+        - kind
+        - value
+        additionalProperties: false
+      - title: invoke
+        type: object
+        properties:
+          kind:
+            type: string
+            const: invoke
+          value:
+            $ref: '#/components/schemas/type.workflow.definition.InvokeNode'
+        required:
+        - kind
+        - value
+        additionalProperties: false
+      - title: judge
+        type: object
+        properties:
+          kind:
+            type: string
+            const: judge
+          value:
+            $ref: '#/components/schemas/type.workflow.definition.JudgeNode'
+        required:
+        - kind
+        - value
+        additionalProperties: false
+      - title: read
+        type: object
+        properties:
+          kind:
+            type: string
+            const: read
+          value:
+            $ref: '#/components/schemas/type.workflow.definition.ReadNode'
+        required:
+        - kind
+        - value
+        additionalProperties: false
+      - title: wait
+        type: object
+        properties:
+          kind:
+            type: string
+            const: wait
+          value:
+            $ref: '#/components/schemas/type.workflow.definition.WaitNode'
+        required:
+        - kind
+        - value
+        additionalProperties: false
+      x-ess-union-tag: kind
+    type.workflow.definition.NodeId:
+      title: NodeId
+      x-ess-name: workflow.definition.NodeId
+      x-ess-kind: newtype
+      type: string
+      format: uuid
+      pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+    type.workflow.definition.NodeSnapshot:
+      title: NodeSnapshot
+      x-ess-name: workflow.definition.NodeSnapshot
+      x-ess-kind: struct
+      type: object
+      properties:
+        node_id:
+          $ref: '#/components/schemas/type.workflow.definition.NodeId'
+        draft_id:
+          $ref: '#/components/schemas/type.workflow.definition.DraftId'
+        definition:
+          $ref: '#/components/schemas/type.workflow.definition.NodeDefinition'
+      required:
+      - node_id
+      - draft_id
+      - definition
+      additionalProperties: false
+    type.workflow.definition.OwnerRef:
+      title: OwnerRef
+      x-ess-name: workflow.definition.OwnerRef
+      x-ess-kind: newtype
+      type: string
+    type.workflow.definition.PrincipalRef:
+      title: PrincipalRef
+      x-ess-name: workflow.definition.PrincipalRef
+      x-ess-kind: newtype
+      type: string
+    type.workflow.definition.ProjectRef:
+      title: ProjectRef
+      x-ess-name: workflow.definition.ProjectRef
+      x-ess-kind: newtype
+      type: string
+    type.workflow.definition.ReadNode:
+      title: ReadNode
+      x-ess-name: workflow.definition.ReadNode
+      x-ess-kind: struct
+      type: object
+      properties:
+        connector:
+          type: string
+        operation:
+          type: string
+      required:
+      - connector
+      - operation
+      additionalProperties: false
+    type.workflow.definition.RevisionId:
+      title: RevisionId
+      x-ess-name: workflow.definition.RevisionId
+      x-ess-kind: newtype
+      type: string
+      format: uuid
+      pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+    type.workflow.definition.ScopeBindings:
+      title: ScopeBindings
+      x-ess-name: workflow.definition.ScopeBindings
+      x-ess-kind: struct
+      type: object
+      properties:
+        principal:
+          $ref: '#/components/schemas/type.workflow.definition.PrincipalRef'
+        team:
+          $ref: '#/components/schemas/type.workflow.definition.TeamRef'
+        project:
+          $ref: '#/components/schemas/type.workflow.definition.ProjectRef'
+      additionalProperties: false
+    type.workflow.definition.TeamRef:
+      title: TeamRef
+      x-ess-name: workflow.definition.TeamRef
+      x-ess-kind: newtype
+      type: string
+    type.workflow.definition.WaitNode:
+      title: WaitNode
+      x-ess-name: workflow.definition.WaitNode
+      x-ess-kind: struct
+      type: object
+      properties:
+        duration:
+          type: string
+          format: duration
+      required:
+      - duration
+      additionalProperties: false
+    type.workflow.definition.WorkflowId:
+      title: WorkflowId
+      x-ess-name: workflow.definition.WorkflowId
+      x-ess-kind: newtype
+      type: string
+      format: uuid
+      pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$

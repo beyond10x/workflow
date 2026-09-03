@@ -1,0 +1,49 @@
+version: '3'
+
+tasks:
+  generate:
+    desc: Generate the complete Workflow service from its pinned Service SDK revision.
+    cmds:
+      - |
+        set -eu
+        repo_root="{{.TASKFILE_DIR}}"
+        sdk_repository="$(awk '$1 == "repository:" { print $2; exit }' "$repo_root/service.yaml")"
+        sdk_revision="$(awk '$1 == "revision:" { print $2; exit }' "$repo_root/service.yaml")"
+        tool_root="$repo_root/target/service-builder/$sdk_revision"
+        cargo install --locked --git "$sdk_repository" --rev "$sdk_revision" \
+          --root "$tool_root" service-builder
+        "$tool_root/bin/service-builder" generate \
+          --package "$repo_root/service.yaml" --output "$repo_root/generated"
+
+  check:
+    desc: Validate ESS, refuse generated drift, and test every generated Workflow surface.
+    cmds:
+      - ess validate --path spec/workflow
+      - |
+        set -eu
+        repo_root="{{.TASKFILE_DIR}}"
+        sdk_repository="$(awk '$1 == "repository:" { print $2; exit }' "$repo_root/service.yaml")"
+        sdk_revision="$(awk '$1 == "revision:" { print $2; exit }' "$repo_root/service.yaml")"
+        tool_root="$repo_root/target/service-builder/$sdk_revision"
+        cargo install --locked --git "$sdk_repository" --rev "$sdk_revision" \
+          --root "$tool_root" service-builder
+        "$tool_root/bin/service-builder" check \
+          --package "$repo_root/service.yaml" --output "$repo_root/generated"
+        check_root="$(mktemp -d)"
+        cp -R "$repo_root/generated" "$check_root/generated"
+        CARGO_TARGET_DIR="$repo_root/target/generated-service" \
+          cargo test --manifest-path "$check_root/generated/rust/Cargo.toml"
+        (
+          cd "$check_root/generated/docs"
+          pnpm install --no-frozen-lockfile
+          pnpm build
+        )
+        rustfmt --edition 2024 --check \
+          "$repo_root/generated/rust/src/lib.rs" \
+          "$repo_root/generated/rust/tests/generated_scenarios.rs"
+        rg -q 'pub struct WorkflowClient' "$repo_root/generated/rust/src/lib.rs"
+        rg -q 'pub async fn http_router' "$repo_root/generated/rust/src/lib.rs"
+        rg -q 'urn:b10x:workflow' "$repo_root/generated/http/openapi.json"
+        rg -q 'workflows.read' "$repo_root/generated/http/openapi.json"
+        rg -q 'workflows.manage' "$repo_root/generated/http/openapi.json"
+        ! rg -n 'Unimplemented|unimplemented!|todo!' "$repo_root/generated"

@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/workflow.definition.CallNode",
+  "x-ess-provenance": {
+    "system": "workflow",
+    "specification_version": "v1",
+    "source_digest": "6a79078047815754e0dda89f285e08689037af0adfd4277dfcc305f1d003df1b",
+    "contract_digest": "9d549013b0555dd36c809ccd0d2fc436eb09f133161ab0364d48c351e1b2532d",
+    "regenerate": "ess generate"
+  },
+  "$defs": {
+    "workflow.definition.CallNode": {
+      "title": "CallNode",
+      "x-ess-name": "workflow.definition.CallNode",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "connector": {
+          "type": "string"
+        },
+        "operation": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "connector",
+        "operation"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

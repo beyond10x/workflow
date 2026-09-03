@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/workflow.definition.DraftEdge.State",
+  "x-ess-provenance": {
+    "system": "workflow",
+    "specification_version": "v1",
+    "source_digest": "6a79078047815754e0dda89f285e08689037af0adfd4277dfcc305f1d003df1b",
+    "contract_digest": "5a996dd0e5105b5ac715c9b45c8f82725fc48bf54b7317491a14691c27fd0d6b",
+    "regenerate": "ess generate"
+  },
+  "$defs": {
+    "workflow.definition.DraftEdge.State": {
+      "title": "State",
+      "x-ess-name": "workflow.definition.DraftEdge.State",
+      "x-ess-kind": "enum",
+      "type": "string",
+      "enum": [
+        "Active",
+        "Disconnected"
+      ]
+    }
+  }
+}

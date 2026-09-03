@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Disconnect nodes input",
+  "x-ess-name": "workflow.definition.DisconnectNodes",
+  "x-ess-kind": "command-input",
+  "type": "object",
+  "properties": {
+    "workflow_id": {
+      "$ref": "#/$defs/workflow.definition.WorkflowId"
+    },
+    "draft_id": {
+      "$ref": "#/$defs/workflow.definition.DraftId"
+    },
+    "edge_id": {
+      "$ref": "#/$defs/workflow.definition.EdgeId"
+    }
+  },
+  "required": [
+    "workflow_id",
+    "draft_id",
+    "edge_id"
+  ],
+  "additionalProperties": false,
+  "x-ess-provenance": {
+    "system": "workflow",
+    "specification_version": "v1",
+    "source_digest": "6a79078047815754e0dda89f285e08689037af0adfd4277dfcc305f1d003df1b",
+    "contract_digest": "7873cdfacf470755c7c5f49469df354ab87656c3d345cb703cccad4131255e13",
+    "regenerate": "ess generate"
+  },
+  "$defs": {
+    "workflow.definition.DraftId": {
+      "title": "DraftId",
+      "x-ess-name": "workflow.definition.DraftId",
+      "x-ess-kind": "newtype",
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+    },
+    "workflow.definition.EdgeId": {
+      "title": "EdgeId",
+      "x-ess-name": "workflow.definition.EdgeId",
+      "x-ess-kind": "newtype",
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+    },
+    "workflow.definition.WorkflowId": {
+      "title": "WorkflowId",
+      "x-ess-name": "workflow.definition.WorkflowId",
+      "x-ess-kind": "newtype",
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+    }
+  }
+}

@@ -1,0 +1,2208 @@
+{
+  "format": "service-runtime-ir/3",
+  "ess": {
+    "system": "workflow",
+    "version": "v1",
+    "source_digest": "6a79078047815754e0dda89f285e08689037af0adfd4277dfcc305f1d003df1b"
+  },
+  "synthesis": {
+    "profile": "component-skeletons",
+    "digest": "682dd27cfa566d4b165cc125a1e125fabc04da6f17faa034f10714893c5e68fb",
+    "capabilities": 82
+  },
+  "obligation_catalog": {
+    "digest": "12e8b6adb5b214031bd1c101f71e91a666d19674d844683e35f32b67f966ecb3",
+    "providers": [
+      "sdk.aggregate.event-sourced/v1",
+      "sdk.aggregate.nested-entity/v1",
+      "sdk.aggregate.owned-revision/v1",
+      "sdk.auth.owner-and-conjunctive-scopes/v1",
+      "sdk.auth.requested-scopes/v1",
+      "sdk.derive.inherit-parent-authority/v2",
+      "sdk.graph.connect-dag/v1",
+      "sdk.graph.node-unreferenced/v1",
+      "sdk.graph.publish-snapshot/v1",
+      "sdk.lifecycle.require-state/v1",
+      "sdk.projection.auth-partitioned-visibility/v1"
+    ]
+  },
+  "admission": [
+    "verify_credential",
+    "enforce_realm_policy",
+    "decode_operation",
+    "bind_and_dispatch"
+  ],
+  "definition": {
+    "format": "service-definition/3",
+    "service": "workflow",
+    "delivery": {
+      "kind": "identity_http",
+      "audience": "urn:b10x:workflow"
+    },
+    "realm": "optional",
+    "intents": [
+      {
+        "name": "create_workflow",
+        "scope": "workflows.manage",
+        "command": "workflow.definition.CreateWorkflow",
+        "stream_id": {
+          "kind": "generated_uuid_v7"
+        },
+        "expected_version": {
+          "kind": "no_stream"
+        },
+        "idempotency": {
+          "kind": "operation_field",
+          "field": "idempotency_key"
+        },
+        "guards": [
+          {
+            "name": "may_create_workflow",
+            "refusal_code": "workflow_creation_forbidden",
+            "reads": [
+              {
+                "kind": "command_field",
+                "field": "scopes"
+              },
+              {
+                "kind": "context",
+                "value": "tenant_id"
+              },
+              {
+                "kind": "context",
+                "value": "realm_id_optional"
+              },
+              {
+                "kind": "context",
+                "value": "current_authority"
+              }
+            ]
+          }
+        ],
+        "content": [],
+        "event_bindings": [
+          {
+            "event": "workflow.definition.WorkflowCreated",
+            "field": "workflow_id",
+            "source": {
+              "kind": "stream_id"
+            }
+          },
+          {
+            "event": "workflow.definition.WorkflowCreated",
+            "field": "owner",
+            "source": {
+              "kind": "context",
+              "value": "current_authority"
+            }
+          }
+        ],
+        "projections": [
+          "workflow_by_id_projection",
+          "workflows_projection"
+        ],
+        "obligations": [
+          "bind_workflow_stream",
+          "authorize_scope_binding"
+        ]
+      },
+      {
+        "name": "create_draft",
+        "scope": "workflows.manage",
+        "command": "workflow.definition.CreateDraft",
+        "stream_id": {
+          "kind": "command_field",
+          "field": "workflow_id"
+        },
+        "expected_version": {
+          "kind": "operation_field",
+          "field": "expected_version"
+        },
+        "idempotency": {
+          "kind": "operation_field",
+          "field": "idempotency_key"
+        },
+        "guards": [
+          {
+            "name": "may_create_draft",
+            "refusal_code": "workflow_access_forbidden",
+            "reads": [
+              {
+                "kind": "command_field",
+                "field": "workflow_id"
+              },
+              {
+                "kind": "context",
+                "value": "current_authority"
+              }
+            ]
+          }
+        ],
+        "content": [],
+        "event_bindings": [
+          {
+            "event": "workflow.definition.DraftCreated",
+            "field": "draft_id",
+            "source": {
+              "kind": "generated_uuid_v7"
+            }
+          },
+          {
+            "event": "workflow.definition.DraftCreated",
+            "field": "owner",
+            "source": {
+              "kind": "obligation",
+              "name": "derive_draft_authority"
+            }
+          },
+          {
+            "event": "workflow.definition.DraftCreated",
+            "field": "scopes",
+            "source": {
+              "kind": "obligation",
+              "name": "derive_draft_authority"
+            }
+          }
+        ],
+        "projections": [
+          "draft_by_id_projection",
+          "drafts_projection"
+        ],
+        "obligations": [
+          "bind_workflow_stream",
+          "authorize_workflow_access",
+          "require_workflow",
+          "validate_new_draft_parent",
+          "derive_draft_authority"
+        ]
+      },
+      {
+        "name": "discard_draft",
+        "scope": "workflows.manage",
+        "command": "workflow.definition.DiscardDraft",
+        "stream_id": {
+          "kind": "command_field",
+          "field": "workflow_id"
+        },
+        "expected_version": {
+          "kind": "operation_field",
+          "field": "expected_version"
+        },
+        "idempotency": {
+          "kind": "operation_field",
+          "field": "idempotency_key"
+        },
+        "guards": [
+          {
+            "name": "may_discard_draft",
+            "refusal_code": "workflow_access_forbidden",
+            "reads": [
+              {
+                "kind": "command_field",
+                "field": "workflow_id"
+              },
+              {
+                "kind": "command_field",
+                "field": "draft_id"
+              },
+              {
+                "kind": "context",
+                "value": "current_authority"
+              }
+            ]
+          }
+        ],
+        "content": [],
+        "event_bindings": [],
+        "projections": [
+          "draft_by_id_projection",
+          "drafts_projection"
+        ],
+        "obligations": [
+          "bind_workflow_stream",
+          "authorize_workflow_access",
+          "validate_draft_parent",
+          "require_active_draft"
+        ]
+      },
+      {
+        "name": "validate_draft",
+        "scope": "workflows.manage",
+        "command": "workflow.definition.ValidateDraft",
+        "stream_id": {
+          "kind": "command_field",
+          "field": "workflow_id"
+        },
+        "expected_version": {
+          "kind": "operation_field",
+          "field": "expected_version"
+        },
+        "idempotency": {
+          "kind": "operation_field",
+          "field": "idempotency_key"
+        },
+        "guards": [
+          {
+            "name": "may_validate_draft",
+            "refusal_code": "workflow_access_forbidden",
+            "reads": [
+              {
+                "kind": "command_field",
+                "field": "workflow_id"
+              },
+              {
+                "kind": "command_field",
+                "field": "draft_id"
+              },
+              {
+                "kind": "context",
+                "value": "current_authority"
+              }
+            ]
+          }
+        ],
+        "content": [],
+        "event_bindings": [],
+        "projections": [
+          "draft_by_id_projection",
+          "drafts_projection"
+        ],
+        "obligations": [
+          "bind_workflow_stream",
+          "authorize_workflow_access",
+          "validate_draft_parent",
+          "require_active_draft",
+          "publish_draft_snapshot"
+        ]
+      },
+      {
+        "name": "publish_draft",
+        "scope": "workflows.manage",
+        "command": "workflow.definition.PublishDraft",
+        "stream_id": {
+          "kind": "command_field",
+          "field": "workflow_id"
+        },
+        "expected_version": {
+          "kind": "operation_field",
+          "field": "expected_version"
+        },
+        "idempotency": {
+          "kind": "operation_field",
+          "field": "idempotency_key"
+        },
+        "guards": [
+          {
+            "name": "may_publish_draft",
+            "refusal_code": "workflow_access_forbidden",
+            "reads": [
+              {
+                "kind": "command_field",
+                "field": "workflow_id"
+              },
+              {
+                "kind": "command_field",
+                "field": "draft_id"
+              },
+              {
+                "kind": "context",
+                "value": "current_authority"
+              }
+            ]
+          }
+        ],
+        "content": [],
+        "event_bindings": [
+          {
+            "event": "workflow.definition.RevisionPublished",
+            "field": "revision_id",
+            "source": {
+              "kind": "generated_uuid_v7"
+            }
+          },
+          {
+            "event": "workflow.definition.RevisionPublished",
+            "field": "nodes",
+            "source": {
+              "kind": "obligation",
+              "name": "publish_draft_snapshot"
+            }
+          },
+          {
+            "event": "workflow.definition.RevisionPublished",
+            "field": "edges",
+            "source": {
+              "kind": "obligation",
+              "name": "publish_draft_snapshot"
+            }
+          },
+          {
+            "event": "workflow.definition.RevisionPublished",
+            "field": "digest",
+            "source": {
+              "kind": "obligation",
+              "name": "publish_draft_snapshot"
+            }
+          },
+          {
+            "event": "workflow.definition.RevisionPublished",
+            "field": "node_count",
+            "source": {
+              "kind": "obligation",
+              "name": "publish_draft_snapshot"
+            }
+          },
+          {
+            "event": "workflow.definition.RevisionPublished",
+            "field": "edge_count",
+            "source": {
+              "kind": "obligation",
+              "name": "publish_draft_snapshot"
+            }
+          },
+          {
+            "event": "workflow.definition.RevisionPublished",
+            "field": "owner",
+            "source": {
+              "kind": "obligation",
+              "name": "derive_revision_authority"
+            }
+          },
+          {
+            "event": "workflow.definition.RevisionPublished",
+            "field": "scopes",
+            "source": {
+              "kind": "obligation",
+              "name": "derive_revision_authority"
+            }
+          }
+        ],
+        "projections": [
+          "revision_by_id_projection",
+          "revisions_projection"
+        ],
+        "obligations": [
+          "bind_workflow_stream",
+          "authorize_workflow_access",
+          "validate_draft_parent",
+          "require_active_draft",
+          "publish_draft_snapshot",
+          "derive_revision_authority"
+        ]
+      },
+      {
+        "name": "activate_revision",
+        "scope": "workflows.manage",
+        "command": "workflow.definition.ActivateRevision",
+        "stream_id": {
+          "kind": "command_field",
+          "field": "workflow_id"
+        },
+        "expected_version": {
+          "kind": "operation_field",
+          "field": "expected_version"
+        },
+        "idempotency": {
+          "kind": "operation_field",
+          "field": "idempotency_key"
+        },
+        "guards": [
+          {
+            "name": "may_activate_revision",
+            "refusal_code": "workflow_access_forbidden",
+            "reads": [
+              {
+                "kind": "command_field",
+                "field": "workflow_id"
+              },
+              {
+                "kind": "command_field",
+                "field": "revision_id"
+              },
+              {
+                "kind": "context",
+                "value": "current_authority"
+              }
+            ]
+          }
+        ],
+        "content": [],
+        "event_bindings": [],
+        "projections": [
+          "workflow_by_id_projection",
+          "workflows_projection"
+        ],
+        "obligations": [
+          "bind_workflow_stream",
+          "authorize_workflow_access",
+          "require_workflow",
+          "activate_owned_revision"
+        ]
+      },
+      {
+        "name": "add_node",
+        "scope": "workflows.manage",
+        "command": "workflow.definition.AddNode",
+        "stream_id": {
+          "kind": "command_field",
+          "field": "workflow_id"
+        },
+        "expected_version": {
+          "kind": "operation_field",
+          "field": "expected_version"
+        },
+        "idempotency": {
+          "kind": "operation_field",
+          "field": "idempotency_key"
+        },
+        "guards": [
+          {
+            "name": "may_add_node",
+            "refusal_code": "workflow_access_forbidden",
+            "reads": [
+              {
+                "kind": "command_field",
+                "field": "workflow_id"
+              },
+              {
+                "kind": "command_field",
+                "field": "draft_id"
+              },
+              {
+                "kind": "context",
+                "value": "current_authority"
+              }
+            ]
+          }
+        ],
+        "content": [],
+        "event_bindings": [
+          {
+            "event": "workflow.definition.NodeAdded",
+            "field": "node_id",
+            "source": {
+              "kind": "generated_uuid_v7"
+            }
+          }
+        ],
+        "projections": [],
+        "obligations": [
+          "bind_workflow_stream",
+          "authorize_workflow_access",
+          "validate_draft_parent",
+          "require_active_draft",
+          "validate_new_node_parent"
+        ]
+      },
+      {
+        "name": "replace_node",
+        "scope": "workflows.manage",
+        "command": "workflow.definition.ReplaceNode",
+        "stream_id": {
+          "kind": "command_field",
+          "field": "workflow_id"
+        },
+        "expected_version": {
+          "kind": "operation_field",
+          "field": "expected_version"
+        },
+        "idempotency": {
+          "kind": "operation_field",
+          "field": "idempotency_key"
+        },
+        "guards": [
+          {
+            "name": "may_replace_node",
+            "refusal_code": "workflow_access_forbidden",
+            "reads": [
+              {
+                "kind": "command_field",
+                "field": "workflow_id"
+              },
+              {
+                "kind": "command_field",
+                "field": "draft_id"
+              },
+              {
+                "kind": "command_field",
+                "field": "node_id"
+              },
+              {
+                "kind": "context",
+                "value": "current_authority"
+              }
+            ]
+          }
+        ],
+        "content": [],
+        "event_bindings": [],
+        "projections": [],
+        "obligations": [
+          "bind_workflow_stream",
+          "authorize_workflow_access",
+          "validate_draft_parent",
+          "require_active_draft",
+          "validate_node_parent",
+          "require_active_node"
+        ]
+      },
+      {
+        "name": "remove_node",
+        "scope": "workflows.manage",
+        "command": "workflow.definition.RemoveNode",
+        "stream_id": {
+          "kind": "command_field",
+          "field": "workflow_id"
+        },
+        "expected_version": {
+          "kind": "operation_field",
+          "field": "expected_version"
+        },
+        "idempotency": {
+          "kind": "operation_field",
+          "field": "idempotency_key"
+        },
+        "guards": [
+          {
+            "name": "may_remove_node",
+            "refusal_code": "workflow_access_forbidden",
+            "reads": [
+              {
+                "kind": "command_field",
+                "field": "workflow_id"
+              },
+              {
+                "kind": "command_field",
+                "field": "draft_id"
+              },
+              {
+                "kind": "command_field",
+                "field": "node_id"
+              },
+              {
+                "kind": "context",
+                "value": "current_authority"
+              }
+            ]
+          }
+        ],
+        "content": [],
+        "event_bindings": [],
+        "projections": [],
+        "obligations": [
+          "bind_workflow_stream",
+          "authorize_workflow_access",
+          "validate_draft_parent",
+          "require_active_draft",
+          "validate_node_parent",
+          "require_active_node",
+          "remove_unreferenced_node"
+        ]
+      },
+      {
+        "name": "connect_nodes",
+        "scope": "workflows.manage",
+        "command": "workflow.definition.ConnectNodes",
+        "stream_id": {
+          "kind": "command_field",
+          "field": "workflow_id"
+        },
+        "expected_version": {
+          "kind": "operation_field",
+          "field": "expected_version"
+        },
+        "idempotency": {
+          "kind": "operation_field",
+          "field": "idempotency_key"
+        },
+        "guards": [
+          {
+            "name": "may_connect_nodes",
+            "refusal_code": "workflow_access_forbidden",
+            "reads": [
+              {
+                "kind": "command_field",
+                "field": "workflow_id"
+              },
+              {
+                "kind": "command_field",
+                "field": "draft_id"
+              },
+              {
+                "kind": "command_field",
+                "field": "source_node_id"
+              },
+              {
+                "kind": "command_field",
+                "field": "target_node_id"
+              },
+              {
+                "kind": "context",
+                "value": "current_authority"
+              }
+            ]
+          }
+        ],
+        "content": [],
+        "event_bindings": [
+          {
+            "event": "workflow.definition.NodesConnected",
+            "field": "edge_id",
+            "source": {
+              "kind": "generated_uuid_v7"
+            }
+          }
+        ],
+        "projections": [],
+        "obligations": [
+          "bind_workflow_stream",
+          "authorize_workflow_access",
+          "validate_draft_parent",
+          "require_active_draft",
+          "connect_draft_dag"
+        ]
+      },
+      {
+        "name": "disconnect_nodes",
+        "scope": "workflows.manage",
+        "command": "workflow.definition.DisconnectNodes",
+        "stream_id": {
+          "kind": "command_field",
+          "field": "workflow_id"
+        },
+        "expected_version": {
+          "kind": "operation_field",
+          "field": "expected_version"
+        },
+        "idempotency": {
+          "kind": "operation_field",
+          "field": "idempotency_key"
+        },
+        "guards": [
+          {
+            "name": "may_disconnect_nodes",
+            "refusal_code": "workflow_access_forbidden",
+            "reads": [
+              {
+                "kind": "command_field",
+                "field": "workflow_id"
+              },
+              {
+                "kind": "command_field",
+                "field": "draft_id"
+              },
+              {
+                "kind": "command_field",
+                "field": "edge_id"
+              },
+              {
+                "kind": "context",
+                "value": "current_authority"
+              }
+            ]
+          }
+        ],
+        "content": [],
+        "event_bindings": [],
+        "projections": [],
+        "obligations": [
+          "bind_workflow_stream",
+          "authorize_workflow_access",
+          "validate_draft_parent",
+          "require_active_draft",
+          "validate_edge_parent",
+          "require_active_edge"
+        ]
+      }
+    ],
+    "projections": [
+      {
+        "name": "workflow_by_id_projection",
+        "view": "workflow.definition.WorkflowById",
+        "delivery": "inline_transactional",
+        "obligations": [
+          "partition_projection_by_auth"
+        ]
+      },
+      {
+        "name": "workflows_projection",
+        "view": "workflow.definition.Workflows",
+        "delivery": "inline_transactional",
+        "obligations": [
+          "partition_projection_by_auth",
+          "filter_visible_workflows"
+        ]
+      },
+      {
+        "name": "draft_by_id_projection",
+        "view": "workflow.definition.DraftById",
+        "delivery": "inline_transactional",
+        "obligations": [
+          "partition_projection_by_auth",
+          "derive_draft_authority",
+          "filter_visible_drafts"
+        ]
+      },
+      {
+        "name": "drafts_projection",
+        "view": "workflow.definition.Drafts",
+        "delivery": "inline_transactional",
+        "obligations": [
+          "partition_projection_by_auth",
+          "derive_draft_authority",
+          "filter_visible_drafts"
+        ]
+      },
+      {
+        "name": "revision_by_id_projection",
+        "view": "workflow.definition.RevisionById",
+        "delivery": "inline_transactional",
+        "obligations": [
+          "partition_projection_by_auth",
+          "derive_revision_authority",
+          "filter_visible_revisions"
+        ]
+      },
+      {
+        "name": "revisions_projection",
+        "view": "workflow.definition.Revisions",
+        "delivery": "inline_transactional",
+        "obligations": [
+          "partition_projection_by_auth",
+          "derive_revision_authority",
+          "filter_visible_revisions"
+        ]
+      }
+    ],
+    "queries": [
+      {
+        "name": "list_workflows",
+        "scope": "workflows.read",
+        "view": "workflow.definition.Workflows",
+        "projection": "workflows_projection",
+        "selectors": [],
+        "guards": [
+          {
+            "name": "workflow_is_visible",
+            "refusal_code": "workflow_not_visible",
+            "reads": [
+              {
+                "kind": "view_field",
+                "field": "owner"
+              },
+              {
+                "kind": "view_field",
+                "field": "scopes"
+              },
+              {
+                "kind": "context",
+                "value": "tenant_id"
+              },
+              {
+                "kind": "context",
+                "value": "realm_id_optional"
+              },
+              {
+                "kind": "context",
+                "value": "current_authority"
+              }
+            ]
+          }
+        ],
+        "sort": [
+          {
+            "view_field": "workflow_id",
+            "direction": "ascending"
+          }
+        ],
+        "delivery": "read_your_writes",
+        "obligations": [
+          "partition_projection_by_auth",
+          "filter_visible_workflows"
+        ]
+      },
+      {
+        "name": "get_workflow",
+        "scope": "workflows.read",
+        "view": "workflow.definition.WorkflowById",
+        "projection": "workflow_by_id_projection",
+        "selectors": [
+          {
+            "parameter": "workflow_id",
+            "view_field": "workflow_id"
+          }
+        ],
+        "guards": [
+          {
+            "name": "workflow_is_visible",
+            "refusal_code": "workflow_not_found",
+            "reads": [
+              {
+                "kind": "view_field",
+                "field": "owner"
+              },
+              {
+                "kind": "view_field",
+                "field": "scopes"
+              },
+              {
+                "kind": "context",
+                "value": "current_authority"
+              }
+            ]
+          }
+        ],
+        "sort": [
+          {
+            "view_field": "workflow_id",
+            "direction": "ascending"
+          }
+        ],
+        "delivery": "read_your_writes",
+        "obligations": [
+          "partition_projection_by_auth",
+          "filter_visible_workflows"
+        ]
+      },
+      {
+        "name": "list_drafts",
+        "scope": "workflows.read",
+        "view": "workflow.definition.Drafts",
+        "projection": "drafts_projection",
+        "selectors": [
+          {
+            "parameter": "workflow_id",
+            "view_field": "workflow_id"
+          }
+        ],
+        "guards": [
+          {
+            "name": "draft_is_visible",
+            "refusal_code": "draft_not_visible",
+            "reads": [
+              {
+                "kind": "view_field",
+                "field": "owner"
+              },
+              {
+                "kind": "view_field",
+                "field": "scopes"
+              },
+              {
+                "kind": "context",
+                "value": "current_authority"
+              }
+            ]
+          }
+        ],
+        "sort": [
+          {
+            "view_field": "draft_id",
+            "direction": "ascending"
+          }
+        ],
+        "delivery": "read_your_writes",
+        "obligations": [
+          "partition_projection_by_auth",
+          "filter_visible_drafts"
+        ]
+      },
+      {
+        "name": "get_draft",
+        "scope": "workflows.read",
+        "view": "workflow.definition.DraftById",
+        "projection": "draft_by_id_projection",
+        "selectors": [
+          {
+            "parameter": "workflow_id",
+            "view_field": "workflow_id"
+          },
+          {
+            "parameter": "draft_id",
+            "view_field": "draft_id"
+          }
+        ],
+        "guards": [
+          {
+            "name": "draft_is_visible",
+            "refusal_code": "draft_not_found",
+            "reads": [
+              {
+                "kind": "view_field",
+                "field": "owner"
+              },
+              {
+                "kind": "view_field",
+                "field": "scopes"
+              },
+              {
+                "kind": "context",
+                "value": "current_authority"
+              }
+            ]
+          }
+        ],
+        "sort": [
+          {
+            "view_field": "draft_id",
+            "direction": "ascending"
+          }
+        ],
+        "delivery": "read_your_writes",
+        "obligations": [
+          "partition_projection_by_auth",
+          "filter_visible_drafts"
+        ]
+      },
+      {
+        "name": "list_revisions",
+        "scope": "workflows.read",
+        "view": "workflow.definition.Revisions",
+        "projection": "revisions_projection",
+        "selectors": [
+          {
+            "parameter": "workflow_id",
+            "view_field": "workflow_id"
+          }
+        ],
+        "guards": [
+          {
+            "name": "revision_is_visible",
+            "refusal_code": "revision_not_visible",
+            "reads": [
+              {
+                "kind": "view_field",
+                "field": "owner"
+              },
+              {
+                "kind": "view_field",
+                "field": "scopes"
+              },
+              {
+                "kind": "context",
+                "value": "current_authority"
+              }
+            ]
+          }
+        ],
+        "sort": [
+          {
+            "view_field": "revision_id",
+            "direction": "ascending"
+          }
+        ],
+        "delivery": "read_your_writes",
+        "obligations": [
+          "partition_projection_by_auth",
+          "filter_visible_revisions"
+        ]
+      },
+      {
+        "name": "get_revision",
+        "scope": "workflows.read",
+        "view": "workflow.definition.RevisionById",
+        "projection": "revision_by_id_projection",
+        "selectors": [
+          {
+            "parameter": "workflow_id",
+            "view_field": "workflow_id"
+          },
+          {
+            "parameter": "revision_id",
+            "view_field": "revision_id"
+          }
+        ],
+        "guards": [
+          {
+            "name": "revision_is_visible",
+            "refusal_code": "revision_not_found",
+            "reads": [
+              {
+                "kind": "view_field",
+                "field": "owner"
+              },
+              {
+                "kind": "view_field",
+                "field": "scopes"
+              },
+              {
+                "kind": "context",
+                "value": "current_authority"
+              }
+            ]
+          }
+        ],
+        "sort": [
+          {
+            "view_field": "revision_id",
+            "direction": "ascending"
+          }
+        ],
+        "delivery": "read_your_writes",
+        "obligations": [
+          "partition_projection_by_auth",
+          "filter_visible_revisions"
+        ]
+      }
+    ],
+    "content": [],
+    "obligations": [
+      {
+        "name": "bind_workflow_stream",
+        "provider": "sdk.aggregate.event-sourced/v1",
+        "bindings": {
+          "aggregate": "workflow.definition.Workflow",
+          "category": "workflow",
+          "identity": "workflow_id"
+        },
+        "description": "Fold every owned draft, graph, and revision inside one workflow stream."
+      },
+      {
+        "name": "authorize_workflow_access",
+        "provider": "sdk.auth.owner-and-conjunctive-scopes/v1",
+        "bindings": {
+          "owner": "workflow.definition.Workflow.owner",
+          "scopes": "workflow.definition.Workflow.scopes"
+        },
+        "description": "Authorize against the workflow owner and conjunctive visibility scopes."
+      },
+      {
+        "name": "authorize_scope_binding",
+        "provider": "sdk.auth.requested-scopes/v1",
+        "bindings": {
+          "scopes": "scopes"
+        },
+        "description": "Validate initial visibility scopes against verified authority facts."
+      },
+      {
+        "name": "require_workflow",
+        "provider": "sdk.lifecycle.require-state/v1",
+        "bindings": {
+          "allowed": "Active",
+          "entity": "workflow.definition.Workflow"
+        },
+        "description": "Require the selected workflow aggregate."
+      },
+      {
+        "name": "validate_draft_parent",
+        "provider": "sdk.aggregate.nested-entity/v1",
+        "bindings": {
+          "child": "workflow.definition.WorkflowDraft",
+          "child_identity": "draft_id",
+          "parent": "workflow.definition.Workflow",
+          "parent_identity": "workflow_id"
+        },
+        "description": "Resolve a draft only inside its workflow stream."
+      },
+      {
+        "name": "validate_new_draft_parent",
+        "provider": "sdk.aggregate.nested-entity/v1",
+        "bindings": {
+          "child": "workflow.definition.WorkflowDraft",
+          "parent": "workflow.definition.Workflow",
+          "parent_identity": "workflow_id"
+        },
+        "description": "Resolve the owning workflow before creating a draft."
+      },
+      {
+        "name": "require_active_draft",
+        "provider": "sdk.lifecycle.require-state/v1",
+        "bindings": {
+          "allowed": "Active",
+          "entity": "workflow.definition.WorkflowDraft",
+          "identity": "draft_id"
+        },
+        "description": "Only active drafts can be edited, checked, published, or discarded."
+      },
+      {
+        "name": "validate_node_parent",
+        "provider": "sdk.aggregate.nested-entity/v1",
+        "bindings": {
+          "child": "workflow.definition.DraftNode",
+          "child_identity": "node_id",
+          "parent": "workflow.definition.WorkflowDraft",
+          "parent_identity": "draft_id"
+        },
+        "description": "Resolve a node only inside the selected draft and workflow stream."
+      },
+      {
+        "name": "validate_new_node_parent",
+        "provider": "sdk.aggregate.nested-entity/v1",
+        "bindings": {
+          "child": "workflow.definition.DraftNode",
+          "parent": "workflow.definition.WorkflowDraft",
+          "parent_identity": "draft_id"
+        },
+        "description": "Resolve the draft before adding a node."
+      },
+      {
+        "name": "require_active_node",
+        "provider": "sdk.lifecycle.require-state/v1",
+        "bindings": {
+          "allowed": "Active",
+          "entity": "workflow.definition.DraftNode",
+          "identity": "node_id"
+        },
+        "description": "Removed nodes cannot be replaced or removed again."
+      },
+      {
+        "name": "validate_edge_parent",
+        "provider": "sdk.aggregate.nested-entity/v1",
+        "bindings": {
+          "child": "workflow.definition.DraftEdge",
+          "child_identity": "edge_id",
+          "parent": "workflow.definition.WorkflowDraft",
+          "parent_identity": "draft_id"
+        },
+        "description": "Resolve an edge only inside the selected draft and workflow stream."
+      },
+      {
+        "name": "require_active_edge",
+        "provider": "sdk.lifecycle.require-state/v1",
+        "bindings": {
+          "allowed": "Active",
+          "entity": "workflow.definition.DraftEdge",
+          "identity": "edge_id"
+        },
+        "description": "Disconnected edges cannot be disconnected again."
+      },
+      {
+        "name": "derive_draft_authority",
+        "provider": "sdk.derive.inherit-parent-authority/v2",
+        "bindings": {
+          "child": "workflow.definition.WorkflowDraft",
+          "child_owner": "workflow.definition.WorkflowDraft.owner",
+          "child_scopes": "workflow.definition.WorkflowDraft.scopes",
+          "parent": "workflow.definition.Workflow",
+          "parent_owner": "workflow.definition.Workflow.owner",
+          "parent_scopes": "workflow.definition.Workflow.scopes"
+        },
+        "description": "Drafts inherit the current workflow authority."
+      },
+      {
+        "name": "derive_revision_authority",
+        "provider": "sdk.derive.inherit-parent-authority/v2",
+        "bindings": {
+          "child": "workflow.definition.WorkflowRevision",
+          "child_owner": "workflow.definition.WorkflowRevision.owner",
+          "child_scopes": "workflow.definition.WorkflowRevision.scopes",
+          "parent": "workflow.definition.Workflow",
+          "parent_owner": "workflow.definition.Workflow.owner",
+          "parent_scopes": "workflow.definition.Workflow.scopes"
+        },
+        "description": "Published revisions inherit immutable workflow authority metadata."
+      },
+      {
+        "name": "connect_draft_dag",
+        "provider": "sdk.graph.connect-dag/v1",
+        "bindings": {
+          "active_state": "Active",
+          "edge_partition": "draft_id",
+          "edge_source": "source_node_id",
+          "edge_target": "target_node_id",
+          "edges": "workflow.definition.DraftEdge",
+          "max_edges": "2000",
+          "max_nodes": "500",
+          "node_identity": "node_id",
+          "node_partition": "draft_id",
+          "nodes": "workflow.definition.DraftNode",
+          "partition": "draft_id",
+          "source": "source_node_id",
+          "target": "target_node_id"
+        },
+        "description": "Refuse missing, self, duplicate, or cyclic graph connections."
+      },
+      {
+        "name": "remove_unreferenced_node",
+        "provider": "sdk.graph.node-unreferenced/v1",
+        "bindings": {
+          "active_state": "Active",
+          "edge_partition": "draft_id",
+          "edge_source": "source_node_id",
+          "edge_target": "target_node_id",
+          "edges": "workflow.definition.DraftEdge",
+          "node": "node_id",
+          "node_identity": "node_id",
+          "node_partition": "draft_id",
+          "nodes": "workflow.definition.DraftNode",
+          "partition": "draft_id"
+        },
+        "description": "Require explicit edge disconnection before node removal."
+      },
+      {
+        "name": "publish_draft_snapshot",
+        "provider": "sdk.graph.publish-snapshot/v1",
+        "bindings": {
+          "active_state": "Active",
+          "edge_identity": "edge_id",
+          "edge_partition": "draft_id",
+          "edge_source": "source_node_id",
+          "edge_target": "target_node_id",
+          "edges": "workflow.definition.DraftEdge",
+          "max_edges": "2000",
+          "max_nodes": "500",
+          "node_identity": "node_id",
+          "node_partition": "draft_id",
+          "nodes": "workflow.definition.DraftNode",
+          "partition": "draft_id"
+        },
+        "description": "Validate and materialize one canonical immutable revision snapshot and digest."
+      },
+      {
+        "name": "activate_owned_revision",
+        "provider": "sdk.aggregate.owned-revision/v1",
+        "bindings": {
+          "allowed": "Published",
+          "revision": "workflow.definition.WorkflowRevision",
+          "revision_identity": "revision_id"
+        },
+        "description": "Only a published revision already owned by this workflow stream can be activated."
+      },
+      {
+        "name": "partition_projection_by_auth",
+        "provider": "sdk.projection.auth-partitioned-visibility/v1",
+        "bindings": {
+          "owner": "owner",
+          "scopes": "scopes"
+        },
+        "description": "Materialize hidden tenant and exact optional-realm partitions."
+      },
+      {
+        "name": "filter_visible_workflows",
+        "provider": "sdk.projection.auth-partitioned-visibility/v1",
+        "bindings": {
+          "owner": "owner",
+          "scopes": "scopes"
+        },
+        "description": "Filter workflow rows by verified authority."
+      },
+      {
+        "name": "filter_visible_drafts",
+        "provider": "sdk.projection.auth-partitioned-visibility/v1",
+        "bindings": {
+          "owner": "owner",
+          "parent": "workflow.definition.Workflow",
+          "scopes": "scopes"
+        },
+        "description": "Filter draft rows by inherited workflow authority."
+      },
+      {
+        "name": "filter_visible_revisions",
+        "provider": "sdk.projection.auth-partitioned-visibility/v1",
+        "bindings": {
+          "owner": "owner",
+          "parent": "workflow.definition.Workflow",
+          "scopes": "scopes"
+        },
+        "description": "Filter revision rows by inherited workflow authority."
+      }
+    ]
+  },
+  "obligations": {
+    "activate_owned_revision": {
+      "name": "activate_owned_revision",
+      "provider": "sdk.aggregate.owned-revision/v1",
+      "bindings": {
+        "allowed": "Published",
+        "revision": "workflow.definition.WorkflowRevision",
+        "revision_identity": "revision_id"
+      }
+    },
+    "authorize_scope_binding": {
+      "name": "authorize_scope_binding",
+      "provider": "sdk.auth.requested-scopes/v1",
+      "bindings": {
+        "scopes": "scopes"
+      }
+    },
+    "authorize_workflow_access": {
+      "name": "authorize_workflow_access",
+      "provider": "sdk.auth.owner-and-conjunctive-scopes/v1",
+      "bindings": {
+        "owner": "workflow.definition.Workflow.owner",
+        "scopes": "workflow.definition.Workflow.scopes"
+      }
+    },
+    "bind_workflow_stream": {
+      "name": "bind_workflow_stream",
+      "provider": "sdk.aggregate.event-sourced/v1",
+      "bindings": {
+        "aggregate": "workflow.definition.Workflow",
+        "category": "workflow",
+        "identity": "workflow_id"
+      }
+    },
+    "connect_draft_dag": {
+      "name": "connect_draft_dag",
+      "provider": "sdk.graph.connect-dag/v1",
+      "bindings": {
+        "active_state": "Active",
+        "edge_partition": "draft_id",
+        "edge_source": "source_node_id",
+        "edge_target": "target_node_id",
+        "edges": "workflow.definition.DraftEdge",
+        "max_edges": "2000",
+        "max_nodes": "500",
+        "node_identity": "node_id",
+        "node_partition": "draft_id",
+        "nodes": "workflow.definition.DraftNode",
+        "partition": "draft_id",
+        "source": "source_node_id",
+        "target": "target_node_id"
+      }
+    },
+    "derive_draft_authority": {
+      "name": "derive_draft_authority",
+      "provider": "sdk.derive.inherit-parent-authority/v2",
+      "bindings": {
+        "child": "workflow.definition.WorkflowDraft",
+        "child_owner": "workflow.definition.WorkflowDraft.owner",
+        "child_scopes": "workflow.definition.WorkflowDraft.scopes",
+        "parent": "workflow.definition.Workflow",
+        "parent_owner": "workflow.definition.Workflow.owner",
+        "parent_scopes": "workflow.definition.Workflow.scopes"
+      }
+    },
+    "derive_revision_authority": {
+      "name": "derive_revision_authority",
+      "provider": "sdk.derive.inherit-parent-authority/v2",
+      "bindings": {
+        "child": "workflow.definition.WorkflowRevision",
+        "child_owner": "workflow.definition.WorkflowRevision.owner",
+        "child_scopes": "workflow.definition.WorkflowRevision.scopes",
+        "parent": "workflow.definition.Workflow",
+        "parent_owner": "workflow.definition.Workflow.owner",
+        "parent_scopes": "workflow.definition.Workflow.scopes"
+      }
+    },
+    "filter_visible_drafts": {
+      "name": "filter_visible_drafts",
+      "provider": "sdk.projection.auth-partitioned-visibility/v1",
+      "bindings": {
+        "owner": "owner",
+        "parent": "workflow.definition.Workflow",
+        "scopes": "scopes"
+      }
+    },
+    "filter_visible_revisions": {
+      "name": "filter_visible_revisions",
+      "provider": "sdk.projection.auth-partitioned-visibility/v1",
+      "bindings": {
+        "owner": "owner",
+        "parent": "workflow.definition.Workflow",
+        "scopes": "scopes"
+      }
+    },
+    "filter_visible_workflows": {
+      "name": "filter_visible_workflows",
+      "provider": "sdk.projection.auth-partitioned-visibility/v1",
+      "bindings": {
+        "owner": "owner",
+        "scopes": "scopes"
+      }
+    },
+    "partition_projection_by_auth": {
+      "name": "partition_projection_by_auth",
+      "provider": "sdk.projection.auth-partitioned-visibility/v1",
+      "bindings": {
+        "owner": "owner",
+        "scopes": "scopes"
+      }
+    },
+    "publish_draft_snapshot": {
+      "name": "publish_draft_snapshot",
+      "provider": "sdk.graph.publish-snapshot/v1",
+      "bindings": {
+        "active_state": "Active",
+        "edge_identity": "edge_id",
+        "edge_partition": "draft_id",
+        "edge_source": "source_node_id",
+        "edge_target": "target_node_id",
+        "edges": "workflow.definition.DraftEdge",
+        "max_edges": "2000",
+        "max_nodes": "500",
+        "node_identity": "node_id",
+        "node_partition": "draft_id",
+        "nodes": "workflow.definition.DraftNode",
+        "partition": "draft_id"
+      }
+    },
+    "remove_unreferenced_node": {
+      "name": "remove_unreferenced_node",
+      "provider": "sdk.graph.node-unreferenced/v1",
+      "bindings": {
+        "active_state": "Active",
+        "edge_partition": "draft_id",
+        "edge_source": "source_node_id",
+        "edge_target": "target_node_id",
+        "edges": "workflow.definition.DraftEdge",
+        "node": "node_id",
+        "node_identity": "node_id",
+        "node_partition": "draft_id",
+        "nodes": "workflow.definition.DraftNode",
+        "partition": "draft_id"
+      }
+    },
+    "require_active_draft": {
+      "name": "require_active_draft",
+      "provider": "sdk.lifecycle.require-state/v1",
+      "bindings": {
+        "allowed": "Active",
+        "entity": "workflow.definition.WorkflowDraft",
+        "identity": "draft_id"
+      }
+    },
+    "require_active_edge": {
+      "name": "require_active_edge",
+      "provider": "sdk.lifecycle.require-state/v1",
+      "bindings": {
+        "allowed": "Active",
+        "entity": "workflow.definition.DraftEdge",
+        "identity": "edge_id"
+      }
+    },
+    "require_active_node": {
+      "name": "require_active_node",
+      "provider": "sdk.lifecycle.require-state/v1",
+      "bindings": {
+        "allowed": "Active",
+        "entity": "workflow.definition.DraftNode",
+        "identity": "node_id"
+      }
+    },
+    "require_workflow": {
+      "name": "require_workflow",
+      "provider": "sdk.lifecycle.require-state/v1",
+      "bindings": {
+        "allowed": "Active",
+        "entity": "workflow.definition.Workflow"
+      }
+    },
+    "validate_draft_parent": {
+      "name": "validate_draft_parent",
+      "provider": "sdk.aggregate.nested-entity/v1",
+      "bindings": {
+        "child": "workflow.definition.WorkflowDraft",
+        "child_identity": "draft_id",
+        "parent": "workflow.definition.Workflow",
+        "parent_identity": "workflow_id"
+      }
+    },
+    "validate_edge_parent": {
+      "name": "validate_edge_parent",
+      "provider": "sdk.aggregate.nested-entity/v1",
+      "bindings": {
+        "child": "workflow.definition.DraftEdge",
+        "child_identity": "edge_id",
+        "parent": "workflow.definition.WorkflowDraft",
+        "parent_identity": "draft_id"
+      }
+    },
+    "validate_new_draft_parent": {
+      "name": "validate_new_draft_parent",
+      "provider": "sdk.aggregate.nested-entity/v1",
+      "bindings": {
+        "child": "workflow.definition.WorkflowDraft",
+        "parent": "workflow.definition.Workflow",
+        "parent_identity": "workflow_id"
+      }
+    },
+    "validate_new_node_parent": {
+      "name": "validate_new_node_parent",
+      "provider": "sdk.aggregate.nested-entity/v1",
+      "bindings": {
+        "child": "workflow.definition.DraftNode",
+        "parent": "workflow.definition.WorkflowDraft",
+        "parent_identity": "draft_id"
+      }
+    },
+    "validate_node_parent": {
+      "name": "validate_node_parent",
+      "provider": "sdk.aggregate.nested-entity/v1",
+      "bindings": {
+        "child": "workflow.definition.DraftNode",
+        "child_identity": "node_id",
+        "parent": "workflow.definition.WorkflowDraft",
+        "parent_identity": "draft_id"
+      }
+    }
+  },
+  "intents": {
+    "activate_revision": {
+      "command": "workflow.definition.ActivateRevision",
+      "input_fields": {
+        "revision_id": "workflow.definition.RevisionId",
+        "workflow_id": "workflow.definition.WorkflowId"
+      },
+      "emitted_events": [
+        "workflow.definition.RevisionActivated"
+      ],
+      "contract": {
+        "disposition": "generated"
+      },
+      "behavior": {
+        "disposition": "obligation",
+        "reason": "the contract is declared; the algorithm is not",
+        "contract": "given `workflow.definition.ActivateRevision` input, decide and enact exactly one outcome — `activated` otherwise, updates `workflow.definition.Workflow`, emits `workflow.definition.RevisionActivated`"
+      },
+      "pipeline": [
+        "resolve_idempotency",
+        "resolve_stream",
+        "load",
+        "fold",
+        "guards",
+        "stage_content",
+        "construct_command",
+        "validate",
+        "decide",
+        "guarded_append",
+        "reduce",
+        "project",
+        "accept_content"
+      ]
+    },
+    "add_node": {
+      "command": "workflow.definition.AddNode",
+      "input_fields": {
+        "definition": "workflow.definition.NodeDefinition",
+        "draft_id": "workflow.definition.DraftId",
+        "workflow_id": "workflow.definition.WorkflowId"
+      },
+      "emitted_events": [
+        "workflow.definition.NodeAdded"
+      ],
+      "contract": {
+        "disposition": "generated"
+      },
+      "behavior": {
+        "disposition": "obligation",
+        "reason": "the contract is declared; the algorithm is not",
+        "contract": "given `workflow.definition.AddNode` input, decide and enact exactly one outcome — `added` otherwise, creates `workflow.definition.DraftNode`, emits `workflow.definition.NodeAdded`"
+      },
+      "pipeline": [
+        "resolve_idempotency",
+        "resolve_stream",
+        "load",
+        "fold",
+        "guards",
+        "stage_content",
+        "construct_command",
+        "validate",
+        "decide",
+        "guarded_append",
+        "reduce",
+        "project",
+        "accept_content"
+      ]
+    },
+    "connect_nodes": {
+      "command": "workflow.definition.ConnectNodes",
+      "input_fields": {
+        "draft_id": "workflow.definition.DraftId",
+        "source_node_id": "workflow.definition.NodeId",
+        "target_node_id": "workflow.definition.NodeId",
+        "workflow_id": "workflow.definition.WorkflowId"
+      },
+      "emitted_events": [
+        "workflow.definition.NodesConnected"
+      ],
+      "contract": {
+        "disposition": "generated"
+      },
+      "behavior": {
+        "disposition": "obligation",
+        "reason": "the contract is declared; the algorithm is not",
+        "contract": "given `workflow.definition.ConnectNodes` input, decide and enact exactly one outcome — `connected` otherwise, creates `workflow.definition.DraftEdge`, emits `workflow.definition.NodesConnected`"
+      },
+      "pipeline": [
+        "resolve_idempotency",
+        "resolve_stream",
+        "load",
+        "fold",
+        "guards",
+        "stage_content",
+        "construct_command",
+        "validate",
+        "decide",
+        "guarded_append",
+        "reduce",
+        "project",
+        "accept_content"
+      ]
+    },
+    "create_draft": {
+      "command": "workflow.definition.CreateDraft",
+      "input_fields": {
+        "based_on_revision_id": "Optional<workflow.definition.RevisionId>",
+        "name": "String",
+        "workflow_id": "workflow.definition.WorkflowId"
+      },
+      "emitted_events": [
+        "workflow.definition.DraftCreated"
+      ],
+      "contract": {
+        "disposition": "generated"
+      },
+      "behavior": {
+        "disposition": "obligation",
+        "reason": "the contract is declared; the algorithm is not",
+        "contract": "given `workflow.definition.CreateDraft` input, decide and enact exactly one outcome — `created` otherwise, creates `workflow.definition.WorkflowDraft`, emits `workflow.definition.DraftCreated`"
+      },
+      "pipeline": [
+        "resolve_idempotency",
+        "resolve_stream",
+        "load",
+        "fold",
+        "guards",
+        "stage_content",
+        "construct_command",
+        "validate",
+        "decide",
+        "guarded_append",
+        "reduce",
+        "project",
+        "accept_content"
+      ]
+    },
+    "create_workflow": {
+      "command": "workflow.definition.CreateWorkflow",
+      "input_fields": {
+        "name": "String",
+        "scopes": "workflow.definition.ScopeBindings"
+      },
+      "emitted_events": [
+        "workflow.definition.WorkflowCreated"
+      ],
+      "contract": {
+        "disposition": "generated"
+      },
+      "behavior": {
+        "disposition": "obligation",
+        "reason": "the contract is declared; the algorithm is not",
+        "contract": "given `workflow.definition.CreateWorkflow` input, decide and enact exactly one outcome — `created` otherwise, creates `workflow.definition.Workflow`, emits `workflow.definition.WorkflowCreated`"
+      },
+      "pipeline": [
+        "resolve_idempotency",
+        "resolve_stream",
+        "load",
+        "fold",
+        "guards",
+        "stage_content",
+        "construct_command",
+        "validate",
+        "decide",
+        "guarded_append",
+        "reduce",
+        "project",
+        "accept_content"
+      ]
+    },
+    "discard_draft": {
+      "command": "workflow.definition.DiscardDraft",
+      "input_fields": {
+        "draft_id": "workflow.definition.DraftId",
+        "workflow_id": "workflow.definition.WorkflowId"
+      },
+      "emitted_events": [
+        "workflow.definition.DraftDiscarded"
+      ],
+      "contract": {
+        "disposition": "generated"
+      },
+      "behavior": {
+        "disposition": "obligation",
+        "reason": "the contract is declared; the algorithm is not",
+        "contract": "given `workflow.definition.DiscardDraft` input, decide and enact exactly one outcome — `discarded` otherwise, takes `discard` of `workflow.definition.WorkflowDraft`, emits `workflow.definition.DraftDiscarded`"
+      },
+      "pipeline": [
+        "resolve_idempotency",
+        "resolve_stream",
+        "load",
+        "fold",
+        "guards",
+        "stage_content",
+        "construct_command",
+        "validate",
+        "decide",
+        "guarded_append",
+        "reduce",
+        "project",
+        "accept_content"
+      ]
+    },
+    "disconnect_nodes": {
+      "command": "workflow.definition.DisconnectNodes",
+      "input_fields": {
+        "draft_id": "workflow.definition.DraftId",
+        "edge_id": "workflow.definition.EdgeId",
+        "workflow_id": "workflow.definition.WorkflowId"
+      },
+      "emitted_events": [
+        "workflow.definition.NodesDisconnected"
+      ],
+      "contract": {
+        "disposition": "generated"
+      },
+      "behavior": {
+        "disposition": "obligation",
+        "reason": "the contract is declared; the algorithm is not",
+        "contract": "given `workflow.definition.DisconnectNodes` input, decide and enact exactly one outcome — `disconnected` otherwise, takes `disconnect` of `workflow.definition.DraftEdge`, emits `workflow.definition.NodesDisconnected`"
+      },
+      "pipeline": [
+        "resolve_idempotency",
+        "resolve_stream",
+        "load",
+        "fold",
+        "guards",
+        "stage_content",
+        "construct_command",
+        "validate",
+        "decide",
+        "guarded_append",
+        "reduce",
+        "project",
+        "accept_content"
+      ]
+    },
+    "publish_draft": {
+      "command": "workflow.definition.PublishDraft",
+      "input_fields": {
+        "draft_id": "workflow.definition.DraftId",
+        "workflow_id": "workflow.definition.WorkflowId"
+      },
+      "emitted_events": [
+        "workflow.definition.RevisionPublished"
+      ],
+      "contract": {
+        "disposition": "generated"
+      },
+      "behavior": {
+        "disposition": "obligation",
+        "reason": "the contract is declared; the algorithm is not",
+        "contract": "given `workflow.definition.PublishDraft` input, decide and enact exactly one outcome — `published` otherwise, creates `workflow.definition.WorkflowRevision`, emits `workflow.definition.RevisionPublished`"
+      },
+      "pipeline": [
+        "resolve_idempotency",
+        "resolve_stream",
+        "load",
+        "fold",
+        "guards",
+        "stage_content",
+        "construct_command",
+        "validate",
+        "decide",
+        "guarded_append",
+        "reduce",
+        "project",
+        "accept_content"
+      ]
+    },
+    "remove_node": {
+      "command": "workflow.definition.RemoveNode",
+      "input_fields": {
+        "draft_id": "workflow.definition.DraftId",
+        "node_id": "workflow.definition.NodeId",
+        "workflow_id": "workflow.definition.WorkflowId"
+      },
+      "emitted_events": [
+        "workflow.definition.NodeRemoved"
+      ],
+      "contract": {
+        "disposition": "generated"
+      },
+      "behavior": {
+        "disposition": "obligation",
+        "reason": "the contract is declared; the algorithm is not",
+        "contract": "given `workflow.definition.RemoveNode` input, decide and enact exactly one outcome — `removed` otherwise, takes `remove` of `workflow.definition.DraftNode`, emits `workflow.definition.NodeRemoved`"
+      },
+      "pipeline": [
+        "resolve_idempotency",
+        "resolve_stream",
+        "load",
+        "fold",
+        "guards",
+        "stage_content",
+        "construct_command",
+        "validate",
+        "decide",
+        "guarded_append",
+        "reduce",
+        "project",
+        "accept_content"
+      ]
+    },
+    "replace_node": {
+      "command": "workflow.definition.ReplaceNode",
+      "input_fields": {
+        "definition": "workflow.definition.NodeDefinition",
+        "draft_id": "workflow.definition.DraftId",
+        "node_id": "workflow.definition.NodeId",
+        "workflow_id": "workflow.definition.WorkflowId"
+      },
+      "emitted_events": [
+        "workflow.definition.NodeReplaced"
+      ],
+      "contract": {
+        "disposition": "generated"
+      },
+      "behavior": {
+        "disposition": "obligation",
+        "reason": "the contract is declared; the algorithm is not",
+        "contract": "given `workflow.definition.ReplaceNode` input, decide and enact exactly one outcome — `replaced` otherwise, updates `workflow.definition.DraftNode`, emits `workflow.definition.NodeReplaced`"
+      },
+      "pipeline": [
+        "resolve_idempotency",
+        "resolve_stream",
+        "load",
+        "fold",
+        "guards",
+        "stage_content",
+        "construct_command",
+        "validate",
+        "decide",
+        "guarded_append",
+        "reduce",
+        "project",
+        "accept_content"
+      ]
+    },
+    "validate_draft": {
+      "command": "workflow.definition.ValidateDraft",
+      "input_fields": {
+        "draft_id": "workflow.definition.DraftId",
+        "workflow_id": "workflow.definition.WorkflowId"
+      },
+      "emitted_events": [
+        "workflow.definition.DraftValidated"
+      ],
+      "contract": {
+        "disposition": "generated"
+      },
+      "behavior": {
+        "disposition": "obligation",
+        "reason": "the contract is declared; the algorithm is not",
+        "contract": "given `workflow.definition.ValidateDraft` input, decide and enact exactly one outcome — `validated` otherwise, updates `workflow.definition.WorkflowDraft`, emits `workflow.definition.DraftValidated`"
+      },
+      "pipeline": [
+        "resolve_idempotency",
+        "resolve_stream",
+        "load",
+        "fold",
+        "guards",
+        "stage_content",
+        "construct_command",
+        "validate",
+        "decide",
+        "guarded_append",
+        "reduce",
+        "project",
+        "accept_content"
+      ]
+    }
+  },
+  "projections": {
+    "draft_by_id_projection": {
+      "view": "workflow.definition.DraftById",
+      "shape": "workflow.definition.DraftRow",
+      "fields": {
+        "based_on_revision_id": "Optional<workflow.definition.RevisionId>",
+        "draft_id": "workflow.definition.DraftId",
+        "name": "String",
+        "owner": "workflow.definition.OwnerRef",
+        "scopes": "workflow.definition.ScopeBindings",
+        "state": "workflow.definition.WorkflowDraft.State",
+        "workflow_id": "workflow.definition.WorkflowId"
+      },
+      "consistency": "read_your_writes",
+      "view_type": {
+        "disposition": "generated"
+      },
+      "view_query": {
+        "disposition": "obligation",
+        "reason": "how the projection is kept current is a storage decision",
+        "contract": "a query answering `workflow.definition.DraftById` with rows projected from `workflow.definition.WorkflowDraft` at `read_your_writes` consistency"
+      }
+    },
+    "drafts_projection": {
+      "view": "workflow.definition.Drafts",
+      "shape": "workflow.definition.DraftRow",
+      "fields": {
+        "based_on_revision_id": "Optional<workflow.definition.RevisionId>",
+        "draft_id": "workflow.definition.DraftId",
+        "name": "String",
+        "owner": "workflow.definition.OwnerRef",
+        "scopes": "workflow.definition.ScopeBindings",
+        "state": "workflow.definition.WorkflowDraft.State",
+        "workflow_id": "workflow.definition.WorkflowId"
+      },
+      "consistency": "read_your_writes",
+      "view_type": {
+        "disposition": "generated"
+      },
+      "view_query": {
+        "disposition": "obligation",
+        "reason": "how the projection is kept current is a storage decision",
+        "contract": "a query answering `workflow.definition.Drafts` with rows projected from `workflow.definition.WorkflowDraft` at `read_your_writes` consistency"
+      }
+    },
+    "revision_by_id_projection": {
+      "view": "workflow.definition.RevisionById",
+      "shape": "workflow.definition.RevisionRow",
+      "fields": {
+        "digest": "String",
+        "draft_id": "workflow.definition.DraftId",
+        "edge_count": "Integer",
+        "edges": "List<workflow.definition.EdgeSnapshot>",
+        "node_count": "Integer",
+        "nodes": "List<workflow.definition.NodeSnapshot>",
+        "owner": "workflow.definition.OwnerRef",
+        "revision_id": "workflow.definition.RevisionId",
+        "scopes": "workflow.definition.ScopeBindings",
+        "state": "workflow.definition.WorkflowRevision.State",
+        "workflow_id": "workflow.definition.WorkflowId"
+      },
+      "consistency": "read_your_writes",
+      "view_type": {
+        "disposition": "generated"
+      },
+      "view_query": {
+        "disposition": "obligation",
+        "reason": "how the projection is kept current is a storage decision",
+        "contract": "a query answering `workflow.definition.RevisionById` with rows projected from `workflow.definition.WorkflowRevision` at `read_your_writes` consistency"
+      }
+    },
+    "revisions_projection": {
+      "view": "workflow.definition.Revisions",
+      "shape": "workflow.definition.RevisionRow",
+      "fields": {
+        "digest": "String",
+        "draft_id": "workflow.definition.DraftId",
+        "edge_count": "Integer",
+        "edges": "List<workflow.definition.EdgeSnapshot>",
+        "node_count": "Integer",
+        "nodes": "List<workflow.definition.NodeSnapshot>",
+        "owner": "workflow.definition.OwnerRef",
+        "revision_id": "workflow.definition.RevisionId",
+        "scopes": "workflow.definition.ScopeBindings",
+        "state": "workflow.definition.WorkflowRevision.State",
+        "workflow_id": "workflow.definition.WorkflowId"
+      },
+      "consistency": "read_your_writes",
+      "view_type": {
+        "disposition": "generated"
+      },
+      "view_query": {
+        "disposition": "obligation",
+        "reason": "how the projection is kept current is a storage decision",
+        "contract": "a query answering `workflow.definition.Revisions` with rows projected from `workflow.definition.WorkflowRevision` at `read_your_writes` consistency"
+      }
+    },
+    "workflow_by_id_projection": {
+      "view": "workflow.definition.WorkflowById",
+      "shape": "workflow.definition.WorkflowRow",
+      "fields": {
+        "active_revision_id": "Optional<workflow.definition.RevisionId>",
+        "name": "String",
+        "owner": "workflow.definition.OwnerRef",
+        "scopes": "workflow.definition.ScopeBindings",
+        "state": "workflow.definition.Workflow.State",
+        "workflow_id": "workflow.definition.WorkflowId"
+      },
+      "consistency": "read_your_writes",
+      "view_type": {
+        "disposition": "generated"
+      },
+      "view_query": {
+        "disposition": "obligation",
+        "reason": "how the projection is kept current is a storage decision",
+        "contract": "a query answering `workflow.definition.WorkflowById` with rows projected from `workflow.definition.Workflow` at `read_your_writes` consistency"
+      }
+    },
+    "workflows_projection": {
+      "view": "workflow.definition.Workflows",
+      "shape": "workflow.definition.WorkflowRow",
+      "fields": {
+        "active_revision_id": "Optional<workflow.definition.RevisionId>",
+        "name": "String",
+        "owner": "workflow.definition.OwnerRef",
+        "scopes": "workflow.definition.ScopeBindings",
+        "state": "workflow.definition.Workflow.State",
+        "workflow_id": "workflow.definition.WorkflowId"
+      },
+      "consistency": "read_your_writes",
+      "view_type": {
+        "disposition": "generated"
+      },
+      "view_query": {
+        "disposition": "obligation",
+        "reason": "how the projection is kept current is a storage decision",
+        "contract": "a query answering `workflow.definition.Workflows` with rows projected from `workflow.definition.Workflow` at `read_your_writes` consistency"
+      }
+    }
+  },
+  "queries": {
+    "get_draft": {
+      "view": "workflow.definition.DraftById",
+      "projection": "draft_by_id_projection",
+      "fields": {
+        "based_on_revision_id": "Optional<workflow.definition.RevisionId>",
+        "draft_id": "workflow.definition.DraftId",
+        "name": "String",
+        "owner": "workflow.definition.OwnerRef",
+        "scopes": "workflow.definition.ScopeBindings",
+        "state": "workflow.definition.WorkflowDraft.State",
+        "workflow_id": "workflow.definition.WorkflowId"
+      },
+      "view_type": {
+        "disposition": "generated"
+      },
+      "view_query": {
+        "disposition": "obligation",
+        "reason": "how the projection is kept current is a storage decision",
+        "contract": "a query answering `workflow.definition.DraftById` with rows projected from `workflow.definition.WorkflowDraft` at `read_your_writes` consistency"
+      },
+      "pipeline": [
+        "guards",
+        "bind_selectors",
+        "read_projection"
+      ]
+    },
+    "get_revision": {
+      "view": "workflow.definition.RevisionById",
+      "projection": "revision_by_id_projection",
+      "fields": {
+        "digest": "String",
+        "draft_id": "workflow.definition.DraftId",
+        "edge_count": "Integer",
+        "edges": "List<workflow.definition.EdgeSnapshot>",
+        "node_count": "Integer",
+        "nodes": "List<workflow.definition.NodeSnapshot>",
+        "owner": "workflow.definition.OwnerRef",
+        "revision_id": "workflow.definition.RevisionId",
+        "scopes": "workflow.definition.ScopeBindings",
+        "state": "workflow.definition.WorkflowRevision.State",
+        "workflow_id": "workflow.definition.WorkflowId"
+      },
+      "view_type": {
+        "disposition": "generated"
+      },
+      "view_query": {
+        "disposition": "obligation",
+        "reason": "how the projection is kept current is a storage decision",
+        "contract": "a query answering `workflow.definition.RevisionById` with rows projected from `workflow.definition.WorkflowRevision` at `read_your_writes` consistency"
+      },
+      "pipeline": [
+        "guards",
+        "bind_selectors",
+        "read_projection"
+      ]
+    },
+    "get_workflow": {
+      "view": "workflow.definition.WorkflowById",
+      "projection": "workflow_by_id_projection",
+      "fields": {
+        "active_revision_id": "Optional<workflow.definition.RevisionId>",
+        "name": "String",
+        "owner": "workflow.definition.OwnerRef",
+        "scopes": "workflow.definition.ScopeBindings",
+        "state": "workflow.definition.Workflow.State",
+        "workflow_id": "workflow.definition.WorkflowId"
+      },
+      "view_type": {
+        "disposition": "generated"
+      },
+      "view_query": {
+        "disposition": "obligation",
+        "reason": "how the projection is kept current is a storage decision",
+        "contract": "a query answering `workflow.definition.WorkflowById` with rows projected from `workflow.definition.Workflow` at `read_your_writes` consistency"
+      },
+      "pipeline": [
+        "guards",
+        "bind_selectors",
+        "read_projection"
+      ]
+    },
+    "list_drafts": {
+      "view": "workflow.definition.Drafts",
+      "projection": "drafts_projection",
+      "fields": {
+        "based_on_revision_id": "Optional<workflow.definition.RevisionId>",
+        "draft_id": "workflow.definition.DraftId",
+        "name": "String",
+        "owner": "workflow.definition.OwnerRef",
+        "scopes": "workflow.definition.ScopeBindings",
+        "state": "workflow.definition.WorkflowDraft.State",
+        "workflow_id": "workflow.definition.WorkflowId"
+      },
+      "view_type": {
+        "disposition": "generated"
+      },
+      "view_query": {
+        "disposition": "obligation",
+        "reason": "how the projection is kept current is a storage decision",
+        "contract": "a query answering `workflow.definition.Drafts` with rows projected from `workflow.definition.WorkflowDraft` at `read_your_writes` consistency"
+      },
+      "pipeline": [
+        "guards",
+        "bind_selectors",
+        "read_projection"
+      ]
+    },
+    "list_revisions": {
+      "view": "workflow.definition.Revisions",
+      "projection": "revisions_projection",
+      "fields": {
+        "digest": "String",
+        "draft_id": "workflow.definition.DraftId",
+        "edge_count": "Integer",
+        "edges": "List<workflow.definition.EdgeSnapshot>",
+        "node_count": "Integer",
+        "nodes": "List<workflow.definition.NodeSnapshot>",
+        "owner": "workflow.definition.OwnerRef",
+        "revision_id": "workflow.definition.RevisionId",
+        "scopes": "workflow.definition.ScopeBindings",
+        "state": "workflow.definition.WorkflowRevision.State",
+        "workflow_id": "workflow.definition.WorkflowId"
+      },
+      "view_type": {
+        "disposition": "generated"
+      },
+      "view_query": {
+        "disposition": "obligation",
+        "reason": "how the projection is kept current is a storage decision",
+        "contract": "a query answering `workflow.definition.Revisions` with rows projected from `workflow.definition.WorkflowRevision` at `read_your_writes` consistency"
+      },
+      "pipeline": [
+        "guards",
+        "bind_selectors",
+        "read_projection"
+      ]
+    },
+    "list_workflows": {
+      "view": "workflow.definition.Workflows",
+      "projection": "workflows_projection",
+      "fields": {
+        "active_revision_id": "Optional<workflow.definition.RevisionId>",
+        "name": "String",
+        "owner": "workflow.definition.OwnerRef",
+        "scopes": "workflow.definition.ScopeBindings",
+        "state": "workflow.definition.Workflow.State",
+        "workflow_id": "workflow.definition.WorkflowId"
+      },
+      "view_type": {
+        "disposition": "generated"
+      },
+      "view_query": {
+        "disposition": "obligation",
+        "reason": "how the projection is kept current is a storage decision",
+        "contract": "a query answering `workflow.definition.Workflows` with rows projected from `workflow.definition.Workflow` at `read_your_writes` consistency"
+      },
+      "pipeline": [
+        "guards",
+        "bind_selectors",
+        "read_projection"
+      ]
+    }
+  },
+  "content": {}
+}

@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/workflow.definition.ScopeBindings",
+  "x-ess-provenance": {
+    "system": "workflow",
+    "specification_version": "v1",
+    "source_digest": "6a79078047815754e0dda89f285e08689037af0adfd4277dfcc305f1d003df1b",
+    "contract_digest": "f686d521565b00b6ae036ad3089d95984b688c3c59ef1e13fe6391ca1ca1481f",
+    "regenerate": "ess generate"
+  },
+  "$defs": {
+    "workflow.definition.PrincipalRef": {
+      "title": "PrincipalRef",
+      "x-ess-name": "workflow.definition.PrincipalRef",
+      "x-ess-kind": "newtype",
+      "type": "string"
+    },
+    "workflow.definition.ProjectRef": {
+      "title": "ProjectRef",
+      "x-ess-name": "workflow.definition.ProjectRef",
+      "x-ess-kind": "newtype",
+      "type": "string"
+    },
+    "workflow.definition.ScopeBindings": {
+      "title": "ScopeBindings",
+      "x-ess-name": "workflow.definition.ScopeBindings",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "principal": {
+          "$ref": "#/$defs/workflow.definition.PrincipalRef"
+        },
+        "team": {
+          "$ref": "#/$defs/workflow.definition.TeamRef"
+        },
+        "project": {
+          "$ref": "#/$defs/workflow.definition.ProjectRef"
+        }
+      },
+      "additionalProperties": false
+    },
+    "workflow.definition.TeamRef": {
+      "title": "TeamRef",
+      "x-ess-name": "workflow.definition.TeamRef",
+      "x-ess-kind": "newtype",
+      "type": "string"
+    }
+  }
+}

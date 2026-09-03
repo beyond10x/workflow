@@ -1,22 +1,34 @@
 # Workflow
 
-Workflow is the experimental Rust domain boundary for user-maintained workflow definitions and
-immutable revisions. It is the foundation of a future product-neutral workflow service, not that
-service presented as already complete.
+Workflow is the standalone, generated Rust service for user-maintained workflow definitions and
+immutable revisions. Authors edit draft directed acyclic graphs, publish canonical snapshots, and
+activate an owned revision. Tenant, authority, and optional realm come only from Identity.
 
 ## Current status
 
-The repository currently contains the governed AEP roadmap and a minimal domain crate. HTTP,
-persistence, schedule and webhook delivery, durable runs, step leases, cancellation, and execution
-evidence remain planned. The predecessor API is input to an explicit compatibility map, not a
-source dependency.
+Version 0.2.0 replaces the former `WorkflowId` placeholder. The ESS model, runtime annotations,
+generated `WorkflowClient`, Identity-authenticated HTTP server, OpenAPI, Connector contribution,
+and conformance scenarios are one deterministic package rooted at [`service.yaml`](service.yaml).
+There is no handwritten service/client adapter and no compatibility path for the predecessor or
+the 0.1.0 crate.
+
+Semantic node kinds are closed to `compute`, `read`, `call`, `judge`, `wait`, `invoke`, `emit`, and
+`complete`. Layout coordinates remain a product concern and are not persisted in semantic graphs.
+All mutations carry optimistic concurrency and idempotency. Nodes must be disconnected before
+removal; connections refuse missing endpoints, self edges, duplicates, and cycles. Publishing
+freezes ordered node/edge data with a deterministic digest; published revisions are never edited.
+
+The HTTP resource audience is exactly `urn:b10x:workflow`. Reads require `workflows.read`, while
+draft authoring, publishing, and activation require `workflows.manage`. Verification and exact scope
+authorization happen before operation JSON is decoded.
 
 Build and validate the boundary that exists today:
 
 ```bash
-cargo test --workspace --locked
-aep artifact validate --strict
+task check
 ```
+
+Execution, triggers, schedules, leases, cancellation, and revision deletion remain planned.
 
 <!-- b10x-docs:start -->
 ## Documentation

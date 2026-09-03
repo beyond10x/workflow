@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/workflow.definition.EdgeSnapshot",
+  "x-ess-provenance": {
+    "system": "workflow",
+    "specification_version": "v1",
+    "source_digest": "6a79078047815754e0dda89f285e08689037af0adfd4277dfcc305f1d003df1b",
+    "contract_digest": "631c227cc552ddd6afa50560675721996683d31cb984e761ed01134d1c5afe74",
+    "regenerate": "ess generate"
+  },
+  "$defs": {
+    "workflow.definition.DraftId": {
+      "title": "DraftId",
+      "x-ess-name": "workflow.definition.DraftId",
+      "x-ess-kind": "newtype",
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+    },
+    "workflow.definition.EdgeId": {
+      "title": "EdgeId",
+      "x-ess-name": "workflow.definition.EdgeId",
+      "x-ess-kind": "newtype",
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+    },
+    "workflow.definition.EdgeSnapshot": {
+      "title": "EdgeSnapshot",
+      "x-ess-name": "workflow.definition.EdgeSnapshot",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "edge_id": {
+          "$ref": "#/$defs/workflow.definition.EdgeId"
+        },
+        "draft_id": {
+          "$ref": "#/$defs/workflow.definition.DraftId"
+        },
+        "source_node_id": {
+          "$ref": "#/$defs/workflow.definition.NodeId"
+        },
+        "target_node_id": {
+          "$ref": "#/$defs/workflow.definition.NodeId"
+        }
+      },
+      "required": [
+        "edge_id",
+        "draft_id",
+        "source_node_id",
+        "target_node_id"
+      ],
+      "additionalProperties": false
+    },
+    "workflow.definition.NodeId": {
+      "title": "NodeId",
+      "x-ess-name": "workflow.definition.NodeId",
+      "x-ess-kind": "newtype",
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+    }
+  }
+}

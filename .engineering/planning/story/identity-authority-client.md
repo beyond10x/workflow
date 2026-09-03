@@ -2,42 +2,58 @@
 format: aep.planning-md/1
 id: story:identity-authority-client
 kind: story
-status: draft
+status: implemented
 title: Identity authority client
 summary: Derive tenant, actor, and delegation from an Identity-owned verifier.
 relations:
 - derived_from: epic:authenticated-workflow-surface
 - serves: vision:O1
-revision: 1
+scope:
+- confidence: cited
+  path: CHANGELOG.md
+- confidence: cited
+  path: README.md
+- confidence: cited
+  path: generated/client
+- confidence: cited
+  path: generated/connectors
+- confidence: cited
+  path: generated/ess/projections/openapi
+- confidence: cited
+  path: generated/http
+- confidence: cited
+  path: service.yaml
+- confidence: cited
+  path: service/runtime.yaml
+revision: 6
 ---
-<!-- Starting point for a `story` artifact, seeded by `protocol artifact new story <name>`.
-     No frontmatter here on purpose: the `---` block is written by the CLI from the id, kind, status
-     and relations you gave it, and a second copy in this file would be the one that went stale.
-     Delete the italic guidance as you fill each section. -->
-
-# Story: <name>
+# Identity authority and official Workflow client
 
 ## Outcome
 
-*What is true for whom once this has shipped, in one sentence. If it names a component rather than a
-person, it is a task — say what changes for someone.*
+Workflow exposes a supported tenant-scoped client boundary that downstream products can call with exchanged Identity authority.
 
 ## Context
 
-*Why this is worth doing now, and what it depends on. Link the epic or specification it comes from
-rather than restating it; the `derived_from` relation already carries the edge.*
+The service boundary is generated from the same Workflow service package as the authoring model; no caller can supply tenant, actor, realm, or deployment coordinates as operation input.
 
 ## Acceptance
 
-*The conditions under which this is done, each one something a person or a check can observe. "Works
-correctly" is not one of them.*
+- The released audience is `urn:b10x:workflow`.
+- Read operations require exactly `workflows.read`; authoring and draft mutation require exactly `workflows.manage`.
+- Identity verification and scope checks run before request DTO decoding.
+- The release includes the official typed Workflow client, generated server, OpenAPI projection, Connector contribution, stable problem codes, and probes.
+- Tenant and actor come only from verified authority, optional realm remains authority context, and cross-tenant reads and writes are refused.
 
 ## Out of Scope
 
-*What a reasonable reader would expect to be included and is not — the boundary that stops this
-story quietly becoming an epic.*
+Deployment-specific issuer URLs, tenant identifiers, credentials, Identity repository changes, and a compatibility layer for the abandoned Platform client.
 
 ## Open Questions
 
-*What is still undecided, each with who decides it. A story carrying an unowned question is a story
-that stalls without anybody noticing.*
+None.
+
+## Scope
+
+- cited: Workflow `service.yaml`, generated client/server/OpenAPI/Connector artifacts, README, changelog, and conformance scenarios.
+- inferred: deployment registers the opaque audience and exchange policy outside this public repository.

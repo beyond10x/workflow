@@ -1,0 +1,658 @@
+{
+  "provenance": {
+    "system": "workflow",
+    "specification_version": "v1",
+    "source_digest": "6a79078047815754e0dda89f285e08689037af0adfd4277dfcc305f1d003df1b",
+    "contract_digest": "1f20a14314130c4a1d048f7a1f6cb2319a04e70ea589b6d3b51b7e4443f39b95"
+  },
+  "scope": {
+    "profile": "component-skeletons"
+  },
+  "capabilities": [
+    {
+      "kind": "domain_type",
+      "source": "workflow.definition.CallNode",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "domain_type",
+      "source": "workflow.definition.CompleteNode",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "domain_type",
+      "source": "workflow.definition.ComputeNode",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "domain_type",
+      "source": "workflow.definition.DraftEdge.State",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "domain_type",
+      "source": "workflow.definition.DraftId",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "domain_type",
+      "source": "workflow.definition.DraftNode.State",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "domain_type",
+      "source": "workflow.definition.DraftRow",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "domain_type",
+      "source": "workflow.definition.EdgeId",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "domain_type",
+      "source": "workflow.definition.EdgeSnapshot",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "domain_type",
+      "source": "workflow.definition.EmitNode",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "domain_type",
+      "source": "workflow.definition.InvokeNode",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "domain_type",
+      "source": "workflow.definition.JudgeNode",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "domain_type",
+      "source": "workflow.definition.NodeDefinition",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "domain_type",
+      "source": "workflow.definition.NodeId",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "domain_type",
+      "source": "workflow.definition.NodeSnapshot",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "domain_type",
+      "source": "workflow.definition.OwnerRef",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "domain_type",
+      "source": "workflow.definition.PrincipalRef",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "domain_type",
+      "source": "workflow.definition.ProjectRef",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "domain_type",
+      "source": "workflow.definition.ReadNode",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "domain_type",
+      "source": "workflow.definition.RevisionId",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "domain_type",
+      "source": "workflow.definition.RevisionRow",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "domain_type",
+      "source": "workflow.definition.ScopeBindings",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "domain_type",
+      "source": "workflow.definition.TeamRef",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "domain_type",
+      "source": "workflow.definition.WaitNode",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "domain_type",
+      "source": "workflow.definition.Workflow.State",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "domain_type",
+      "source": "workflow.definition.WorkflowDraft.State",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "domain_type",
+      "source": "workflow.definition.WorkflowId",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "domain_type",
+      "source": "workflow.definition.WorkflowRevision.State",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "domain_type",
+      "source": "workflow.definition.WorkflowRow",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "entity_lifecycle",
+      "source": "workflow.definition.DraftEdge",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "entity_lifecycle",
+      "source": "workflow.definition.DraftNode",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "entity_lifecycle",
+      "source": "workflow.definition.Workflow",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "entity_lifecycle",
+      "source": "workflow.definition.WorkflowDraft",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "entity_lifecycle",
+      "source": "workflow.definition.WorkflowRevision",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "command_contract",
+      "source": "workflow.definition.ActivateRevision",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "command_behavior",
+      "source": "workflow.definition.ActivateRevision",
+      "disposition": {
+        "disposition": "obligation",
+        "reason": {
+          "class": "unspecified_algorithm"
+        },
+        "contract": "given `workflow.definition.ActivateRevision` input, decide and enact exactly one outcome — `activated` otherwise, updates `workflow.definition.Workflow`, emits `workflow.definition.RevisionActivated`"
+      }
+    },
+    {
+      "kind": "command_contract",
+      "source": "workflow.definition.AddNode",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "command_behavior",
+      "source": "workflow.definition.AddNode",
+      "disposition": {
+        "disposition": "obligation",
+        "reason": {
+          "class": "unspecified_algorithm"
+        },
+        "contract": "given `workflow.definition.AddNode` input, decide and enact exactly one outcome — `added` otherwise, creates `workflow.definition.DraftNode`, emits `workflow.definition.NodeAdded`"
+      }
+    },
+    {
+      "kind": "command_contract",
+      "source": "workflow.definition.ConnectNodes",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "command_behavior",
+      "source": "workflow.definition.ConnectNodes",
+      "disposition": {
+        "disposition": "obligation",
+        "reason": {
+          "class": "unspecified_algorithm"
+        },
+        "contract": "given `workflow.definition.ConnectNodes` input, decide and enact exactly one outcome — `connected` otherwise, creates `workflow.definition.DraftEdge`, emits `workflow.definition.NodesConnected`"
+      }
+    },
+    {
+      "kind": "command_contract",
+      "source": "workflow.definition.CreateDraft",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "command_behavior",
+      "source": "workflow.definition.CreateDraft",
+      "disposition": {
+        "disposition": "obligation",
+        "reason": {
+          "class": "unspecified_algorithm"
+        },
+        "contract": "given `workflow.definition.CreateDraft` input, decide and enact exactly one outcome — `created` otherwise, creates `workflow.definition.WorkflowDraft`, emits `workflow.definition.DraftCreated`"
+      }
+    },
+    {
+      "kind": "command_contract",
+      "source": "workflow.definition.CreateWorkflow",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "command_behavior",
+      "source": "workflow.definition.CreateWorkflow",
+      "disposition": {
+        "disposition": "obligation",
+        "reason": {
+          "class": "unspecified_algorithm"
+        },
+        "contract": "given `workflow.definition.CreateWorkflow` input, decide and enact exactly one outcome — `created` otherwise, creates `workflow.definition.Workflow`, emits `workflow.definition.WorkflowCreated`"
+      }
+    },
+    {
+      "kind": "command_contract",
+      "source": "workflow.definition.DiscardDraft",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "command_behavior",
+      "source": "workflow.definition.DiscardDraft",
+      "disposition": {
+        "disposition": "obligation",
+        "reason": {
+          "class": "unspecified_algorithm"
+        },
+        "contract": "given `workflow.definition.DiscardDraft` input, decide and enact exactly one outcome — `discarded` otherwise, takes `discard` of `workflow.definition.WorkflowDraft`, emits `workflow.definition.DraftDiscarded`"
+      }
+    },
+    {
+      "kind": "command_contract",
+      "source": "workflow.definition.DisconnectNodes",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "command_behavior",
+      "source": "workflow.definition.DisconnectNodes",
+      "disposition": {
+        "disposition": "obligation",
+        "reason": {
+          "class": "unspecified_algorithm"
+        },
+        "contract": "given `workflow.definition.DisconnectNodes` input, decide and enact exactly one outcome — `disconnected` otherwise, takes `disconnect` of `workflow.definition.DraftEdge`, emits `workflow.definition.NodesDisconnected`"
+      }
+    },
+    {
+      "kind": "command_contract",
+      "source": "workflow.definition.PublishDraft",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "command_behavior",
+      "source": "workflow.definition.PublishDraft",
+      "disposition": {
+        "disposition": "obligation",
+        "reason": {
+          "class": "unspecified_algorithm"
+        },
+        "contract": "given `workflow.definition.PublishDraft` input, decide and enact exactly one outcome — `published` otherwise, creates `workflow.definition.WorkflowRevision`, emits `workflow.definition.RevisionPublished`"
+      }
+    },
+    {
+      "kind": "command_contract",
+      "source": "workflow.definition.RemoveNode",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "command_behavior",
+      "source": "workflow.definition.RemoveNode",
+      "disposition": {
+        "disposition": "obligation",
+        "reason": {
+          "class": "unspecified_algorithm"
+        },
+        "contract": "given `workflow.definition.RemoveNode` input, decide and enact exactly one outcome — `removed` otherwise, takes `remove` of `workflow.definition.DraftNode`, emits `workflow.definition.NodeRemoved`"
+      }
+    },
+    {
+      "kind": "command_contract",
+      "source": "workflow.definition.ReplaceNode",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "command_behavior",
+      "source": "workflow.definition.ReplaceNode",
+      "disposition": {
+        "disposition": "obligation",
+        "reason": {
+          "class": "unspecified_algorithm"
+        },
+        "contract": "given `workflow.definition.ReplaceNode` input, decide and enact exactly one outcome — `replaced` otherwise, updates `workflow.definition.DraftNode`, emits `workflow.definition.NodeReplaced`"
+      }
+    },
+    {
+      "kind": "command_contract",
+      "source": "workflow.definition.ValidateDraft",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "command_behavior",
+      "source": "workflow.definition.ValidateDraft",
+      "disposition": {
+        "disposition": "obligation",
+        "reason": {
+          "class": "unspecified_algorithm"
+        },
+        "contract": "given `workflow.definition.ValidateDraft` input, decide and enact exactly one outcome — `validated` otherwise, updates `workflow.definition.WorkflowDraft`, emits `workflow.definition.DraftValidated`"
+      }
+    },
+    {
+      "kind": "event_type",
+      "source": "workflow.definition.DraftCreated",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "event_type",
+      "source": "workflow.definition.DraftDiscarded",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "event_type",
+      "source": "workflow.definition.DraftValidated",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "event_type",
+      "source": "workflow.definition.NodeAdded",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "event_type",
+      "source": "workflow.definition.NodeRemoved",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "event_type",
+      "source": "workflow.definition.NodeReplaced",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "event_type",
+      "source": "workflow.definition.NodesConnected",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "event_type",
+      "source": "workflow.definition.NodesDisconnected",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "event_type",
+      "source": "workflow.definition.RevisionActivated",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "event_type",
+      "source": "workflow.definition.RevisionPublished",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "event_type",
+      "source": "workflow.definition.WorkflowCreated",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "view_type",
+      "source": "workflow.definition.DraftById",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "view_query",
+      "source": "workflow.definition.DraftById",
+      "disposition": {
+        "disposition": "obligation",
+        "reason": {
+          "class": "projection_maintenance"
+        },
+        "contract": "a query answering `workflow.definition.DraftById` with rows projected from `workflow.definition.WorkflowDraft` at `read_your_writes` consistency"
+      }
+    },
+    {
+      "kind": "view_type",
+      "source": "workflow.definition.Drafts",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "view_query",
+      "source": "workflow.definition.Drafts",
+      "disposition": {
+        "disposition": "obligation",
+        "reason": {
+          "class": "projection_maintenance"
+        },
+        "contract": "a query answering `workflow.definition.Drafts` with rows projected from `workflow.definition.WorkflowDraft` at `read_your_writes` consistency"
+      }
+    },
+    {
+      "kind": "view_type",
+      "source": "workflow.definition.RevisionById",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "view_query",
+      "source": "workflow.definition.RevisionById",
+      "disposition": {
+        "disposition": "obligation",
+        "reason": {
+          "class": "projection_maintenance"
+        },
+        "contract": "a query answering `workflow.definition.RevisionById` with rows projected from `workflow.definition.WorkflowRevision` at `read_your_writes` consistency"
+      }
+    },
+    {
+      "kind": "view_type",
+      "source": "workflow.definition.Revisions",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "view_query",
+      "source": "workflow.definition.Revisions",
+      "disposition": {
+        "disposition": "obligation",
+        "reason": {
+          "class": "projection_maintenance"
+        },
+        "contract": "a query answering `workflow.definition.Revisions` with rows projected from `workflow.definition.WorkflowRevision` at `read_your_writes` consistency"
+      }
+    },
+    {
+      "kind": "view_type",
+      "source": "workflow.definition.WorkflowById",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "view_query",
+      "source": "workflow.definition.WorkflowById",
+      "disposition": {
+        "disposition": "obligation",
+        "reason": {
+          "class": "projection_maintenance"
+        },
+        "contract": "a query answering `workflow.definition.WorkflowById` with rows projected from `workflow.definition.Workflow` at `read_your_writes` consistency"
+      }
+    },
+    {
+      "kind": "view_type",
+      "source": "workflow.definition.Workflows",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "view_query",
+      "source": "workflow.definition.Workflows",
+      "disposition": {
+        "disposition": "obligation",
+        "reason": {
+          "class": "projection_maintenance"
+        },
+        "contract": "a query answering `workflow.definition.Workflows` with rows projected from `workflow.definition.Workflow` at `read_your_writes` consistency"
+      }
+    },
+    {
+      "kind": "actor_grants",
+      "source": "workflow.definition.Author",
+      "disposition": {
+        "disposition": "refused",
+        "reason": "needs_caller_identity",
+        "stage": "planning",
+        "detail": "may invoke `workflow.definition.ActivateRevision`, `workflow.definition.AddNode`, `workflow.definition.ConnectNodes`, `workflow.definition.CreateDraft`, `workflow.definition.CreateWorkflow`, `workflow.definition.DiscardDraft`, `workflow.definition.DisconnectNodes`, `workflow.definition.PublishDraft`, `workflow.definition.RemoveNode`, `workflow.definition.ReplaceNode`, `workflow.definition.ValidateDraft`; a grant is checked against a caller identity, which types do not carry, and enforcement belongs to the layer that knows who is calling"
+      }
+    },
+    {
+      "kind": "component_port",
+      "source": "workflow-service",
+      "disposition": {
+        "disposition": "generated"
+      }
+    },
+    {
+      "kind": "component_transport",
+      "source": "workflow-service",
+      "disposition": {
+        "disposition": "generated"
+      }
+    }
+  ]
+}

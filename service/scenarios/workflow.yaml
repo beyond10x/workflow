@@ -1,0 +1,74 @@
+format: service-scenarios/1
+service: workflow
+scenarios:
+  - name: draft_graph_publishes_then_activates
+    given:
+      auth:
+        tenant: tenant-a
+        realm: null
+        authority: person-a
+        user: person-a
+    when:
+      - intent: create_workflow
+        input:
+          name: Release workflow
+          scopes: { principal: person-a, team: null, project: null }
+          idempotency_key: create-workflow-1
+      - intent: create_draft
+        input:
+          workflow_id: $create_workflow.workflow_id
+          name: First draft
+          based_on_revision_id: null
+          expected_version: 1
+          idempotency_key: create-draft-1
+      - intent: add_node
+        input:
+          workflow_id: $create_workflow.workflow_id
+          draft_id: $create_draft.draft_id
+          definition: { kind: compute, value: { expression: prepare } }
+          expected_version: 2
+          idempotency_key: add-node-1
+      - intent: validate_draft
+        input:
+          workflow_id: $create_workflow.workflow_id
+          draft_id: $create_draft.draft_id
+          expected_version: 3
+          idempotency_key: validate-draft-1
+      - intent: publish_draft
+        input:
+          workflow_id: $create_workflow.workflow_id
+          draft_id: $create_draft.draft_id
+          expected_version: 4
+          idempotency_key: publish-draft-1
+      - intent: activate_revision
+        input:
+          workflow_id: $create_workflow.workflow_id
+          revision_id: $publish_draft.revision_id
+          expected_version: 5
+          idempotency_key: activate-revision-1
+    then:
+      - query: get_workflow
+        input: { workflow_id: $create_workflow.workflow_id }
+        count: 1
+      - query: get_revision
+        input:
+          workflow_id: $create_workflow.workflow_id
+          revision_id: $publish_draft.revision_id
+        count: 1
+
+  - name: authority_partitions_are_isolated
+    given:
+      auth: { tenant: tenant-a, realm: null, authority: person-a, user: person-a }
+      other_auth: { tenant: tenant-b, realm: null, authority: person-a, user: person-a }
+    when:
+      - intent: create_workflow
+        input:
+          name: Private workflow
+          scopes: { principal: null, team: null, project: null }
+          idempotency_key: create-private-workflow
+    then:
+      - query: get_workflow
+        using: other_auth
+        input: { workflow_id: $create_workflow.workflow_id }
+        count: 0
+      - partitions_are_distinct: [auth, other_auth]

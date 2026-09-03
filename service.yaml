@@ -1,0 +1,14 @@
+format: service/1
+service: workflow
+sdk:
+  repository: https://github.com/beyond10x/service-sdk.git
+  revision: 084defb7bf2960b9888db42feb9f009c1a78d4e4
+semantic:
+  root: spec/workflow
+  sources:
+    - system.yaml
+    - components.yaml
+    - domains/definition.yaml
+runtime: service/runtime.yaml
+scenarios:
+  - service/scenarios/workflow.yaml

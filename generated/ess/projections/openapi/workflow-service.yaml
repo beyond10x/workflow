@@ -1,0 +1,1137 @@
+# generated from workflow v1
+# model digest 6a79078047815754e0dda89f285e08689037af0adfd4277dfcc305f1d003df1b
+# contract digest 02f50482d532cb5c196d159bc3a9dd65cf4b1a0563c7b6e29f37214506dec1ba
+# do not edit: regenerate with `ess generate`
+openapi: 3.1.0
+info:
+  title: workflow-service
+  summary: Owns workflow definitions, draft graphs, immutable revisions, and activation.
+  description: |-
+    The HTTP surface of `workflow-service`, one of the components of `workflow` v1.
+
+    Every path here is one semantic command, so the method is always POST and the path is the command's wire name under its domain's: a command is not a resource, and this document does not invent one. A status code is the outcome the specification declares — 202 for a branch that was taken, 422 for a refusal the input decides, 502 for a refusal decided outside the request — and the `outcome` property of every response body names the branch. Events emitted by a branch are published to consumers through the event transport; they are not returned here.
+
+    This component declares `reached_by: network`, so its callers are not deployed with it and this contract is the surface they reach it through. That declaration is also why the views its domains declare have paths here: a GET under `views` per projection, answering every row it holds. There is no page size, no cursor, no ordering and no filter parameter, because the specification states none — a view's filter is part of the projection, not of the request.
+  version: v1
+  x-ess-provenance:
+    system: workflow
+    specification_version: v1
+    source_digest: 6a79078047815754e0dda89f285e08689037af0adfd4277dfcc305f1d003df1b
+    contract_digest: 02f50482d532cb5c196d159bc3a9dd65cf4b1a0563c7b6e29f37214506dec1ba
+  x-ess-reached-by: network
+tags:
+- name: workflows
+  description: Stable workflows, mutable draft DAGs, canonical published revisions, and activation.
+paths:
+  /workflows/commands/activate-revision:
+    post:
+      operationId: workflow.definition.ActivateRevision
+      summary: Activate revision
+      tags:
+      - workflows
+      x-ess-may-invoke:
+      - workflow.definition.Author
+      requestBody:
+        description: The input `workflow.definition.ActivateRevision` declares.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/workflow.definition.ActivateRevision.Input'
+      responses:
+        '202':
+          description: 'Outcome `activated`: the branch the specification declares for this input. Events this branch emits are published to consumers, not returned here.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/workflow.definition.ActivateRevision.activated.Response'
+  /workflows/commands/add-node:
+    post:
+      operationId: workflow.definition.AddNode
+      summary: Add node
+      tags:
+      - workflows
+      x-ess-may-invoke:
+      - workflow.definition.Author
+      requestBody:
+        description: The input `workflow.definition.AddNode` declares.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/workflow.definition.AddNode.Input'
+      responses:
+        '202':
+          description: 'Outcome `added`: the branch the specification declares for this input. Events this branch emits are published to consumers, not returned here.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/workflow.definition.AddNode.added.Response'
+  /workflows/commands/connect-nodes:
+    post:
+      operationId: workflow.definition.ConnectNodes
+      summary: Connect nodes
+      tags:
+      - workflows
+      x-ess-may-invoke:
+      - workflow.definition.Author
+      requestBody:
+        description: The input `workflow.definition.ConnectNodes` declares.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/workflow.definition.ConnectNodes.Input'
+      responses:
+        '202':
+          description: 'Outcome `connected`: the branch the specification declares for this input. Events this branch emits are published to consumers, not returned here.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/workflow.definition.ConnectNodes.connected.Response'
+  /workflows/commands/create-draft:
+    post:
+      operationId: workflow.definition.CreateDraft
+      summary: Create draft
+      tags:
+      - workflows
+      x-ess-may-invoke:
+      - workflow.definition.Author
+      requestBody:
+        description: The input `workflow.definition.CreateDraft` declares.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/workflow.definition.CreateDraft.Input'
+      responses:
+        '202':
+          description: 'Outcome `created`: the branch the specification declares for this input. Events this branch emits are published to consumers, not returned here.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/workflow.definition.CreateDraft.created.Response'
+  /workflows/commands/create-workflow:
+    post:
+      operationId: workflow.definition.CreateWorkflow
+      summary: Create workflow
+      tags:
+      - workflows
+      x-ess-may-invoke:
+      - workflow.definition.Author
+      requestBody:
+        description: The input `workflow.definition.CreateWorkflow` declares.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/workflow.definition.CreateWorkflow.Input'
+      responses:
+        '202':
+          description: 'Outcome `created`: the branch the specification declares for this input. Events this branch emits are published to consumers, not returned here.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/workflow.definition.CreateWorkflow.created.Response'
+  /workflows/commands/discard-draft:
+    post:
+      operationId: workflow.definition.DiscardDraft
+      summary: Discard draft
+      tags:
+      - workflows
+      x-ess-may-invoke:
+      - workflow.definition.Author
+      requestBody:
+        description: The input `workflow.definition.DiscardDraft` declares.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/workflow.definition.DiscardDraft.Input'
+      responses:
+        '202':
+          description: 'Outcome `discarded`: the branch the specification declares for this input. Events this branch emits are published to consumers, not returned here.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/workflow.definition.DiscardDraft.discarded.Response'
+  /workflows/commands/disconnect-nodes:
+    post:
+      operationId: workflow.definition.DisconnectNodes
+      summary: Disconnect nodes
+      tags:
+      - workflows
+      x-ess-may-invoke:
+      - workflow.definition.Author
+      requestBody:
+        description: The input `workflow.definition.DisconnectNodes` declares.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/workflow.definition.DisconnectNodes.Input'
+      responses:
+        '202':
+          description: 'Outcome `disconnected`: the branch the specification declares for this input. Events this branch emits are published to consumers, not returned here.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/workflow.definition.DisconnectNodes.disconnected.Response'
+  /workflows/commands/publish-draft:
+    post:
+      operationId: workflow.definition.PublishDraft
+      summary: Publish draft
+      tags:
+      - workflows
+      x-ess-may-invoke:
+      - workflow.definition.Author
+      requestBody:
+        description: The input `workflow.definition.PublishDraft` declares.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/workflow.definition.PublishDraft.Input'
+      responses:
+        '202':
+          description: 'Outcome `published`: the branch the specification declares for this input. Events this branch emits are published to consumers, not returned here.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/workflow.definition.PublishDraft.published.Response'
+  /workflows/commands/remove-node:
+    post:
+      operationId: workflow.definition.RemoveNode
+      summary: Remove node
+      tags:
+      - workflows
+      x-ess-may-invoke:
+      - workflow.definition.Author
+      requestBody:
+        description: The input `workflow.definition.RemoveNode` declares.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/workflow.definition.RemoveNode.Input'
+      responses:
+        '202':
+          description: 'Outcome `removed`: the branch the specification declares for this input. Events this branch emits are published to consumers, not returned here.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/workflow.definition.RemoveNode.removed.Response'
+  /workflows/commands/replace-node:
+    post:
+      operationId: workflow.definition.ReplaceNode
+      summary: Replace node
+      tags:
+      - workflows
+      x-ess-may-invoke:
+      - workflow.definition.Author
+      requestBody:
+        description: The input `workflow.definition.ReplaceNode` declares.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/workflow.definition.ReplaceNode.Input'
+      responses:
+        '202':
+          description: 'Outcome `replaced`: the branch the specification declares for this input. Events this branch emits are published to consumers, not returned here.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/workflow.definition.ReplaceNode.replaced.Response'
+  /workflows/commands/validate-draft:
+    post:
+      operationId: workflow.definition.ValidateDraft
+      summary: Validate draft
+      tags:
+      - workflows
+      x-ess-may-invoke:
+      - workflow.definition.Author
+      requestBody:
+        description: The input `workflow.definition.ValidateDraft` declares.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/workflow.definition.ValidateDraft.Input'
+      responses:
+        '202':
+          description: 'Outcome `validated`: the branch the specification declares for this input. Events this branch emits are published to consumers, not returned here.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/workflow.definition.ValidateDraft.validated.Response'
+  /workflows/views/DraftById:
+    get:
+      operationId: workflow.definition.DraftById
+      summary: DraftById
+      tags:
+      - workflows
+      x-ess-consistency: read_your_writes
+      responses:
+        '200':
+          description: 'Every row of `workflow.definition.DraftById`, a projection of `workflow.definition.WorkflowDraft`. Contains every instance. Read-your-writes: a caller that has just issued a command sees its effect here.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/workflow.definition.DraftById.Response'
+  /workflows/views/Drafts:
+    get:
+      operationId: workflow.definition.Drafts
+      summary: Drafts
+      tags:
+      - workflows
+      x-ess-consistency: read_your_writes
+      responses:
+        '200':
+          description: 'Every row of `workflow.definition.Drafts`, a projection of `workflow.definition.WorkflowDraft`. Contains every instance. Read-your-writes: a caller that has just issued a command sees its effect here.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/workflow.definition.Drafts.Response'
+  /workflows/views/RevisionById:
+    get:
+      operationId: workflow.definition.RevisionById
+      summary: RevisionById
+      tags:
+      - workflows
+      x-ess-consistency: read_your_writes
+      responses:
+        '200':
+          description: 'Every row of `workflow.definition.RevisionById`, a projection of `workflow.definition.WorkflowRevision`. Contains every instance. Read-your-writes: a caller that has just issued a command sees its effect here.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/workflow.definition.RevisionById.Response'
+  /workflows/views/Revisions:
+    get:
+      operationId: workflow.definition.Revisions
+      summary: Revisions
+      tags:
+      - workflows
+      x-ess-consistency: read_your_writes
+      responses:
+        '200':
+          description: 'Every row of `workflow.definition.Revisions`, a projection of `workflow.definition.WorkflowRevision`. Contains every instance. Read-your-writes: a caller that has just issued a command sees its effect here.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/workflow.definition.Revisions.Response'
+  /workflows/views/WorkflowById:
+    get:
+      operationId: workflow.definition.WorkflowById
+      summary: WorkflowById
+      tags:
+      - workflows
+      x-ess-consistency: read_your_writes
+      responses:
+        '200':
+          description: 'Every row of `workflow.definition.WorkflowById`, a projection of `workflow.definition.Workflow`. Contains every instance. Read-your-writes: a caller that has just issued a command sees its effect here.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/workflow.definition.WorkflowById.Response'
+  /workflows/views/Workflows:
+    get:
+      operationId: workflow.definition.Workflows
+      summary: Workflows
+      tags:
+      - workflows
+      x-ess-consistency: read_your_writes
+      responses:
+        '200':
+          description: 'Every row of `workflow.definition.Workflows`, a projection of `workflow.definition.Workflow`. Contains every instance. Read-your-writes: a caller that has just issued a command sees its effect here.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/workflow.definition.Workflows.Response'
+components:
+  schemas:
+    workflow.definition.ActivateRevision.Input:
+      title: Activate revision input
+      x-ess-name: workflow.definition.ActivateRevision
+      x-ess-kind: command-input
+      type: object
+      properties:
+        workflow_id:
+          $ref: '#/components/schemas/workflow.definition.WorkflowId'
+        revision_id:
+          $ref: '#/components/schemas/workflow.definition.RevisionId'
+      required:
+      - workflow_id
+      - revision_id
+      additionalProperties: false
+    workflow.definition.ActivateRevision.activated.Response:
+      additionalProperties: false
+      description: Taken when no other outcome's condition matched. A `workflow.definition.Workflow` has changed, and its state is unchanged. The instance is the one `workflow_id` names. Emits `RevisionActivated`, published to consumers rather than returned here.
+      properties:
+        outcome:
+          const: activated
+          description: Which declared outcome the command took.
+      required:
+      - outcome
+      type: object
+    workflow.definition.AddNode.Input:
+      title: Add node input
+      x-ess-name: workflow.definition.AddNode
+      x-ess-kind: command-input
+      type: object
+      properties:
+        workflow_id:
+          $ref: '#/components/schemas/workflow.definition.WorkflowId'
+        draft_id:
+          $ref: '#/components/schemas/workflow.definition.DraftId'
+        definition:
+          $ref: '#/components/schemas/workflow.definition.NodeDefinition'
+      required:
+      - workflow_id
+      - draft_id
+      - definition
+      additionalProperties: false
+    workflow.definition.AddNode.added.Response:
+      additionalProperties: false
+      description: Taken when no other outcome's condition matched. A `workflow.definition.DraftNode` now exists, in `Active`. Its identity is published as `node_id` on `workflow.definition.NodeAdded`. Emits `NodeAdded`, published to consumers rather than returned here.
+      properties:
+        outcome:
+          const: added
+          description: Which declared outcome the command took.
+      required:
+      - outcome
+      type: object
+    workflow.definition.CallNode:
+      title: CallNode
+      x-ess-name: workflow.definition.CallNode
+      x-ess-kind: struct
+      type: object
+      properties:
+        connector:
+          type: string
+        operation:
+          type: string
+      required:
+      - connector
+      - operation
+      additionalProperties: false
+    workflow.definition.CompleteNode:
+      title: CompleteNode
+      x-ess-name: workflow.definition.CompleteNode
+      x-ess-kind: struct
+      type: object
+      properties:
+        result:
+          type: string
+      required:
+      - result
+      additionalProperties: false
+    workflow.definition.ComputeNode:
+      title: ComputeNode
+      x-ess-name: workflow.definition.ComputeNode
+      x-ess-kind: struct
+      type: object
+      properties:
+        expression:
+          type: string
+      required:
+      - expression
+      additionalProperties: false
+    workflow.definition.ConnectNodes.Input:
+      title: Connect nodes input
+      x-ess-name: workflow.definition.ConnectNodes
+      x-ess-kind: command-input
+      type: object
+      properties:
+        workflow_id:
+          $ref: '#/components/schemas/workflow.definition.WorkflowId'
+        draft_id:
+          $ref: '#/components/schemas/workflow.definition.DraftId'
+        source_node_id:
+          $ref: '#/components/schemas/workflow.definition.NodeId'
+        target_node_id:
+          $ref: '#/components/schemas/workflow.definition.NodeId'
+      required:
+      - workflow_id
+      - draft_id
+      - source_node_id
+      - target_node_id
+      additionalProperties: false
+    workflow.definition.ConnectNodes.connected.Response:
+      additionalProperties: false
+      description: Taken when no other outcome's condition matched. A `workflow.definition.DraftEdge` now exists, in `Active`. Its identity is published as `edge_id` on `workflow.definition.NodesConnected`. Emits `NodesConnected`, published to consumers rather than returned here.
+      properties:
+        outcome:
+          const: connected
+          description: Which declared outcome the command took.
+      required:
+      - outcome
+      type: object
+    workflow.definition.CreateDraft.Input:
+      title: Create draft input
+      x-ess-name: workflow.definition.CreateDraft
+      x-ess-kind: command-input
+      type: object
+      properties:
+        workflow_id:
+          $ref: '#/components/schemas/workflow.definition.WorkflowId'
+        name:
+          type: string
+        based_on_revision_id:
+          $ref: '#/components/schemas/workflow.definition.RevisionId'
+      required:
+      - workflow_id
+      - name
+      additionalProperties: false
+    workflow.definition.CreateDraft.created.Response:
+      additionalProperties: false
+      description: Taken when no other outcome's condition matched. A `workflow.definition.WorkflowDraft` now exists, in `Active`. Its identity is published as `draft_id` on `workflow.definition.DraftCreated`. Emits `DraftCreated`, published to consumers rather than returned here.
+      properties:
+        outcome:
+          const: created
+          description: Which declared outcome the command took.
+      required:
+      - outcome
+      type: object
+    workflow.definition.CreateWorkflow.Input:
+      title: Create workflow input
+      x-ess-name: workflow.definition.CreateWorkflow
+      x-ess-kind: command-input
+      type: object
+      properties:
+        name:
+          type: string
+        scopes:
+          $ref: '#/components/schemas/workflow.definition.ScopeBindings'
+      required:
+      - name
+      - scopes
+      additionalProperties: false
+    workflow.definition.CreateWorkflow.created.Response:
+      additionalProperties: false
+      description: Taken when no other outcome's condition matched. A `workflow.definition.Workflow` now exists, in `Active`. Its identity is published as `workflow_id` on `workflow.definition.WorkflowCreated`. Emits `WorkflowCreated`, published to consumers rather than returned here.
+      properties:
+        outcome:
+          const: created
+          description: Which declared outcome the command took.
+      required:
+      - outcome
+      type: object
+    workflow.definition.DiscardDraft.Input:
+      title: Discard draft input
+      x-ess-name: workflow.definition.DiscardDraft
+      x-ess-kind: command-input
+      type: object
+      properties:
+        workflow_id:
+          $ref: '#/components/schemas/workflow.definition.WorkflowId'
+        draft_id:
+          $ref: '#/components/schemas/workflow.definition.DraftId'
+      required:
+      - workflow_id
+      - draft_id
+      additionalProperties: false
+    workflow.definition.DiscardDraft.discarded.Response:
+      additionalProperties: false
+      description: Taken when no other outcome's condition matched. A `workflow.definition.WorkflowDraft` has moved to `Discarded`, along `discard`. The instance is the one `draft_id` names. Emits `DraftDiscarded`, published to consumers rather than returned here.
+      properties:
+        outcome:
+          const: discarded
+          description: Which declared outcome the command took.
+      required:
+      - outcome
+      type: object
+    workflow.definition.DisconnectNodes.Input:
+      title: Disconnect nodes input
+      x-ess-name: workflow.definition.DisconnectNodes
+      x-ess-kind: command-input
+      type: object
+      properties:
+        workflow_id:
+          $ref: '#/components/schemas/workflow.definition.WorkflowId'
+        draft_id:
+          $ref: '#/components/schemas/workflow.definition.DraftId'
+        edge_id:
+          $ref: '#/components/schemas/workflow.definition.EdgeId'
+      required:
+      - workflow_id
+      - draft_id
+      - edge_id
+      additionalProperties: false
+    workflow.definition.DisconnectNodes.disconnected.Response:
+      additionalProperties: false
+      description: Taken when no other outcome's condition matched. A `workflow.definition.DraftEdge` has moved to `Disconnected`, along `disconnect`. The instance is the one `edge_id` names. Emits `NodesDisconnected`, published to consumers rather than returned here.
+      properties:
+        outcome:
+          const: disconnected
+          description: Which declared outcome the command took.
+      required:
+      - outcome
+      type: object
+    workflow.definition.DraftById.Response:
+      additionalProperties: false
+      description: The rows of `workflow.definition.DraftById`.
+      properties:
+        rows:
+          description: Every row the projection holds, in the order it holds them.
+          items:
+            $ref: '#/components/schemas/workflow.definition.DraftRow'
+          type: array
+      required:
+      - rows
+      type: object
+    workflow.definition.DraftId:
+      title: DraftId
+      x-ess-name: workflow.definition.DraftId
+      x-ess-kind: newtype
+      type: string
+      format: uuid
+      pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+    workflow.definition.DraftRow:
+      title: DraftRow
+      x-ess-name: workflow.definition.DraftRow
+      x-ess-kind: struct
+      type: object
+      properties:
+        draft_id:
+          $ref: '#/components/schemas/workflow.definition.DraftId'
+        workflow_id:
+          $ref: '#/components/schemas/workflow.definition.WorkflowId'
+        name:
+          type: string
+        based_on_revision_id:
+          $ref: '#/components/schemas/workflow.definition.RevisionId'
+        owner:
+          $ref: '#/components/schemas/workflow.definition.OwnerRef'
+        scopes:
+          $ref: '#/components/schemas/workflow.definition.ScopeBindings'
+        state:
+          $ref: '#/components/schemas/workflow.definition.WorkflowDraft.State'
+      required:
+      - draft_id
+      - workflow_id
+      - name
+      - owner
+      - scopes
+      - state
+      additionalProperties: false
+    workflow.definition.Drafts.Response:
+      additionalProperties: false
+      description: The rows of `workflow.definition.Drafts`.
+      properties:
+        rows:
+          description: Every row the projection holds, in the order it holds them.
+          items:
+            $ref: '#/components/schemas/workflow.definition.DraftRow'
+          type: array
+      required:
+      - rows
+      type: object
+    workflow.definition.EdgeId:
+      title: EdgeId
+      x-ess-name: workflow.definition.EdgeId
+      x-ess-kind: newtype
+      type: string
+      format: uuid
+      pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+    workflow.definition.EdgeSnapshot:
+      title: EdgeSnapshot
+      x-ess-name: workflow.definition.EdgeSnapshot
+      x-ess-kind: struct
+      type: object
+      properties:
+        edge_id:
+          $ref: '#/components/schemas/workflow.definition.EdgeId'
+        draft_id:
+          $ref: '#/components/schemas/workflow.definition.DraftId'
+        source_node_id:
+          $ref: '#/components/schemas/workflow.definition.NodeId'
+        target_node_id:
+          $ref: '#/components/schemas/workflow.definition.NodeId'
+      required:
+      - edge_id
+      - draft_id
+      - source_node_id
+      - target_node_id
+      additionalProperties: false
+    workflow.definition.EmitNode:
+      title: EmitNode
+      x-ess-name: workflow.definition.EmitNode
+      x-ess-kind: struct
+      type: object
+      properties:
+        event:
+          type: string
+      required:
+      - event
+      additionalProperties: false
+    workflow.definition.InvokeNode:
+      title: InvokeNode
+      x-ess-name: workflow.definition.InvokeNode
+      x-ess-kind: struct
+      type: object
+      properties:
+        agent:
+          type: string
+        instruction:
+          type: string
+      required:
+      - agent
+      - instruction
+      additionalProperties: false
+    workflow.definition.JudgeNode:
+      title: JudgeNode
+      x-ess-name: workflow.definition.JudgeNode
+      x-ess-kind: struct
+      type: object
+      properties:
+        condition:
+          type: string
+      required:
+      - condition
+      additionalProperties: false
+    workflow.definition.NodeDefinition:
+      title: NodeDefinition
+      x-ess-name: workflow.definition.NodeDefinition
+      x-ess-kind: union
+      oneOf:
+      - title: call
+        type: object
+        properties:
+          kind:
+            type: string
+            const: call
+          value:
+            $ref: '#/components/schemas/workflow.definition.CallNode'
+        required:
+        - kind
+        - value
+        additionalProperties: false
+      - title: complete
+        type: object
+        properties:
+          kind:
+            type: string
+            const: complete
+          value:
+            $ref: '#/components/schemas/workflow.definition.CompleteNode'
+        required:
+        - kind
+        - value
+        additionalProperties: false
+      - title: compute
+        type: object
+        properties:
+          kind:
+            type: string
+            const: compute
+          value:
+            $ref: '#/components/schemas/workflow.definition.ComputeNode'
+        required:
+        - kind
+        - value
+        additionalProperties: false
+      - title: emit
+        type: object
+        properties:
+          kind:
+            type: string
+            const: emit
+          value:
+            $ref: '#/components/schemas/workflow.definition.EmitNode'
+        required:
+        - kind
+        - value
+        additionalProperties: false
+      - title: invoke
+        type: object
+        properties:
+          kind:
+            type: string
+            const: invoke
+          value:
+            $ref: '#/components/schemas/workflow.definition.InvokeNode'
+        required:
+        - kind
+        - value
+        additionalProperties: false
+      - title: judge
+        type: object
+        properties:
+          kind:
+            type: string
+            const: judge
+          value:
+            $ref: '#/components/schemas/workflow.definition.JudgeNode'
+        required:
+        - kind
+        - value
+        additionalProperties: false
+      - title: read
+        type: object
+        properties:
+          kind:
+            type: string
+            const: read
+          value:
+            $ref: '#/components/schemas/workflow.definition.ReadNode'
+        required:
+        - kind
+        - value
+        additionalProperties: false
+      - title: wait
+        type: object
+        properties:
+          kind:
+            type: string
+            const: wait
+          value:
+            $ref: '#/components/schemas/workflow.definition.WaitNode'
+        required:
+        - kind
+        - value
+        additionalProperties: false
+      x-ess-union-tag: kind
+    workflow.definition.NodeId:
+      title: NodeId
+      x-ess-name: workflow.definition.NodeId
+      x-ess-kind: newtype
+      type: string
+      format: uuid
+      pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+    workflow.definition.NodeSnapshot:
+      title: NodeSnapshot
+      x-ess-name: workflow.definition.NodeSnapshot
+      x-ess-kind: struct
+      type: object
+      properties:
+        node_id:
+          $ref: '#/components/schemas/workflow.definition.NodeId'
+        draft_id:
+          $ref: '#/components/schemas/workflow.definition.DraftId'
+        definition:
+          $ref: '#/components/schemas/workflow.definition.NodeDefinition'
+      required:
+      - node_id
+      - draft_id
+      - definition
+      additionalProperties: false
+    workflow.definition.OwnerRef:
+      title: OwnerRef
+      x-ess-name: workflow.definition.OwnerRef
+      x-ess-kind: newtype
+      type: string
+    workflow.definition.PrincipalRef:
+      title: PrincipalRef
+      x-ess-name: workflow.definition.PrincipalRef
+      x-ess-kind: newtype
+      type: string
+    workflow.definition.ProjectRef:
+      title: ProjectRef
+      x-ess-name: workflow.definition.ProjectRef
+      x-ess-kind: newtype
+      type: string
+    workflow.definition.PublishDraft.Input:
+      title: Publish draft input
+      x-ess-name: workflow.definition.PublishDraft
+      x-ess-kind: command-input
+      type: object
+      properties:
+        workflow_id:
+          $ref: '#/components/schemas/workflow.definition.WorkflowId'
+        draft_id:
+          $ref: '#/components/schemas/workflow.definition.DraftId'
+      required:
+      - workflow_id
+      - draft_id
+      additionalProperties: false
+    workflow.definition.PublishDraft.published.Response:
+      additionalProperties: false
+      description: Taken when no other outcome's condition matched. A `workflow.definition.WorkflowRevision` now exists, in `Published`. Its identity is published as `revision_id` on `workflow.definition.RevisionPublished`. Emits `RevisionPublished`, published to consumers rather than returned here.
+      properties:
+        outcome:
+          const: published
+          description: Which declared outcome the command took.
+      required:
+      - outcome
+      type: object
+    workflow.definition.ReadNode:
+      title: ReadNode
+      x-ess-name: workflow.definition.ReadNode
+      x-ess-kind: struct
+      type: object
+      properties:
+        connector:
+          type: string
+        operation:
+          type: string
+      required:
+      - connector
+      - operation
+      additionalProperties: false
+    workflow.definition.RemoveNode.Input:
+      title: Remove node input
+      x-ess-name: workflow.definition.RemoveNode
+      x-ess-kind: command-input
+      type: object
+      properties:
+        workflow_id:
+          $ref: '#/components/schemas/workflow.definition.WorkflowId'
+        draft_id:
+          $ref: '#/components/schemas/workflow.definition.DraftId'
+        node_id:
+          $ref: '#/components/schemas/workflow.definition.NodeId'
+      required:
+      - workflow_id
+      - draft_id
+      - node_id
+      additionalProperties: false
+    workflow.definition.RemoveNode.removed.Response:
+      additionalProperties: false
+      description: Taken when no other outcome's condition matched. A `workflow.definition.DraftNode` has moved to `Removed`, along `remove`. The instance is the one `node_id` names. Emits `NodeRemoved`, published to consumers rather than returned here.
+      properties:
+        outcome:
+          const: removed
+          description: Which declared outcome the command took.
+      required:
+      - outcome
+      type: object
+    workflow.definition.ReplaceNode.Input:
+      title: Replace node input
+      x-ess-name: workflow.definition.ReplaceNode
+      x-ess-kind: command-input
+      type: object
+      properties:
+        workflow_id:
+          $ref: '#/components/schemas/workflow.definition.WorkflowId'
+        draft_id:
+          $ref: '#/components/schemas/workflow.definition.DraftId'
+        node_id:
+          $ref: '#/components/schemas/workflow.definition.NodeId'
+        definition:
+          $ref: '#/components/schemas/workflow.definition.NodeDefinition'
+      required:
+      - workflow_id
+      - draft_id
+      - node_id
+      - definition
+      additionalProperties: false
+    workflow.definition.ReplaceNode.replaced.Response:
+      additionalProperties: false
+      description: Taken when no other outcome's condition matched. A `workflow.definition.DraftNode` has changed, and its state is unchanged. The instance is the one `node_id` names. Emits `NodeReplaced`, published to consumers rather than returned here.
+      properties:
+        outcome:
+          const: replaced
+          description: Which declared outcome the command took.
+      required:
+      - outcome
+      type: object
+    workflow.definition.RevisionById.Response:
+      additionalProperties: false
+      description: The rows of `workflow.definition.RevisionById`.
+      properties:
+        rows:
+          description: Every row the projection holds, in the order it holds them.
+          items:
+            $ref: '#/components/schemas/workflow.definition.RevisionRow'
+          type: array
+      required:
+      - rows
+      type: object
+    workflow.definition.RevisionId:
+      title: RevisionId
+      x-ess-name: workflow.definition.RevisionId
+      x-ess-kind: newtype
+      type: string
+      format: uuid
+      pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+    workflow.definition.RevisionRow:
+      title: RevisionRow
+      x-ess-name: workflow.definition.RevisionRow
+      x-ess-kind: struct
+      type: object
+      properties:
+        revision_id:
+          $ref: '#/components/schemas/workflow.definition.RevisionId'
+        workflow_id:
+          $ref: '#/components/schemas/workflow.definition.WorkflowId'
+        draft_id:
+          $ref: '#/components/schemas/workflow.definition.DraftId'
+        nodes:
+          type: array
+          items:
+            $ref: '#/components/schemas/workflow.definition.NodeSnapshot'
+        edges:
+          type: array
+          items:
+            $ref: '#/components/schemas/workflow.definition.EdgeSnapshot'
+        digest:
+          type: string
+        node_count:
+          type: integer
+        edge_count:
+          type: integer
+        owner:
+          $ref: '#/components/schemas/workflow.definition.OwnerRef'
+        scopes:
+          $ref: '#/components/schemas/workflow.definition.ScopeBindings'
+        state:
+          $ref: '#/components/schemas/workflow.definition.WorkflowRevision.State'
+      required:
+      - revision_id
+      - workflow_id
+      - draft_id
+      - nodes
+      - edges
+      - digest
+      - node_count
+      - edge_count
+      - owner
+      - scopes
+      - state
+      additionalProperties: false
+    workflow.definition.Revisions.Response:
+      additionalProperties: false
+      description: The rows of `workflow.definition.Revisions`.
+      properties:
+        rows:
+          description: Every row the projection holds, in the order it holds them.
+          items:
+            $ref: '#/components/schemas/workflow.definition.RevisionRow'
+          type: array
+      required:
+      - rows
+      type: object
+    workflow.definition.ScopeBindings:
+      title: ScopeBindings
+      x-ess-name: workflow.definition.ScopeBindings
+      x-ess-kind: struct
+      type: object
+      properties:
+        principal:
+          $ref: '#/components/schemas/workflow.definition.PrincipalRef'
+        team:
+          $ref: '#/components/schemas/workflow.definition.TeamRef'
+        project:
+          $ref: '#/components/schemas/workflow.definition.ProjectRef'
+      additionalProperties: false
+    workflow.definition.TeamRef:
+      title: TeamRef
+      x-ess-name: workflow.definition.TeamRef
+      x-ess-kind: newtype
+      type: string
+    workflow.definition.ValidateDraft.Input:
+      title: Validate draft input
+      x-ess-name: workflow.definition.ValidateDraft
+      x-ess-kind: command-input
+      type: object
+      properties:
+        workflow_id:
+          $ref: '#/components/schemas/workflow.definition.WorkflowId'
+        draft_id:
+          $ref: '#/components/schemas/workflow.definition.DraftId'
+      required:
+      - workflow_id
+      - draft_id
+      additionalProperties: false
+    workflow.definition.ValidateDraft.validated.Response:
+      additionalProperties: false
+      description: Taken when no other outcome's condition matched. A `workflow.definition.WorkflowDraft` has changed, and its state is unchanged. The instance is the one `draft_id` names. Emits `DraftValidated`, published to consumers rather than returned here.
+      properties:
+        outcome:
+          const: validated
+          description: Which declared outcome the command took.
+      required:
+      - outcome
+      type: object
+    workflow.definition.WaitNode:
+      title: WaitNode
+      x-ess-name: workflow.definition.WaitNode
+      x-ess-kind: struct
+      type: object
+      properties:
+        duration:
+          type: string
+          format: duration
+      required:
+      - duration
+      additionalProperties: false
+    workflow.definition.Workflow.State:
+      title: State
+      x-ess-name: workflow.definition.Workflow.State
+      x-ess-kind: enum
+      type: string
+      enum:
+      - Active
+    workflow.definition.WorkflowById.Response:
+      additionalProperties: false
+      description: The rows of `workflow.definition.WorkflowById`.
+      properties:
+        rows:
+          description: Every row the projection holds, in the order it holds them.
+          items:
+            $ref: '#/components/schemas/workflow.definition.WorkflowRow'
+          type: array
+      required:
+      - rows
+      type: object
+    workflow.definition.WorkflowDraft.State:
+      title: State
+      x-ess-name: workflow.definition.WorkflowDraft.State
+      x-ess-kind: enum
+      type: string
+      enum:
+      - Active
+      - Discarded
+    workflow.definition.WorkflowId:
+      title: WorkflowId
+      x-ess-name: workflow.definition.WorkflowId
+      x-ess-kind: newtype
+      type: string
+      format: uuid
+      pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+    workflow.definition.WorkflowRevision.State:
+      title: State
+      x-ess-name: workflow.definition.WorkflowRevision.State
+      x-ess-kind: enum
+      type: string
+      enum:
+      - Published
+    workflow.definition.WorkflowRow:
+      title: WorkflowRow
+      x-ess-name: workflow.definition.WorkflowRow
+      x-ess-kind: struct
+      type: object
+      properties:
+        workflow_id:
+          $ref: '#/components/schemas/workflow.definition.WorkflowId'
+        name:
+          type: string
+        owner:
+          $ref: '#/components/schemas/workflow.definition.OwnerRef'
+        scopes:
+          $ref: '#/components/schemas/workflow.definition.ScopeBindings'
+        active_revision_id:
+          $ref: '#/components/schemas/workflow.definition.RevisionId'
+        state:
+          $ref: '#/components/schemas/workflow.definition.Workflow.State'
+      required:
+      - workflow_id
+      - name
+      - owner
+      - scopes
+      - state
+      additionalProperties: false
+    workflow.definition.Workflows.Response:
+      additionalProperties: false
+      description: The rows of `workflow.definition.Workflows`.
+      properties:
+        rows:
+          description: Every row the projection holds, in the order it holds them.
+          items:
+            $ref: '#/components/schemas/workflow.definition.WorkflowRow'
+          type: array
+      required:
+      - rows
+      type: object

@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/workflow.definition.ReadNode",
+  "x-ess-provenance": {
+    "system": "workflow",
+    "specification_version": "v1",
+    "source_digest": "6a79078047815754e0dda89f285e08689037af0adfd4277dfcc305f1d003df1b",
+    "contract_digest": "5b3a2be5158c532e013613fcd3e34af0c5f0ace4687908a5b2b9c38155a9f9fa",
+    "regenerate": "ess generate"
+  },
+  "$defs": {
+    "workflow.definition.ReadNode": {
+      "title": "ReadNode",
+      "x-ess-name": "workflow.definition.ReadNode",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "connector": {
+          "type": "string"
+        },
+        "operation": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "connector",
+        "operation"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

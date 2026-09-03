@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/workflow.definition.JudgeNode",
+  "x-ess-provenance": {
+    "system": "workflow",
+    "specification_version": "v1",
+    "source_digest": "6a79078047815754e0dda89f285e08689037af0adfd4277dfcc305f1d003df1b",
+    "contract_digest": "f0af76088dc4ac54f0ca249a0ad97df78abbf94f72faa971af5679a417a5f354",
+    "regenerate": "ess generate"
+  },
+  "$defs": {
+    "workflow.definition.JudgeNode": {
+      "title": "JudgeNode",
+      "x-ess-name": "workflow.definition.JudgeNode",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "condition": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "condition"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

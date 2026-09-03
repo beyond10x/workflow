@@ -1,0 +1,431 @@
+{
+  "format": "service-connector-contribution/1",
+  "service": "workflow",
+  "ess_source_digest": "6a79078047815754e0dda89f285e08689037af0adfd4277dfcc305f1d003df1b",
+  "operations": [
+    {
+      "operation": "activate_revision",
+      "semantic_ref": "workflow.definition.ActivateRevision",
+      "kind": "intent",
+      "effect": "write",
+      "inputs": [
+        {
+          "name": "expected_version",
+          "type_ref": "Integer",
+          "optional": false
+        },
+        {
+          "name": "idempotency_key",
+          "type_ref": "String",
+          "optional": false
+        },
+        {
+          "name": "revision_id",
+          "type_ref": "workflow.definition.RevisionId",
+          "optional": false
+        },
+        {
+          "name": "workflow_id",
+          "type_ref": "workflow.definition.WorkflowId",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "operation": "add_node",
+      "semantic_ref": "workflow.definition.AddNode",
+      "kind": "intent",
+      "effect": "write",
+      "inputs": [
+        {
+          "name": "definition",
+          "type_ref": "workflow.definition.NodeDefinition",
+          "optional": false
+        },
+        {
+          "name": "draft_id",
+          "type_ref": "workflow.definition.DraftId",
+          "optional": false
+        },
+        {
+          "name": "expected_version",
+          "type_ref": "Integer",
+          "optional": false
+        },
+        {
+          "name": "idempotency_key",
+          "type_ref": "String",
+          "optional": false
+        },
+        {
+          "name": "workflow_id",
+          "type_ref": "workflow.definition.WorkflowId",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "operation": "connect_nodes",
+      "semantic_ref": "workflow.definition.ConnectNodes",
+      "kind": "intent",
+      "effect": "write",
+      "inputs": [
+        {
+          "name": "draft_id",
+          "type_ref": "workflow.definition.DraftId",
+          "optional": false
+        },
+        {
+          "name": "expected_version",
+          "type_ref": "Integer",
+          "optional": false
+        },
+        {
+          "name": "idempotency_key",
+          "type_ref": "String",
+          "optional": false
+        },
+        {
+          "name": "source_node_id",
+          "type_ref": "workflow.definition.NodeId",
+          "optional": false
+        },
+        {
+          "name": "target_node_id",
+          "type_ref": "workflow.definition.NodeId",
+          "optional": false
+        },
+        {
+          "name": "workflow_id",
+          "type_ref": "workflow.definition.WorkflowId",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "operation": "create_draft",
+      "semantic_ref": "workflow.definition.CreateDraft",
+      "kind": "intent",
+      "effect": "write",
+      "inputs": [
+        {
+          "name": "based_on_revision_id",
+          "type_ref": "Optional<workflow.definition.RevisionId>",
+          "optional": true
+        },
+        {
+          "name": "expected_version",
+          "type_ref": "Integer",
+          "optional": false
+        },
+        {
+          "name": "idempotency_key",
+          "type_ref": "String",
+          "optional": false
+        },
+        {
+          "name": "name",
+          "type_ref": "String",
+          "optional": false
+        },
+        {
+          "name": "workflow_id",
+          "type_ref": "workflow.definition.WorkflowId",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "operation": "create_workflow",
+      "semantic_ref": "workflow.definition.CreateWorkflow",
+      "kind": "intent",
+      "effect": "write",
+      "inputs": [
+        {
+          "name": "idempotency_key",
+          "type_ref": "String",
+          "optional": false
+        },
+        {
+          "name": "name",
+          "type_ref": "String",
+          "optional": false
+        },
+        {
+          "name": "scopes",
+          "type_ref": "workflow.definition.ScopeBindings",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "operation": "discard_draft",
+      "semantic_ref": "workflow.definition.DiscardDraft",
+      "kind": "intent",
+      "effect": "write",
+      "inputs": [
+        {
+          "name": "draft_id",
+          "type_ref": "workflow.definition.DraftId",
+          "optional": false
+        },
+        {
+          "name": "expected_version",
+          "type_ref": "Integer",
+          "optional": false
+        },
+        {
+          "name": "idempotency_key",
+          "type_ref": "String",
+          "optional": false
+        },
+        {
+          "name": "workflow_id",
+          "type_ref": "workflow.definition.WorkflowId",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "operation": "disconnect_nodes",
+      "semantic_ref": "workflow.definition.DisconnectNodes",
+      "kind": "intent",
+      "effect": "write",
+      "inputs": [
+        {
+          "name": "draft_id",
+          "type_ref": "workflow.definition.DraftId",
+          "optional": false
+        },
+        {
+          "name": "edge_id",
+          "type_ref": "workflow.definition.EdgeId",
+          "optional": false
+        },
+        {
+          "name": "expected_version",
+          "type_ref": "Integer",
+          "optional": false
+        },
+        {
+          "name": "idempotency_key",
+          "type_ref": "String",
+          "optional": false
+        },
+        {
+          "name": "workflow_id",
+          "type_ref": "workflow.definition.WorkflowId",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "operation": "get_draft",
+      "semantic_ref": "workflow.definition.DraftById",
+      "kind": "query",
+      "effect": "read",
+      "inputs": [
+        {
+          "name": "draft_id",
+          "type_ref": "workflow.definition.DraftId",
+          "optional": false
+        },
+        {
+          "name": "workflow_id",
+          "type_ref": "workflow.definition.WorkflowId",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "operation": "get_revision",
+      "semantic_ref": "workflow.definition.RevisionById",
+      "kind": "query",
+      "effect": "read",
+      "inputs": [
+        {
+          "name": "revision_id",
+          "type_ref": "workflow.definition.RevisionId",
+          "optional": false
+        },
+        {
+          "name": "workflow_id",
+          "type_ref": "workflow.definition.WorkflowId",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "operation": "get_workflow",
+      "semantic_ref": "workflow.definition.WorkflowById",
+      "kind": "query",
+      "effect": "read",
+      "inputs": [
+        {
+          "name": "workflow_id",
+          "type_ref": "workflow.definition.WorkflowId",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "operation": "list_drafts",
+      "semantic_ref": "workflow.definition.Drafts",
+      "kind": "query",
+      "effect": "read",
+      "inputs": [
+        {
+          "name": "workflow_id",
+          "type_ref": "workflow.definition.WorkflowId",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "operation": "list_revisions",
+      "semantic_ref": "workflow.definition.Revisions",
+      "kind": "query",
+      "effect": "read",
+      "inputs": [
+        {
+          "name": "workflow_id",
+          "type_ref": "workflow.definition.WorkflowId",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "operation": "list_workflows",
+      "semantic_ref": "workflow.definition.Workflows",
+      "kind": "query",
+      "effect": "read"
+    },
+    {
+      "operation": "publish_draft",
+      "semantic_ref": "workflow.definition.PublishDraft",
+      "kind": "intent",
+      "effect": "write",
+      "inputs": [
+        {
+          "name": "draft_id",
+          "type_ref": "workflow.definition.DraftId",
+          "optional": false
+        },
+        {
+          "name": "expected_version",
+          "type_ref": "Integer",
+          "optional": false
+        },
+        {
+          "name": "idempotency_key",
+          "type_ref": "String",
+          "optional": false
+        },
+        {
+          "name": "workflow_id",
+          "type_ref": "workflow.definition.WorkflowId",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "operation": "remove_node",
+      "semantic_ref": "workflow.definition.RemoveNode",
+      "kind": "intent",
+      "effect": "write",
+      "inputs": [
+        {
+          "name": "draft_id",
+          "type_ref": "workflow.definition.DraftId",
+          "optional": false
+        },
+        {
+          "name": "expected_version",
+          "type_ref": "Integer",
+          "optional": false
+        },
+        {
+          "name": "idempotency_key",
+          "type_ref": "String",
+          "optional": false
+        },
+        {
+          "name": "node_id",
+          "type_ref": "workflow.definition.NodeId",
+          "optional": false
+        },
+        {
+          "name": "workflow_id",
+          "type_ref": "workflow.definition.WorkflowId",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "operation": "replace_node",
+      "semantic_ref": "workflow.definition.ReplaceNode",
+      "kind": "intent",
+      "effect": "write",
+      "inputs": [
+        {
+          "name": "definition",
+          "type_ref": "workflow.definition.NodeDefinition",
+          "optional": false
+        },
+        {
+          "name": "draft_id",
+          "type_ref": "workflow.definition.DraftId",
+          "optional": false
+        },
+        {
+          "name": "expected_version",
+          "type_ref": "Integer",
+          "optional": false
+        },
+        {
+          "name": "idempotency_key",
+          "type_ref": "String",
+          "optional": false
+        },
+        {
+          "name": "node_id",
+          "type_ref": "workflow.definition.NodeId",
+          "optional": false
+        },
+        {
+          "name": "workflow_id",
+          "type_ref": "workflow.definition.WorkflowId",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "operation": "validate_draft",
+      "semantic_ref": "workflow.definition.ValidateDraft",
+      "kind": "intent",
+      "effect": "write",
+      "inputs": [
+        {
+          "name": "draft_id",
+          "type_ref": "workflow.definition.DraftId",
+          "optional": false
+        },
+        {
+          "name": "expected_version",
+          "type_ref": "Integer",
+          "optional": false
+        },
+        {
+          "name": "idempotency_key",
+          "type_ref": "String",
+          "optional": false
+        },
+        {
+          "name": "workflow_id",
+          "type_ref": "workflow.definition.WorkflowId",
+          "optional": false
+        }
+      ]
+    }
+  ]
+}

@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.2.0 - 2026-09-03
+
+- Replace the ID-only 0.1.0 crate with a definition-only Service SDK package and generated Rust
+  service, official `WorkflowClient`, Identity HTTP boundary, OpenAPI, Connector contribution, and
+  conformance scenarios.
+- Add mutable owned draft DAGs with guarded node/edge mutation, deterministic validation, canonical
+  immutable revision snapshots and digests, and owned revision activation.
+- Require the exact `urn:b10x:workflow` audience, `workflows.read` and `workflows.manage` scopes,
+  optimistic concurrency, and idempotency with no predecessor or 0.1.0 compatibility layer.
+
 All notable changes to Workflow are documented here.
 
 ## 0.1.0 - 2026-09-03

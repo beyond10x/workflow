@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "NodesConnected payload",
+  "x-ess-name": "workflow.definition.NodesConnected",
+  "x-ess-kind": "event-payload",
+  "type": "object",
+  "properties": {
+    "edge_id": {
+      "$ref": "#/$defs/workflow.definition.EdgeId"
+    },
+    "workflow_id": {
+      "$ref": "#/$defs/workflow.definition.WorkflowId"
+    },
+    "draft_id": {
+      "$ref": "#/$defs/workflow.definition.DraftId"
+    },
+    "source_node_id": {
+      "$ref": "#/$defs/workflow.definition.NodeId"
+    },
+    "target_node_id": {
+      "$ref": "#/$defs/workflow.definition.NodeId"
+    }
+  },
+  "required": [
+    "edge_id",
+    "workflow_id",
+    "draft_id",
+    "source_node_id",
+    "target_node_id"
+  ],
+  "additionalProperties": false,
+  "x-ess-provenance": {
+    "system": "workflow",
+    "specification_version": "v1",
+    "source_digest": "6a79078047815754e0dda89f285e08689037af0adfd4277dfcc305f1d003df1b",
+    "contract_digest": "0a6d5212a58bd3f64cae895f99d78b54f75391f8a632ea2311aca639eb5d5974",
+    "regenerate": "ess generate"
+  },
+  "$defs": {
+    "workflow.definition.DraftId": {
+      "title": "DraftId",
+      "x-ess-name": "workflow.definition.DraftId",
+      "x-ess-kind": "newtype",
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+    },
+    "workflow.definition.EdgeId": {
+      "title": "EdgeId",
+      "x-ess-name": "workflow.definition.EdgeId",
+      "x-ess-kind": "newtype",
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+    },
+    "workflow.definition.NodeId": {
+      "title": "NodeId",
+      "x-ess-name": "workflow.definition.NodeId",
+      "x-ess-kind": "newtype",
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+    },
+    "workflow.definition.WorkflowId": {
+      "title": "WorkflowId",
+      "x-ess-name": "workflow.definition.WorkflowId",
+      "x-ess-kind": "newtype",
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+    }
+  }
+}

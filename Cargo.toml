@@ -1,12 +1,12 @@
 [workspace]
-resolver = "3"
-members = ["crates/workflow-domain"]
+resolver = "2"
+members = ["generated/rust"]
 
 [workspace.package]
-version = "0.1.0"
+version = "0.2.0"
 edition = "2024"
-rust-version = "1.97"
-license = "LicenseRef-B10x-Proprietary"
+rust-version = "1.91"
+license = "Apache-2.0"
 repository = "https://github.com/beyond10x/workflow"
 publish = false
 

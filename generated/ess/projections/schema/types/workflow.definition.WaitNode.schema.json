@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/workflow.definition.WaitNode",
+  "x-ess-provenance": {
+    "system": "workflow",
+    "specification_version": "v1",
+    "source_digest": "6a79078047815754e0dda89f285e08689037af0adfd4277dfcc305f1d003df1b",
+    "contract_digest": "5df45a93059b8f89ddea549c72ff1277d32a47de01380682ac9c10e9fdb80958",
+    "regenerate": "ess generate"
+  },
+  "$defs": {
+    "workflow.definition.WaitNode": {
+      "title": "WaitNode",
+      "x-ess-name": "workflow.definition.WaitNode",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "duration": {
+          "type": "string",
+          "format": "duration"
+        }
+      },
+      "required": [
+        "duration"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,4380 @@
+{
+  "format": "service-catalog/1",
+  "service_ref": "service:workflow",
+  "display_name": "workflow",
+  "description": "Generated workflow service",
+  "semantic_catalog": {
+    "bindings": [],
+    "commands": [
+      {
+        "behavior": {
+          "contract": "given `workflow.definition.ActivateRevision` input, decide and enact exactly one outcome — `activated` otherwise, updates `workflow.definition.Workflow`, emits `workflow.definition.RevisionActivated`",
+          "disposition": "obligation",
+          "why": "the contract is declared; the algorithm is not"
+        },
+        "component": "workflow-service",
+        "dispatchable": true,
+        "display": "Activate revision",
+        "domain": "workflow.definition",
+        "input": [
+          {
+            "name": "workflow_id",
+            "optional": false,
+            "spelling": "workflow.definition.WorkflowId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.WorkflowId"
+            },
+            "wire": "workflow_id"
+          },
+          {
+            "name": "revision_id",
+            "optional": false,
+            "spelling": "workflow.definition.RevisionId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.RevisionId"
+            },
+            "wire": "revision_id"
+          }
+        ],
+        "name": "workflow.definition.ActivateRevision",
+        "outcomes": [
+          {
+            "condition": "otherwise",
+            "error": null,
+            "moves": {
+              "effect": {
+                "kind": "updates"
+              },
+              "entity": "workflow.definition.Workflow"
+            },
+            "name": "activated",
+            "publishes": [
+              "workflow.definition.RevisionActivated"
+            ],
+            "summary": null
+          }
+        ]
+      },
+      {
+        "behavior": {
+          "contract": "given `workflow.definition.AddNode` input, decide and enact exactly one outcome — `added` otherwise, creates `workflow.definition.DraftNode`, emits `workflow.definition.NodeAdded`",
+          "disposition": "obligation",
+          "why": "the contract is declared; the algorithm is not"
+        },
+        "component": "workflow-service",
+        "dispatchable": true,
+        "display": "Add node",
+        "domain": "workflow.definition",
+        "input": [
+          {
+            "name": "workflow_id",
+            "optional": false,
+            "spelling": "workflow.definition.WorkflowId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.WorkflowId"
+            },
+            "wire": "workflow_id"
+          },
+          {
+            "name": "draft_id",
+            "optional": false,
+            "spelling": "workflow.definition.DraftId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.DraftId"
+            },
+            "wire": "draft_id"
+          },
+          {
+            "name": "definition",
+            "optional": false,
+            "spelling": "workflow.definition.NodeDefinition",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.NodeDefinition"
+            },
+            "wire": "definition"
+          }
+        ],
+        "name": "workflow.definition.AddNode",
+        "outcomes": [
+          {
+            "condition": "otherwise",
+            "error": null,
+            "moves": {
+              "effect": {
+                "kind": "creates"
+              },
+              "entity": "workflow.definition.DraftNode"
+            },
+            "name": "added",
+            "publishes": [
+              "workflow.definition.NodeAdded"
+            ],
+            "summary": null
+          }
+        ]
+      },
+      {
+        "behavior": {
+          "contract": "given `workflow.definition.ConnectNodes` input, decide and enact exactly one outcome — `connected` otherwise, creates `workflow.definition.DraftEdge`, emits `workflow.definition.NodesConnected`",
+          "disposition": "obligation",
+          "why": "the contract is declared; the algorithm is not"
+        },
+        "component": "workflow-service",
+        "dispatchable": true,
+        "display": "Connect nodes",
+        "domain": "workflow.definition",
+        "input": [
+          {
+            "name": "workflow_id",
+            "optional": false,
+            "spelling": "workflow.definition.WorkflowId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.WorkflowId"
+            },
+            "wire": "workflow_id"
+          },
+          {
+            "name": "draft_id",
+            "optional": false,
+            "spelling": "workflow.definition.DraftId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.DraftId"
+            },
+            "wire": "draft_id"
+          },
+          {
+            "name": "source_node_id",
+            "optional": false,
+            "spelling": "workflow.definition.NodeId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.NodeId"
+            },
+            "wire": "source_node_id"
+          },
+          {
+            "name": "target_node_id",
+            "optional": false,
+            "spelling": "workflow.definition.NodeId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.NodeId"
+            },
+            "wire": "target_node_id"
+          }
+        ],
+        "name": "workflow.definition.ConnectNodes",
+        "outcomes": [
+          {
+            "condition": "otherwise",
+            "error": null,
+            "moves": {
+              "effect": {
+                "kind": "creates"
+              },
+              "entity": "workflow.definition.DraftEdge"
+            },
+            "name": "connected",
+            "publishes": [
+              "workflow.definition.NodesConnected"
+            ],
+            "summary": null
+          }
+        ]
+      },
+      {
+        "behavior": {
+          "contract": "given `workflow.definition.CreateDraft` input, decide and enact exactly one outcome — `created` otherwise, creates `workflow.definition.WorkflowDraft`, emits `workflow.definition.DraftCreated`",
+          "disposition": "obligation",
+          "why": "the contract is declared; the algorithm is not"
+        },
+        "component": "workflow-service",
+        "dispatchable": true,
+        "display": "Create draft",
+        "domain": "workflow.definition",
+        "input": [
+          {
+            "name": "workflow_id",
+            "optional": false,
+            "spelling": "workflow.definition.WorkflowId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.WorkflowId"
+            },
+            "wire": "workflow_id"
+          },
+          {
+            "name": "name",
+            "optional": false,
+            "spelling": "String",
+            "type": {
+              "kind": "primitive",
+              "name": "string"
+            },
+            "wire": "name"
+          },
+          {
+            "name": "based_on_revision_id",
+            "optional": true,
+            "spelling": "Optional<workflow.definition.RevisionId>",
+            "type": {
+              "kind": "optional",
+              "of": {
+                "kind": "declared",
+                "name": "workflow.definition.RevisionId"
+              }
+            },
+            "wire": "based_on_revision_id"
+          }
+        ],
+        "name": "workflow.definition.CreateDraft",
+        "outcomes": [
+          {
+            "condition": "otherwise",
+            "error": null,
+            "moves": {
+              "effect": {
+                "kind": "creates"
+              },
+              "entity": "workflow.definition.WorkflowDraft"
+            },
+            "name": "created",
+            "publishes": [
+              "workflow.definition.DraftCreated"
+            ],
+            "summary": null
+          }
+        ]
+      },
+      {
+        "behavior": {
+          "contract": "given `workflow.definition.CreateWorkflow` input, decide and enact exactly one outcome — `created` otherwise, creates `workflow.definition.Workflow`, emits `workflow.definition.WorkflowCreated`",
+          "disposition": "obligation",
+          "why": "the contract is declared; the algorithm is not"
+        },
+        "component": "workflow-service",
+        "dispatchable": true,
+        "display": "Create workflow",
+        "domain": "workflow.definition",
+        "input": [
+          {
+            "name": "name",
+            "optional": false,
+            "spelling": "String",
+            "type": {
+              "kind": "primitive",
+              "name": "string"
+            },
+            "wire": "name"
+          },
+          {
+            "name": "scopes",
+            "optional": false,
+            "spelling": "workflow.definition.ScopeBindings",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.ScopeBindings"
+            },
+            "wire": "scopes"
+          }
+        ],
+        "name": "workflow.definition.CreateWorkflow",
+        "outcomes": [
+          {
+            "condition": "otherwise",
+            "error": null,
+            "moves": {
+              "effect": {
+                "kind": "creates"
+              },
+              "entity": "workflow.definition.Workflow"
+            },
+            "name": "created",
+            "publishes": [
+              "workflow.definition.WorkflowCreated"
+            ],
+            "summary": null
+          }
+        ]
+      },
+      {
+        "behavior": {
+          "contract": "given `workflow.definition.DiscardDraft` input, decide and enact exactly one outcome — `discarded` otherwise, takes `discard` of `workflow.definition.WorkflowDraft`, emits `workflow.definition.DraftDiscarded`",
+          "disposition": "obligation",
+          "why": "the contract is declared; the algorithm is not"
+        },
+        "component": "workflow-service",
+        "dispatchable": true,
+        "display": "Discard draft",
+        "domain": "workflow.definition",
+        "input": [
+          {
+            "name": "workflow_id",
+            "optional": false,
+            "spelling": "workflow.definition.WorkflowId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.WorkflowId"
+            },
+            "wire": "workflow_id"
+          },
+          {
+            "name": "draft_id",
+            "optional": false,
+            "spelling": "workflow.definition.DraftId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.DraftId"
+            },
+            "wire": "draft_id"
+          }
+        ],
+        "name": "workflow.definition.DiscardDraft",
+        "outcomes": [
+          {
+            "condition": "otherwise",
+            "error": null,
+            "moves": {
+              "effect": {
+                "from": [
+                  "Active"
+                ],
+                "kind": "moves",
+                "to": "Discarded",
+                "transition": "discard"
+              },
+              "entity": "workflow.definition.WorkflowDraft"
+            },
+            "name": "discarded",
+            "publishes": [
+              "workflow.definition.DraftDiscarded"
+            ],
+            "summary": null
+          }
+        ]
+      },
+      {
+        "behavior": {
+          "contract": "given `workflow.definition.DisconnectNodes` input, decide and enact exactly one outcome — `disconnected` otherwise, takes `disconnect` of `workflow.definition.DraftEdge`, emits `workflow.definition.NodesDisconnected`",
+          "disposition": "obligation",
+          "why": "the contract is declared; the algorithm is not"
+        },
+        "component": "workflow-service",
+        "dispatchable": true,
+        "display": "Disconnect nodes",
+        "domain": "workflow.definition",
+        "input": [
+          {
+            "name": "workflow_id",
+            "optional": false,
+            "spelling": "workflow.definition.WorkflowId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.WorkflowId"
+            },
+            "wire": "workflow_id"
+          },
+          {
+            "name": "draft_id",
+            "optional": false,
+            "spelling": "workflow.definition.DraftId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.DraftId"
+            },
+            "wire": "draft_id"
+          },
+          {
+            "name": "edge_id",
+            "optional": false,
+            "spelling": "workflow.definition.EdgeId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.EdgeId"
+            },
+            "wire": "edge_id"
+          }
+        ],
+        "name": "workflow.definition.DisconnectNodes",
+        "outcomes": [
+          {
+            "condition": "otherwise",
+            "error": null,
+            "moves": {
+              "effect": {
+                "from": [
+                  "Active"
+                ],
+                "kind": "moves",
+                "to": "Disconnected",
+                "transition": "disconnect"
+              },
+              "entity": "workflow.definition.DraftEdge"
+            },
+            "name": "disconnected",
+            "publishes": [
+              "workflow.definition.NodesDisconnected"
+            ],
+            "summary": null
+          }
+        ]
+      },
+      {
+        "behavior": {
+          "contract": "given `workflow.definition.PublishDraft` input, decide and enact exactly one outcome — `published` otherwise, creates `workflow.definition.WorkflowRevision`, emits `workflow.definition.RevisionPublished`",
+          "disposition": "obligation",
+          "why": "the contract is declared; the algorithm is not"
+        },
+        "component": "workflow-service",
+        "dispatchable": true,
+        "display": "Publish draft",
+        "domain": "workflow.definition",
+        "input": [
+          {
+            "name": "workflow_id",
+            "optional": false,
+            "spelling": "workflow.definition.WorkflowId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.WorkflowId"
+            },
+            "wire": "workflow_id"
+          },
+          {
+            "name": "draft_id",
+            "optional": false,
+            "spelling": "workflow.definition.DraftId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.DraftId"
+            },
+            "wire": "draft_id"
+          }
+        ],
+        "name": "workflow.definition.PublishDraft",
+        "outcomes": [
+          {
+            "condition": "otherwise",
+            "error": null,
+            "moves": {
+              "effect": {
+                "kind": "creates"
+              },
+              "entity": "workflow.definition.WorkflowRevision"
+            },
+            "name": "published",
+            "publishes": [
+              "workflow.definition.RevisionPublished"
+            ],
+            "summary": null
+          }
+        ]
+      },
+      {
+        "behavior": {
+          "contract": "given `workflow.definition.RemoveNode` input, decide and enact exactly one outcome — `removed` otherwise, takes `remove` of `workflow.definition.DraftNode`, emits `workflow.definition.NodeRemoved`",
+          "disposition": "obligation",
+          "why": "the contract is declared; the algorithm is not"
+        },
+        "component": "workflow-service",
+        "dispatchable": true,
+        "display": "Remove node",
+        "domain": "workflow.definition",
+        "input": [
+          {
+            "name": "workflow_id",
+            "optional": false,
+            "spelling": "workflow.definition.WorkflowId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.WorkflowId"
+            },
+            "wire": "workflow_id"
+          },
+          {
+            "name": "draft_id",
+            "optional": false,
+            "spelling": "workflow.definition.DraftId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.DraftId"
+            },
+            "wire": "draft_id"
+          },
+          {
+            "name": "node_id",
+            "optional": false,
+            "spelling": "workflow.definition.NodeId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.NodeId"
+            },
+            "wire": "node_id"
+          }
+        ],
+        "name": "workflow.definition.RemoveNode",
+        "outcomes": [
+          {
+            "condition": "otherwise",
+            "error": null,
+            "moves": {
+              "effect": {
+                "from": [
+                  "Active"
+                ],
+                "kind": "moves",
+                "to": "Removed",
+                "transition": "remove"
+              },
+              "entity": "workflow.definition.DraftNode"
+            },
+            "name": "removed",
+            "publishes": [
+              "workflow.definition.NodeRemoved"
+            ],
+            "summary": null
+          }
+        ]
+      },
+      {
+        "behavior": {
+          "contract": "given `workflow.definition.ReplaceNode` input, decide and enact exactly one outcome — `replaced` otherwise, updates `workflow.definition.DraftNode`, emits `workflow.definition.NodeReplaced`",
+          "disposition": "obligation",
+          "why": "the contract is declared; the algorithm is not"
+        },
+        "component": "workflow-service",
+        "dispatchable": true,
+        "display": "Replace node",
+        "domain": "workflow.definition",
+        "input": [
+          {
+            "name": "workflow_id",
+            "optional": false,
+            "spelling": "workflow.definition.WorkflowId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.WorkflowId"
+            },
+            "wire": "workflow_id"
+          },
+          {
+            "name": "draft_id",
+            "optional": false,
+            "spelling": "workflow.definition.DraftId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.DraftId"
+            },
+            "wire": "draft_id"
+          },
+          {
+            "name": "node_id",
+            "optional": false,
+            "spelling": "workflow.definition.NodeId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.NodeId"
+            },
+            "wire": "node_id"
+          },
+          {
+            "name": "definition",
+            "optional": false,
+            "spelling": "workflow.definition.NodeDefinition",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.NodeDefinition"
+            },
+            "wire": "definition"
+          }
+        ],
+        "name": "workflow.definition.ReplaceNode",
+        "outcomes": [
+          {
+            "condition": "otherwise",
+            "error": null,
+            "moves": {
+              "effect": {
+                "kind": "updates"
+              },
+              "entity": "workflow.definition.DraftNode"
+            },
+            "name": "replaced",
+            "publishes": [
+              "workflow.definition.NodeReplaced"
+            ],
+            "summary": null
+          }
+        ]
+      },
+      {
+        "behavior": {
+          "contract": "given `workflow.definition.ValidateDraft` input, decide and enact exactly one outcome — `validated` otherwise, updates `workflow.definition.WorkflowDraft`, emits `workflow.definition.DraftValidated`",
+          "disposition": "obligation",
+          "why": "the contract is declared; the algorithm is not"
+        },
+        "component": "workflow-service",
+        "dispatchable": true,
+        "display": "Validate draft",
+        "domain": "workflow.definition",
+        "input": [
+          {
+            "name": "workflow_id",
+            "optional": false,
+            "spelling": "workflow.definition.WorkflowId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.WorkflowId"
+            },
+            "wire": "workflow_id"
+          },
+          {
+            "name": "draft_id",
+            "optional": false,
+            "spelling": "workflow.definition.DraftId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.DraftId"
+            },
+            "wire": "draft_id"
+          }
+        ],
+        "name": "workflow.definition.ValidateDraft",
+        "outcomes": [
+          {
+            "condition": "otherwise",
+            "error": null,
+            "moves": {
+              "effect": {
+                "kind": "updates"
+              },
+              "entity": "workflow.definition.WorkflowDraft"
+            },
+            "name": "validated",
+            "publishes": [
+              "workflow.definition.DraftValidated"
+            ],
+            "summary": null
+          }
+        ]
+      }
+    ],
+    "components": [
+      {
+        "accepts": [
+          "workflow.definition.ActivateRevision",
+          "workflow.definition.AddNode",
+          "workflow.definition.ConnectNodes",
+          "workflow.definition.CreateDraft",
+          "workflow.definition.CreateWorkflow",
+          "workflow.definition.DiscardDraft",
+          "workflow.definition.DisconnectNodes",
+          "workflow.definition.PublishDraft",
+          "workflow.definition.RemoveNode",
+          "workflow.definition.ReplaceNode",
+          "workflow.definition.ValidateDraft"
+        ],
+        "display": "workflow-service",
+        "name": "workflow-service",
+        "publishes": [
+          "workflow.definition.DraftCreated",
+          "workflow.definition.DraftDiscarded",
+          "workflow.definition.DraftValidated",
+          "workflow.definition.NodeAdded",
+          "workflow.definition.NodeRemoved",
+          "workflow.definition.NodeReplaced",
+          "workflow.definition.NodesConnected",
+          "workflow.definition.NodesDisconnected",
+          "workflow.definition.RevisionActivated",
+          "workflow.definition.RevisionPublished",
+          "workflow.definition.WorkflowCreated"
+        ],
+        "summary": "Owns workflow definitions, draft graphs, immutable revisions, and activation."
+      }
+    ],
+    "conversions": [],
+    "display": "workflow",
+    "entities": [
+      {
+        "display": "DraftEdge",
+        "fields": [
+          {
+            "name": "draft_id",
+            "optional": false,
+            "spelling": "workflow.definition.DraftId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.DraftId"
+            },
+            "wire": "draft_id"
+          },
+          {
+            "name": "source_node_id",
+            "optional": false,
+            "spelling": "workflow.definition.NodeId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.NodeId"
+            },
+            "wire": "source_node_id"
+          },
+          {
+            "name": "target_node_id",
+            "optional": false,
+            "spelling": "workflow.definition.NodeId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.NodeId"
+            },
+            "wire": "target_node_id"
+          }
+        ],
+        "identity": {
+          "name": "edge_id",
+          "optional": false,
+          "spelling": "workflow.definition.EdgeId",
+          "type": {
+            "kind": "declared",
+            "name": "workflow.definition.EdgeId"
+          },
+          "wire": "edge_id"
+        },
+        "initial": "Active",
+        "invariants": [],
+        "name": "workflow.definition.DraftEdge",
+        "states": [
+          "Active",
+          "Disconnected"
+        ],
+        "summary": null,
+        "terminal": [
+          "Disconnected"
+        ],
+        "transitions": [
+          {
+            "from": [
+              "Active"
+            ],
+            "name": "disconnect",
+            "to": "Disconnected"
+          }
+        ],
+        "views": []
+      },
+      {
+        "display": "DraftNode",
+        "fields": [
+          {
+            "name": "draft_id",
+            "optional": false,
+            "spelling": "workflow.definition.DraftId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.DraftId"
+            },
+            "wire": "draft_id"
+          },
+          {
+            "name": "definition",
+            "optional": false,
+            "spelling": "workflow.definition.NodeDefinition",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.NodeDefinition"
+            },
+            "wire": "definition"
+          }
+        ],
+        "identity": {
+          "name": "node_id",
+          "optional": false,
+          "spelling": "workflow.definition.NodeId",
+          "type": {
+            "kind": "declared",
+            "name": "workflow.definition.NodeId"
+          },
+          "wire": "node_id"
+        },
+        "initial": "Active",
+        "invariants": [],
+        "name": "workflow.definition.DraftNode",
+        "states": [
+          "Active",
+          "Removed"
+        ],
+        "summary": null,
+        "terminal": [
+          "Removed"
+        ],
+        "transitions": [
+          {
+            "from": [
+              "Active"
+            ],
+            "name": "remove",
+            "to": "Removed"
+          }
+        ],
+        "views": []
+      },
+      {
+        "display": "Workflow",
+        "fields": [
+          {
+            "name": "name",
+            "optional": false,
+            "spelling": "String",
+            "type": {
+              "kind": "primitive",
+              "name": "string"
+            },
+            "wire": "name"
+          },
+          {
+            "name": "owner",
+            "optional": false,
+            "spelling": "workflow.definition.OwnerRef",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.OwnerRef"
+            },
+            "wire": "owner"
+          },
+          {
+            "name": "scopes",
+            "optional": false,
+            "spelling": "workflow.definition.ScopeBindings",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.ScopeBindings"
+            },
+            "wire": "scopes"
+          },
+          {
+            "name": "active_revision_id",
+            "optional": true,
+            "spelling": "Optional<workflow.definition.RevisionId>",
+            "type": {
+              "kind": "optional",
+              "of": {
+                "kind": "declared",
+                "name": "workflow.definition.RevisionId"
+              }
+            },
+            "wire": "active_revision_id"
+          }
+        ],
+        "identity": {
+          "name": "workflow_id",
+          "optional": false,
+          "spelling": "workflow.definition.WorkflowId",
+          "type": {
+            "kind": "declared",
+            "name": "workflow.definition.WorkflowId"
+          },
+          "wire": "workflow_id"
+        },
+        "initial": "Active",
+        "invariants": [],
+        "name": "workflow.definition.Workflow",
+        "states": [
+          "Active"
+        ],
+        "summary": null,
+        "terminal": [
+          "Active"
+        ],
+        "transitions": [],
+        "views": [
+          "workflow.definition.WorkflowById",
+          "workflow.definition.Workflows"
+        ]
+      },
+      {
+        "display": "WorkflowDraft",
+        "fields": [
+          {
+            "name": "workflow_id",
+            "optional": false,
+            "spelling": "workflow.definition.WorkflowId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.WorkflowId"
+            },
+            "wire": "workflow_id"
+          },
+          {
+            "name": "name",
+            "optional": false,
+            "spelling": "String",
+            "type": {
+              "kind": "primitive",
+              "name": "string"
+            },
+            "wire": "name"
+          },
+          {
+            "name": "based_on_revision_id",
+            "optional": true,
+            "spelling": "Optional<workflow.definition.RevisionId>",
+            "type": {
+              "kind": "optional",
+              "of": {
+                "kind": "declared",
+                "name": "workflow.definition.RevisionId"
+              }
+            },
+            "wire": "based_on_revision_id"
+          },
+          {
+            "name": "owner",
+            "optional": false,
+            "spelling": "workflow.definition.OwnerRef",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.OwnerRef"
+            },
+            "wire": "owner"
+          },
+          {
+            "name": "scopes",
+            "optional": false,
+            "spelling": "workflow.definition.ScopeBindings",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.ScopeBindings"
+            },
+            "wire": "scopes"
+          }
+        ],
+        "identity": {
+          "name": "draft_id",
+          "optional": false,
+          "spelling": "workflow.definition.DraftId",
+          "type": {
+            "kind": "declared",
+            "name": "workflow.definition.DraftId"
+          },
+          "wire": "draft_id"
+        },
+        "initial": "Active",
+        "invariants": [],
+        "name": "workflow.definition.WorkflowDraft",
+        "states": [
+          "Active",
+          "Discarded"
+        ],
+        "summary": null,
+        "terminal": [
+          "Discarded"
+        ],
+        "transitions": [
+          {
+            "from": [
+              "Active"
+            ],
+            "name": "discard",
+            "to": "Discarded"
+          }
+        ],
+        "views": [
+          "workflow.definition.DraftById",
+          "workflow.definition.Drafts"
+        ]
+      },
+      {
+        "display": "WorkflowRevision",
+        "fields": [
+          {
+            "name": "workflow_id",
+            "optional": false,
+            "spelling": "workflow.definition.WorkflowId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.WorkflowId"
+            },
+            "wire": "workflow_id"
+          },
+          {
+            "name": "draft_id",
+            "optional": false,
+            "spelling": "workflow.definition.DraftId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.DraftId"
+            },
+            "wire": "draft_id"
+          },
+          {
+            "name": "nodes",
+            "optional": false,
+            "spelling": "List<workflow.definition.NodeSnapshot>",
+            "type": {
+              "kind": "list",
+              "of": {
+                "kind": "declared",
+                "name": "workflow.definition.NodeSnapshot"
+              }
+            },
+            "wire": "nodes"
+          },
+          {
+            "name": "edges",
+            "optional": false,
+            "spelling": "List<workflow.definition.EdgeSnapshot>",
+            "type": {
+              "kind": "list",
+              "of": {
+                "kind": "declared",
+                "name": "workflow.definition.EdgeSnapshot"
+              }
+            },
+            "wire": "edges"
+          },
+          {
+            "name": "digest",
+            "optional": false,
+            "spelling": "String",
+            "type": {
+              "kind": "primitive",
+              "name": "string"
+            },
+            "wire": "digest"
+          },
+          {
+            "name": "node_count",
+            "optional": false,
+            "spelling": "Integer",
+            "type": {
+              "kind": "primitive",
+              "name": "integer"
+            },
+            "wire": "node_count"
+          },
+          {
+            "name": "edge_count",
+            "optional": false,
+            "spelling": "Integer",
+            "type": {
+              "kind": "primitive",
+              "name": "integer"
+            },
+            "wire": "edge_count"
+          },
+          {
+            "name": "owner",
+            "optional": false,
+            "spelling": "workflow.definition.OwnerRef",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.OwnerRef"
+            },
+            "wire": "owner"
+          },
+          {
+            "name": "scopes",
+            "optional": false,
+            "spelling": "workflow.definition.ScopeBindings",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.ScopeBindings"
+            },
+            "wire": "scopes"
+          }
+        ],
+        "identity": {
+          "name": "revision_id",
+          "optional": false,
+          "spelling": "workflow.definition.RevisionId",
+          "type": {
+            "kind": "declared",
+            "name": "workflow.definition.RevisionId"
+          },
+          "wire": "revision_id"
+        },
+        "initial": "Published",
+        "invariants": [],
+        "name": "workflow.definition.WorkflowRevision",
+        "states": [
+          "Published"
+        ],
+        "summary": null,
+        "terminal": [
+          "Published"
+        ],
+        "transitions": [],
+        "views": [
+          "workflow.definition.RevisionById",
+          "workflow.definition.Revisions"
+        ]
+      }
+    ],
+    "errors": [],
+    "events": [
+      {
+        "display": "DraftCreated",
+        "fields": [
+          {
+            "name": "draft_id",
+            "optional": false,
+            "spelling": "workflow.definition.DraftId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.DraftId"
+            },
+            "wire": "draft_id"
+          },
+          {
+            "name": "workflow_id",
+            "optional": false,
+            "spelling": "workflow.definition.WorkflowId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.WorkflowId"
+            },
+            "wire": "workflow_id"
+          },
+          {
+            "name": "name",
+            "optional": false,
+            "spelling": "String",
+            "type": {
+              "kind": "primitive",
+              "name": "string"
+            },
+            "wire": "name"
+          },
+          {
+            "name": "based_on_revision_id",
+            "optional": true,
+            "spelling": "Optional<workflow.definition.RevisionId>",
+            "type": {
+              "kind": "optional",
+              "of": {
+                "kind": "declared",
+                "name": "workflow.definition.RevisionId"
+              }
+            },
+            "wire": "based_on_revision_id"
+          },
+          {
+            "name": "owner",
+            "optional": false,
+            "spelling": "workflow.definition.OwnerRef",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.OwnerRef"
+            },
+            "wire": "owner"
+          },
+          {
+            "name": "scopes",
+            "optional": false,
+            "spelling": "workflow.definition.ScopeBindings",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.ScopeBindings"
+            },
+            "wire": "scopes"
+          }
+        ],
+        "name": "workflow.definition.DraftCreated",
+        "summary": null
+      },
+      {
+        "display": "DraftDiscarded",
+        "fields": [
+          {
+            "name": "workflow_id",
+            "optional": false,
+            "spelling": "workflow.definition.WorkflowId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.WorkflowId"
+            },
+            "wire": "workflow_id"
+          },
+          {
+            "name": "draft_id",
+            "optional": false,
+            "spelling": "workflow.definition.DraftId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.DraftId"
+            },
+            "wire": "draft_id"
+          }
+        ],
+        "name": "workflow.definition.DraftDiscarded",
+        "summary": null
+      },
+      {
+        "display": "DraftValidated",
+        "fields": [
+          {
+            "name": "workflow_id",
+            "optional": false,
+            "spelling": "workflow.definition.WorkflowId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.WorkflowId"
+            },
+            "wire": "workflow_id"
+          },
+          {
+            "name": "draft_id",
+            "optional": false,
+            "spelling": "workflow.definition.DraftId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.DraftId"
+            },
+            "wire": "draft_id"
+          }
+        ],
+        "name": "workflow.definition.DraftValidated",
+        "summary": null
+      },
+      {
+        "display": "NodeAdded",
+        "fields": [
+          {
+            "name": "node_id",
+            "optional": false,
+            "spelling": "workflow.definition.NodeId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.NodeId"
+            },
+            "wire": "node_id"
+          },
+          {
+            "name": "workflow_id",
+            "optional": false,
+            "spelling": "workflow.definition.WorkflowId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.WorkflowId"
+            },
+            "wire": "workflow_id"
+          },
+          {
+            "name": "draft_id",
+            "optional": false,
+            "spelling": "workflow.definition.DraftId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.DraftId"
+            },
+            "wire": "draft_id"
+          },
+          {
+            "name": "definition",
+            "optional": false,
+            "spelling": "workflow.definition.NodeDefinition",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.NodeDefinition"
+            },
+            "wire": "definition"
+          }
+        ],
+        "name": "workflow.definition.NodeAdded",
+        "summary": null
+      },
+      {
+        "display": "NodeRemoved",
+        "fields": [
+          {
+            "name": "workflow_id",
+            "optional": false,
+            "spelling": "workflow.definition.WorkflowId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.WorkflowId"
+            },
+            "wire": "workflow_id"
+          },
+          {
+            "name": "draft_id",
+            "optional": false,
+            "spelling": "workflow.definition.DraftId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.DraftId"
+            },
+            "wire": "draft_id"
+          },
+          {
+            "name": "node_id",
+            "optional": false,
+            "spelling": "workflow.definition.NodeId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.NodeId"
+            },
+            "wire": "node_id"
+          }
+        ],
+        "name": "workflow.definition.NodeRemoved",
+        "summary": null
+      },
+      {
+        "display": "NodeReplaced",
+        "fields": [
+          {
+            "name": "workflow_id",
+            "optional": false,
+            "spelling": "workflow.definition.WorkflowId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.WorkflowId"
+            },
+            "wire": "workflow_id"
+          },
+          {
+            "name": "draft_id",
+            "optional": false,
+            "spelling": "workflow.definition.DraftId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.DraftId"
+            },
+            "wire": "draft_id"
+          },
+          {
+            "name": "node_id",
+            "optional": false,
+            "spelling": "workflow.definition.NodeId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.NodeId"
+            },
+            "wire": "node_id"
+          },
+          {
+            "name": "definition",
+            "optional": false,
+            "spelling": "workflow.definition.NodeDefinition",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.NodeDefinition"
+            },
+            "wire": "definition"
+          }
+        ],
+        "name": "workflow.definition.NodeReplaced",
+        "summary": null
+      },
+      {
+        "display": "NodesConnected",
+        "fields": [
+          {
+            "name": "edge_id",
+            "optional": false,
+            "spelling": "workflow.definition.EdgeId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.EdgeId"
+            },
+            "wire": "edge_id"
+          },
+          {
+            "name": "workflow_id",
+            "optional": false,
+            "spelling": "workflow.definition.WorkflowId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.WorkflowId"
+            },
+            "wire": "workflow_id"
+          },
+          {
+            "name": "draft_id",
+            "optional": false,
+            "spelling": "workflow.definition.DraftId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.DraftId"
+            },
+            "wire": "draft_id"
+          },
+          {
+            "name": "source_node_id",
+            "optional": false,
+            "spelling": "workflow.definition.NodeId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.NodeId"
+            },
+            "wire": "source_node_id"
+          },
+          {
+            "name": "target_node_id",
+            "optional": false,
+            "spelling": "workflow.definition.NodeId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.NodeId"
+            },
+            "wire": "target_node_id"
+          }
+        ],
+        "name": "workflow.definition.NodesConnected",
+        "summary": null
+      },
+      {
+        "display": "NodesDisconnected",
+        "fields": [
+          {
+            "name": "workflow_id",
+            "optional": false,
+            "spelling": "workflow.definition.WorkflowId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.WorkflowId"
+            },
+            "wire": "workflow_id"
+          },
+          {
+            "name": "draft_id",
+            "optional": false,
+            "spelling": "workflow.definition.DraftId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.DraftId"
+            },
+            "wire": "draft_id"
+          },
+          {
+            "name": "edge_id",
+            "optional": false,
+            "spelling": "workflow.definition.EdgeId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.EdgeId"
+            },
+            "wire": "edge_id"
+          }
+        ],
+        "name": "workflow.definition.NodesDisconnected",
+        "summary": null
+      },
+      {
+        "display": "RevisionActivated",
+        "fields": [
+          {
+            "name": "workflow_id",
+            "optional": false,
+            "spelling": "workflow.definition.WorkflowId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.WorkflowId"
+            },
+            "wire": "workflow_id"
+          },
+          {
+            "name": "active_revision_id",
+            "optional": false,
+            "spelling": "workflow.definition.RevisionId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.RevisionId"
+            },
+            "wire": "active_revision_id"
+          }
+        ],
+        "name": "workflow.definition.RevisionActivated",
+        "summary": null
+      },
+      {
+        "display": "RevisionPublished",
+        "fields": [
+          {
+            "name": "revision_id",
+            "optional": false,
+            "spelling": "workflow.definition.RevisionId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.RevisionId"
+            },
+            "wire": "revision_id"
+          },
+          {
+            "name": "workflow_id",
+            "optional": false,
+            "spelling": "workflow.definition.WorkflowId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.WorkflowId"
+            },
+            "wire": "workflow_id"
+          },
+          {
+            "name": "draft_id",
+            "optional": false,
+            "spelling": "workflow.definition.DraftId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.DraftId"
+            },
+            "wire": "draft_id"
+          },
+          {
+            "name": "nodes",
+            "optional": false,
+            "spelling": "List<workflow.definition.NodeSnapshot>",
+            "type": {
+              "kind": "list",
+              "of": {
+                "kind": "declared",
+                "name": "workflow.definition.NodeSnapshot"
+              }
+            },
+            "wire": "nodes"
+          },
+          {
+            "name": "edges",
+            "optional": false,
+            "spelling": "List<workflow.definition.EdgeSnapshot>",
+            "type": {
+              "kind": "list",
+              "of": {
+                "kind": "declared",
+                "name": "workflow.definition.EdgeSnapshot"
+              }
+            },
+            "wire": "edges"
+          },
+          {
+            "name": "digest",
+            "optional": false,
+            "spelling": "String",
+            "type": {
+              "kind": "primitive",
+              "name": "string"
+            },
+            "wire": "digest"
+          },
+          {
+            "name": "node_count",
+            "optional": false,
+            "spelling": "Integer",
+            "type": {
+              "kind": "primitive",
+              "name": "integer"
+            },
+            "wire": "node_count"
+          },
+          {
+            "name": "edge_count",
+            "optional": false,
+            "spelling": "Integer",
+            "type": {
+              "kind": "primitive",
+              "name": "integer"
+            },
+            "wire": "edge_count"
+          },
+          {
+            "name": "owner",
+            "optional": false,
+            "spelling": "workflow.definition.OwnerRef",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.OwnerRef"
+            },
+            "wire": "owner"
+          },
+          {
+            "name": "scopes",
+            "optional": false,
+            "spelling": "workflow.definition.ScopeBindings",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.ScopeBindings"
+            },
+            "wire": "scopes"
+          }
+        ],
+        "name": "workflow.definition.RevisionPublished",
+        "summary": null
+      },
+      {
+        "display": "WorkflowCreated",
+        "fields": [
+          {
+            "name": "workflow_id",
+            "optional": false,
+            "spelling": "workflow.definition.WorkflowId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.WorkflowId"
+            },
+            "wire": "workflow_id"
+          },
+          {
+            "name": "name",
+            "optional": false,
+            "spelling": "String",
+            "type": {
+              "kind": "primitive",
+              "name": "string"
+            },
+            "wire": "name"
+          },
+          {
+            "name": "owner",
+            "optional": false,
+            "spelling": "workflow.definition.OwnerRef",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.OwnerRef"
+            },
+            "wire": "owner"
+          },
+          {
+            "name": "scopes",
+            "optional": false,
+            "spelling": "workflow.definition.ScopeBindings",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.ScopeBindings"
+            },
+            "wire": "scopes"
+          }
+        ],
+        "name": "workflow.definition.WorkflowCreated",
+        "summary": null
+      }
+    ],
+    "format": "ess-browser-catalog/1",
+    "plan": {
+      "generated": 64,
+      "obligations": 17,
+      "refused": 1
+    },
+    "provenance": {
+      "contract_digest": "1f20a14314130c4a1d048f7a1f6cb2319a04e70ea589b6d3b51b7e4443f39b95",
+      "source_digest": "6a79078047815754e0dda89f285e08689037af0adfd4277dfcc305f1d003df1b",
+      "specification_version": "v1",
+      "system": "workflow"
+    },
+    "summary": "Tenant-partitioned workflow definitions with mutable draft graphs, canonical immutable revisions, and explicit activation.",
+    "system": "workflow",
+    "types": {
+      "workflow.definition.CallNode": {
+        "display": "CallNode",
+        "fields": [
+          {
+            "name": "connector",
+            "optional": false,
+            "spelling": "String",
+            "type": {
+              "kind": "primitive",
+              "name": "string"
+            },
+            "wire": "connector"
+          },
+          {
+            "name": "operation",
+            "optional": false,
+            "spelling": "String",
+            "type": {
+              "kind": "primitive",
+              "name": "string"
+            },
+            "wire": "operation"
+          }
+        ],
+        "invariants": [],
+        "kind": "struct"
+      },
+      "workflow.definition.CompleteNode": {
+        "display": "CompleteNode",
+        "fields": [
+          {
+            "name": "result",
+            "optional": false,
+            "spelling": "String",
+            "type": {
+              "kind": "primitive",
+              "name": "string"
+            },
+            "wire": "result"
+          }
+        ],
+        "invariants": [],
+        "kind": "struct"
+      },
+      "workflow.definition.ComputeNode": {
+        "display": "ComputeNode",
+        "fields": [
+          {
+            "name": "expression",
+            "optional": false,
+            "spelling": "String",
+            "type": {
+              "kind": "primitive",
+              "name": "string"
+            },
+            "wire": "expression"
+          }
+        ],
+        "invariants": [],
+        "kind": "struct"
+      },
+      "workflow.definition.DraftEdge.State": {
+        "display": "State",
+        "kind": "enum",
+        "variants": [
+          "Active",
+          "Disconnected"
+        ]
+      },
+      "workflow.definition.DraftId": {
+        "display": "DraftId",
+        "invariants": [],
+        "kind": "newtype",
+        "of": {
+          "kind": "primitive",
+          "name": "uuid"
+        },
+        "spelling": "Uuid"
+      },
+      "workflow.definition.DraftNode.State": {
+        "display": "State",
+        "kind": "enum",
+        "variants": [
+          "Active",
+          "Removed"
+        ]
+      },
+      "workflow.definition.DraftRow": {
+        "display": "DraftRow",
+        "fields": [
+          {
+            "name": "draft_id",
+            "optional": false,
+            "spelling": "workflow.definition.DraftId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.DraftId"
+            },
+            "wire": "draft_id"
+          },
+          {
+            "name": "workflow_id",
+            "optional": false,
+            "spelling": "workflow.definition.WorkflowId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.WorkflowId"
+            },
+            "wire": "workflow_id"
+          },
+          {
+            "name": "name",
+            "optional": false,
+            "spelling": "String",
+            "type": {
+              "kind": "primitive",
+              "name": "string"
+            },
+            "wire": "name"
+          },
+          {
+            "name": "based_on_revision_id",
+            "optional": true,
+            "spelling": "Optional<workflow.definition.RevisionId>",
+            "type": {
+              "kind": "optional",
+              "of": {
+                "kind": "declared",
+                "name": "workflow.definition.RevisionId"
+              }
+            },
+            "wire": "based_on_revision_id"
+          },
+          {
+            "name": "owner",
+            "optional": false,
+            "spelling": "workflow.definition.OwnerRef",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.OwnerRef"
+            },
+            "wire": "owner"
+          },
+          {
+            "name": "scopes",
+            "optional": false,
+            "spelling": "workflow.definition.ScopeBindings",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.ScopeBindings"
+            },
+            "wire": "scopes"
+          },
+          {
+            "name": "state",
+            "optional": false,
+            "spelling": "workflow.definition.WorkflowDraft.State",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.WorkflowDraft.State"
+            },
+            "wire": "state"
+          }
+        ],
+        "invariants": [],
+        "kind": "struct"
+      },
+      "workflow.definition.EdgeId": {
+        "display": "EdgeId",
+        "invariants": [],
+        "kind": "newtype",
+        "of": {
+          "kind": "primitive",
+          "name": "uuid"
+        },
+        "spelling": "Uuid"
+      },
+      "workflow.definition.EdgeSnapshot": {
+        "display": "EdgeSnapshot",
+        "fields": [
+          {
+            "name": "edge_id",
+            "optional": false,
+            "spelling": "workflow.definition.EdgeId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.EdgeId"
+            },
+            "wire": "edge_id"
+          },
+          {
+            "name": "draft_id",
+            "optional": false,
+            "spelling": "workflow.definition.DraftId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.DraftId"
+            },
+            "wire": "draft_id"
+          },
+          {
+            "name": "source_node_id",
+            "optional": false,
+            "spelling": "workflow.definition.NodeId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.NodeId"
+            },
+            "wire": "source_node_id"
+          },
+          {
+            "name": "target_node_id",
+            "optional": false,
+            "spelling": "workflow.definition.NodeId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.NodeId"
+            },
+            "wire": "target_node_id"
+          }
+        ],
+        "invariants": [],
+        "kind": "struct"
+      },
+      "workflow.definition.EmitNode": {
+        "display": "EmitNode",
+        "fields": [
+          {
+            "name": "event",
+            "optional": false,
+            "spelling": "String",
+            "type": {
+              "kind": "primitive",
+              "name": "string"
+            },
+            "wire": "event"
+          }
+        ],
+        "invariants": [],
+        "kind": "struct"
+      },
+      "workflow.definition.InvokeNode": {
+        "display": "InvokeNode",
+        "fields": [
+          {
+            "name": "agent",
+            "optional": false,
+            "spelling": "String",
+            "type": {
+              "kind": "primitive",
+              "name": "string"
+            },
+            "wire": "agent"
+          },
+          {
+            "name": "instruction",
+            "optional": false,
+            "spelling": "String",
+            "type": {
+              "kind": "primitive",
+              "name": "string"
+            },
+            "wire": "instruction"
+          }
+        ],
+        "invariants": [],
+        "kind": "struct"
+      },
+      "workflow.definition.JudgeNode": {
+        "display": "JudgeNode",
+        "fields": [
+          {
+            "name": "condition",
+            "optional": false,
+            "spelling": "String",
+            "type": {
+              "kind": "primitive",
+              "name": "string"
+            },
+            "wire": "condition"
+          }
+        ],
+        "invariants": [],
+        "kind": "struct"
+      },
+      "workflow.definition.NodeDefinition": {
+        "content": "value",
+        "display": "NodeDefinition",
+        "kind": "union",
+        "tag": "kind",
+        "variants": {
+          "call": {
+            "spelling": "workflow.definition.CallNode",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.CallNode"
+            }
+          },
+          "complete": {
+            "spelling": "workflow.definition.CompleteNode",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.CompleteNode"
+            }
+          },
+          "compute": {
+            "spelling": "workflow.definition.ComputeNode",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.ComputeNode"
+            }
+          },
+          "emit": {
+            "spelling": "workflow.definition.EmitNode",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.EmitNode"
+            }
+          },
+          "invoke": {
+            "spelling": "workflow.definition.InvokeNode",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.InvokeNode"
+            }
+          },
+          "judge": {
+            "spelling": "workflow.definition.JudgeNode",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.JudgeNode"
+            }
+          },
+          "read": {
+            "spelling": "workflow.definition.ReadNode",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.ReadNode"
+            }
+          },
+          "wait": {
+            "spelling": "workflow.definition.WaitNode",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.WaitNode"
+            }
+          }
+        }
+      },
+      "workflow.definition.NodeId": {
+        "display": "NodeId",
+        "invariants": [],
+        "kind": "newtype",
+        "of": {
+          "kind": "primitive",
+          "name": "uuid"
+        },
+        "spelling": "Uuid"
+      },
+      "workflow.definition.NodeSnapshot": {
+        "display": "NodeSnapshot",
+        "fields": [
+          {
+            "name": "node_id",
+            "optional": false,
+            "spelling": "workflow.definition.NodeId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.NodeId"
+            },
+            "wire": "node_id"
+          },
+          {
+            "name": "draft_id",
+            "optional": false,
+            "spelling": "workflow.definition.DraftId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.DraftId"
+            },
+            "wire": "draft_id"
+          },
+          {
+            "name": "definition",
+            "optional": false,
+            "spelling": "workflow.definition.NodeDefinition",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.NodeDefinition"
+            },
+            "wire": "definition"
+          }
+        ],
+        "invariants": [],
+        "kind": "struct"
+      },
+      "workflow.definition.OwnerRef": {
+        "display": "OwnerRef",
+        "invariants": [],
+        "kind": "newtype",
+        "of": {
+          "kind": "primitive",
+          "name": "string"
+        },
+        "spelling": "String"
+      },
+      "workflow.definition.PrincipalRef": {
+        "display": "PrincipalRef",
+        "invariants": [],
+        "kind": "newtype",
+        "of": {
+          "kind": "primitive",
+          "name": "string"
+        },
+        "spelling": "String"
+      },
+      "workflow.definition.ProjectRef": {
+        "display": "ProjectRef",
+        "invariants": [],
+        "kind": "newtype",
+        "of": {
+          "kind": "primitive",
+          "name": "string"
+        },
+        "spelling": "String"
+      },
+      "workflow.definition.ReadNode": {
+        "display": "ReadNode",
+        "fields": [
+          {
+            "name": "connector",
+            "optional": false,
+            "spelling": "String",
+            "type": {
+              "kind": "primitive",
+              "name": "string"
+            },
+            "wire": "connector"
+          },
+          {
+            "name": "operation",
+            "optional": false,
+            "spelling": "String",
+            "type": {
+              "kind": "primitive",
+              "name": "string"
+            },
+            "wire": "operation"
+          }
+        ],
+        "invariants": [],
+        "kind": "struct"
+      },
+      "workflow.definition.RevisionId": {
+        "display": "RevisionId",
+        "invariants": [],
+        "kind": "newtype",
+        "of": {
+          "kind": "primitive",
+          "name": "uuid"
+        },
+        "spelling": "Uuid"
+      },
+      "workflow.definition.RevisionRow": {
+        "display": "RevisionRow",
+        "fields": [
+          {
+            "name": "revision_id",
+            "optional": false,
+            "spelling": "workflow.definition.RevisionId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.RevisionId"
+            },
+            "wire": "revision_id"
+          },
+          {
+            "name": "workflow_id",
+            "optional": false,
+            "spelling": "workflow.definition.WorkflowId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.WorkflowId"
+            },
+            "wire": "workflow_id"
+          },
+          {
+            "name": "draft_id",
+            "optional": false,
+            "spelling": "workflow.definition.DraftId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.DraftId"
+            },
+            "wire": "draft_id"
+          },
+          {
+            "name": "nodes",
+            "optional": false,
+            "spelling": "List<workflow.definition.NodeSnapshot>",
+            "type": {
+              "kind": "list",
+              "of": {
+                "kind": "declared",
+                "name": "workflow.definition.NodeSnapshot"
+              }
+            },
+            "wire": "nodes"
+          },
+          {
+            "name": "edges",
+            "optional": false,
+            "spelling": "List<workflow.definition.EdgeSnapshot>",
+            "type": {
+              "kind": "list",
+              "of": {
+                "kind": "declared",
+                "name": "workflow.definition.EdgeSnapshot"
+              }
+            },
+            "wire": "edges"
+          },
+          {
+            "name": "digest",
+            "optional": false,
+            "spelling": "String",
+            "type": {
+              "kind": "primitive",
+              "name": "string"
+            },
+            "wire": "digest"
+          },
+          {
+            "name": "node_count",
+            "optional": false,
+            "spelling": "Integer",
+            "type": {
+              "kind": "primitive",
+              "name": "integer"
+            },
+            "wire": "node_count"
+          },
+          {
+            "name": "edge_count",
+            "optional": false,
+            "spelling": "Integer",
+            "type": {
+              "kind": "primitive",
+              "name": "integer"
+            },
+            "wire": "edge_count"
+          },
+          {
+            "name": "owner",
+            "optional": false,
+            "spelling": "workflow.definition.OwnerRef",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.OwnerRef"
+            },
+            "wire": "owner"
+          },
+          {
+            "name": "scopes",
+            "optional": false,
+            "spelling": "workflow.definition.ScopeBindings",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.ScopeBindings"
+            },
+            "wire": "scopes"
+          },
+          {
+            "name": "state",
+            "optional": false,
+            "spelling": "workflow.definition.WorkflowRevision.State",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.WorkflowRevision.State"
+            },
+            "wire": "state"
+          }
+        ],
+        "invariants": [],
+        "kind": "struct"
+      },
+      "workflow.definition.ScopeBindings": {
+        "display": "ScopeBindings",
+        "fields": [
+          {
+            "name": "principal",
+            "optional": true,
+            "spelling": "Optional<workflow.definition.PrincipalRef>",
+            "type": {
+              "kind": "optional",
+              "of": {
+                "kind": "declared",
+                "name": "workflow.definition.PrincipalRef"
+              }
+            },
+            "wire": "principal"
+          },
+          {
+            "name": "team",
+            "optional": true,
+            "spelling": "Optional<workflow.definition.TeamRef>",
+            "type": {
+              "kind": "optional",
+              "of": {
+                "kind": "declared",
+                "name": "workflow.definition.TeamRef"
+              }
+            },
+            "wire": "team"
+          },
+          {
+            "name": "project",
+            "optional": true,
+            "spelling": "Optional<workflow.definition.ProjectRef>",
+            "type": {
+              "kind": "optional",
+              "of": {
+                "kind": "declared",
+                "name": "workflow.definition.ProjectRef"
+              }
+            },
+            "wire": "project"
+          }
+        ],
+        "invariants": [],
+        "kind": "struct"
+      },
+      "workflow.definition.TeamRef": {
+        "display": "TeamRef",
+        "invariants": [],
+        "kind": "newtype",
+        "of": {
+          "kind": "primitive",
+          "name": "string"
+        },
+        "spelling": "String"
+      },
+      "workflow.definition.WaitNode": {
+        "display": "WaitNode",
+        "fields": [
+          {
+            "name": "duration",
+            "optional": false,
+            "spelling": "Duration",
+            "type": {
+              "kind": "primitive",
+              "name": "duration"
+            },
+            "wire": "duration"
+          }
+        ],
+        "invariants": [],
+        "kind": "struct"
+      },
+      "workflow.definition.Workflow.State": {
+        "display": "State",
+        "kind": "enum",
+        "variants": [
+          "Active"
+        ]
+      },
+      "workflow.definition.WorkflowDraft.State": {
+        "display": "State",
+        "kind": "enum",
+        "variants": [
+          "Active",
+          "Discarded"
+        ]
+      },
+      "workflow.definition.WorkflowId": {
+        "display": "WorkflowId",
+        "invariants": [],
+        "kind": "newtype",
+        "of": {
+          "kind": "primitive",
+          "name": "uuid"
+        },
+        "spelling": "Uuid"
+      },
+      "workflow.definition.WorkflowRevision.State": {
+        "display": "State",
+        "kind": "enum",
+        "variants": [
+          "Published"
+        ]
+      },
+      "workflow.definition.WorkflowRow": {
+        "display": "WorkflowRow",
+        "fields": [
+          {
+            "name": "workflow_id",
+            "optional": false,
+            "spelling": "workflow.definition.WorkflowId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.WorkflowId"
+            },
+            "wire": "workflow_id"
+          },
+          {
+            "name": "name",
+            "optional": false,
+            "spelling": "String",
+            "type": {
+              "kind": "primitive",
+              "name": "string"
+            },
+            "wire": "name"
+          },
+          {
+            "name": "owner",
+            "optional": false,
+            "spelling": "workflow.definition.OwnerRef",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.OwnerRef"
+            },
+            "wire": "owner"
+          },
+          {
+            "name": "scopes",
+            "optional": false,
+            "spelling": "workflow.definition.ScopeBindings",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.ScopeBindings"
+            },
+            "wire": "scopes"
+          },
+          {
+            "name": "active_revision_id",
+            "optional": true,
+            "spelling": "Optional<workflow.definition.RevisionId>",
+            "type": {
+              "kind": "optional",
+              "of": {
+                "kind": "declared",
+                "name": "workflow.definition.RevisionId"
+              }
+            },
+            "wire": "active_revision_id"
+          },
+          {
+            "name": "state",
+            "optional": false,
+            "spelling": "workflow.definition.Workflow.State",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.Workflow.State"
+            },
+            "wire": "state"
+          }
+        ],
+        "invariants": [],
+        "kind": "struct"
+      }
+    },
+    "version": "v1",
+    "views": [
+      {
+        "component": "workflow-service",
+        "consistency": "read_your_writes",
+        "display": "DraftById",
+        "entity": "workflow.definition.WorkflowDraft",
+        "fields": [
+          {
+            "name": "draft_id",
+            "optional": false,
+            "spelling": "workflow.definition.DraftId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.DraftId"
+            },
+            "wire": "draft_id"
+          },
+          {
+            "name": "workflow_id",
+            "optional": false,
+            "spelling": "workflow.definition.WorkflowId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.WorkflowId"
+            },
+            "wire": "workflow_id"
+          },
+          {
+            "name": "name",
+            "optional": false,
+            "spelling": "String",
+            "type": {
+              "kind": "primitive",
+              "name": "string"
+            },
+            "wire": "name"
+          },
+          {
+            "name": "based_on_revision_id",
+            "optional": true,
+            "spelling": "Optional<workflow.definition.RevisionId>",
+            "type": {
+              "kind": "optional",
+              "of": {
+                "kind": "declared",
+                "name": "workflow.definition.RevisionId"
+              }
+            },
+            "wire": "based_on_revision_id"
+          },
+          {
+            "name": "owner",
+            "optional": false,
+            "spelling": "workflow.definition.OwnerRef",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.OwnerRef"
+            },
+            "wire": "owner"
+          },
+          {
+            "name": "scopes",
+            "optional": false,
+            "spelling": "workflow.definition.ScopeBindings",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.ScopeBindings"
+            },
+            "wire": "scopes"
+          },
+          {
+            "name": "state",
+            "optional": false,
+            "spelling": "workflow.definition.WorkflowDraft.State",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.WorkflowDraft.State"
+            },
+            "wire": "state"
+          }
+        ],
+        "filter": null,
+        "name": "workflow.definition.DraftById",
+        "served": {
+          "contract": "a query answering `workflow.definition.DraftById` with rows projected from `workflow.definition.WorkflowDraft` at `read_your_writes` consistency",
+          "disposition": "obligation",
+          "why": "how the projection is kept current is a storage decision"
+        },
+        "summary": null
+      },
+      {
+        "component": "workflow-service",
+        "consistency": "read_your_writes",
+        "display": "Drafts",
+        "entity": "workflow.definition.WorkflowDraft",
+        "fields": [
+          {
+            "name": "draft_id",
+            "optional": false,
+            "spelling": "workflow.definition.DraftId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.DraftId"
+            },
+            "wire": "draft_id"
+          },
+          {
+            "name": "workflow_id",
+            "optional": false,
+            "spelling": "workflow.definition.WorkflowId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.WorkflowId"
+            },
+            "wire": "workflow_id"
+          },
+          {
+            "name": "name",
+            "optional": false,
+            "spelling": "String",
+            "type": {
+              "kind": "primitive",
+              "name": "string"
+            },
+            "wire": "name"
+          },
+          {
+            "name": "based_on_revision_id",
+            "optional": true,
+            "spelling": "Optional<workflow.definition.RevisionId>",
+            "type": {
+              "kind": "optional",
+              "of": {
+                "kind": "declared",
+                "name": "workflow.definition.RevisionId"
+              }
+            },
+            "wire": "based_on_revision_id"
+          },
+          {
+            "name": "owner",
+            "optional": false,
+            "spelling": "workflow.definition.OwnerRef",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.OwnerRef"
+            },
+            "wire": "owner"
+          },
+          {
+            "name": "scopes",
+            "optional": false,
+            "spelling": "workflow.definition.ScopeBindings",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.ScopeBindings"
+            },
+            "wire": "scopes"
+          },
+          {
+            "name": "state",
+            "optional": false,
+            "spelling": "workflow.definition.WorkflowDraft.State",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.WorkflowDraft.State"
+            },
+            "wire": "state"
+          }
+        ],
+        "filter": null,
+        "name": "workflow.definition.Drafts",
+        "served": {
+          "contract": "a query answering `workflow.definition.Drafts` with rows projected from `workflow.definition.WorkflowDraft` at `read_your_writes` consistency",
+          "disposition": "obligation",
+          "why": "how the projection is kept current is a storage decision"
+        },
+        "summary": null
+      },
+      {
+        "component": "workflow-service",
+        "consistency": "read_your_writes",
+        "display": "RevisionById",
+        "entity": "workflow.definition.WorkflowRevision",
+        "fields": [
+          {
+            "name": "revision_id",
+            "optional": false,
+            "spelling": "workflow.definition.RevisionId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.RevisionId"
+            },
+            "wire": "revision_id"
+          },
+          {
+            "name": "workflow_id",
+            "optional": false,
+            "spelling": "workflow.definition.WorkflowId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.WorkflowId"
+            },
+            "wire": "workflow_id"
+          },
+          {
+            "name": "draft_id",
+            "optional": false,
+            "spelling": "workflow.definition.DraftId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.DraftId"
+            },
+            "wire": "draft_id"
+          },
+          {
+            "name": "nodes",
+            "optional": false,
+            "spelling": "List<workflow.definition.NodeSnapshot>",
+            "type": {
+              "kind": "list",
+              "of": {
+                "kind": "declared",
+                "name": "workflow.definition.NodeSnapshot"
+              }
+            },
+            "wire": "nodes"
+          },
+          {
+            "name": "edges",
+            "optional": false,
+            "spelling": "List<workflow.definition.EdgeSnapshot>",
+            "type": {
+              "kind": "list",
+              "of": {
+                "kind": "declared",
+                "name": "workflow.definition.EdgeSnapshot"
+              }
+            },
+            "wire": "edges"
+          },
+          {
+            "name": "digest",
+            "optional": false,
+            "spelling": "String",
+            "type": {
+              "kind": "primitive",
+              "name": "string"
+            },
+            "wire": "digest"
+          },
+          {
+            "name": "node_count",
+            "optional": false,
+            "spelling": "Integer",
+            "type": {
+              "kind": "primitive",
+              "name": "integer"
+            },
+            "wire": "node_count"
+          },
+          {
+            "name": "edge_count",
+            "optional": false,
+            "spelling": "Integer",
+            "type": {
+              "kind": "primitive",
+              "name": "integer"
+            },
+            "wire": "edge_count"
+          },
+          {
+            "name": "owner",
+            "optional": false,
+            "spelling": "workflow.definition.OwnerRef",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.OwnerRef"
+            },
+            "wire": "owner"
+          },
+          {
+            "name": "scopes",
+            "optional": false,
+            "spelling": "workflow.definition.ScopeBindings",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.ScopeBindings"
+            },
+            "wire": "scopes"
+          },
+          {
+            "name": "state",
+            "optional": false,
+            "spelling": "workflow.definition.WorkflowRevision.State",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.WorkflowRevision.State"
+            },
+            "wire": "state"
+          }
+        ],
+        "filter": null,
+        "name": "workflow.definition.RevisionById",
+        "served": {
+          "contract": "a query answering `workflow.definition.RevisionById` with rows projected from `workflow.definition.WorkflowRevision` at `read_your_writes` consistency",
+          "disposition": "obligation",
+          "why": "how the projection is kept current is a storage decision"
+        },
+        "summary": null
+      },
+      {
+        "component": "workflow-service",
+        "consistency": "read_your_writes",
+        "display": "Revisions",
+        "entity": "workflow.definition.WorkflowRevision",
+        "fields": [
+          {
+            "name": "revision_id",
+            "optional": false,
+            "spelling": "workflow.definition.RevisionId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.RevisionId"
+            },
+            "wire": "revision_id"
+          },
+          {
+            "name": "workflow_id",
+            "optional": false,
+            "spelling": "workflow.definition.WorkflowId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.WorkflowId"
+            },
+            "wire": "workflow_id"
+          },
+          {
+            "name": "draft_id",
+            "optional": false,
+            "spelling": "workflow.definition.DraftId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.DraftId"
+            },
+            "wire": "draft_id"
+          },
+          {
+            "name": "nodes",
+            "optional": false,
+            "spelling": "List<workflow.definition.NodeSnapshot>",
+            "type": {
+              "kind": "list",
+              "of": {
+                "kind": "declared",
+                "name": "workflow.definition.NodeSnapshot"
+              }
+            },
+            "wire": "nodes"
+          },
+          {
+            "name": "edges",
+            "optional": false,
+            "spelling": "List<workflow.definition.EdgeSnapshot>",
+            "type": {
+              "kind": "list",
+              "of": {
+                "kind": "declared",
+                "name": "workflow.definition.EdgeSnapshot"
+              }
+            },
+            "wire": "edges"
+          },
+          {
+            "name": "digest",
+            "optional": false,
+            "spelling": "String",
+            "type": {
+              "kind": "primitive",
+              "name": "string"
+            },
+            "wire": "digest"
+          },
+          {
+            "name": "node_count",
+            "optional": false,
+            "spelling": "Integer",
+            "type": {
+              "kind": "primitive",
+              "name": "integer"
+            },
+            "wire": "node_count"
+          },
+          {
+            "name": "edge_count",
+            "optional": false,
+            "spelling": "Integer",
+            "type": {
+              "kind": "primitive",
+              "name": "integer"
+            },
+            "wire": "edge_count"
+          },
+          {
+            "name": "owner",
+            "optional": false,
+            "spelling": "workflow.definition.OwnerRef",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.OwnerRef"
+            },
+            "wire": "owner"
+          },
+          {
+            "name": "scopes",
+            "optional": false,
+            "spelling": "workflow.definition.ScopeBindings",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.ScopeBindings"
+            },
+            "wire": "scopes"
+          },
+          {
+            "name": "state",
+            "optional": false,
+            "spelling": "workflow.definition.WorkflowRevision.State",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.WorkflowRevision.State"
+            },
+            "wire": "state"
+          }
+        ],
+        "filter": null,
+        "name": "workflow.definition.Revisions",
+        "served": {
+          "contract": "a query answering `workflow.definition.Revisions` with rows projected from `workflow.definition.WorkflowRevision` at `read_your_writes` consistency",
+          "disposition": "obligation",
+          "why": "how the projection is kept current is a storage decision"
+        },
+        "summary": null
+      },
+      {
+        "component": "workflow-service",
+        "consistency": "read_your_writes",
+        "display": "WorkflowById",
+        "entity": "workflow.definition.Workflow",
+        "fields": [
+          {
+            "name": "workflow_id",
+            "optional": false,
+            "spelling": "workflow.definition.WorkflowId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.WorkflowId"
+            },
+            "wire": "workflow_id"
+          },
+          {
+            "name": "name",
+            "optional": false,
+            "spelling": "String",
+            "type": {
+              "kind": "primitive",
+              "name": "string"
+            },
+            "wire": "name"
+          },
+          {
+            "name": "owner",
+            "optional": false,
+            "spelling": "workflow.definition.OwnerRef",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.OwnerRef"
+            },
+            "wire": "owner"
+          },
+          {
+            "name": "scopes",
+            "optional": false,
+            "spelling": "workflow.definition.ScopeBindings",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.ScopeBindings"
+            },
+            "wire": "scopes"
+          },
+          {
+            "name": "active_revision_id",
+            "optional": true,
+            "spelling": "Optional<workflow.definition.RevisionId>",
+            "type": {
+              "kind": "optional",
+              "of": {
+                "kind": "declared",
+                "name": "workflow.definition.RevisionId"
+              }
+            },
+            "wire": "active_revision_id"
+          },
+          {
+            "name": "state",
+            "optional": false,
+            "spelling": "workflow.definition.Workflow.State",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.Workflow.State"
+            },
+            "wire": "state"
+          }
+        ],
+        "filter": null,
+        "name": "workflow.definition.WorkflowById",
+        "served": {
+          "contract": "a query answering `workflow.definition.WorkflowById` with rows projected from `workflow.definition.Workflow` at `read_your_writes` consistency",
+          "disposition": "obligation",
+          "why": "how the projection is kept current is a storage decision"
+        },
+        "summary": null
+      },
+      {
+        "component": "workflow-service",
+        "consistency": "read_your_writes",
+        "display": "Workflows",
+        "entity": "workflow.definition.Workflow",
+        "fields": [
+          {
+            "name": "workflow_id",
+            "optional": false,
+            "spelling": "workflow.definition.WorkflowId",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.WorkflowId"
+            },
+            "wire": "workflow_id"
+          },
+          {
+            "name": "name",
+            "optional": false,
+            "spelling": "String",
+            "type": {
+              "kind": "primitive",
+              "name": "string"
+            },
+            "wire": "name"
+          },
+          {
+            "name": "owner",
+            "optional": false,
+            "spelling": "workflow.definition.OwnerRef",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.OwnerRef"
+            },
+            "wire": "owner"
+          },
+          {
+            "name": "scopes",
+            "optional": false,
+            "spelling": "workflow.definition.ScopeBindings",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.ScopeBindings"
+            },
+            "wire": "scopes"
+          },
+          {
+            "name": "active_revision_id",
+            "optional": true,
+            "spelling": "Optional<workflow.definition.RevisionId>",
+            "type": {
+              "kind": "optional",
+              "of": {
+                "kind": "declared",
+                "name": "workflow.definition.RevisionId"
+              }
+            },
+            "wire": "active_revision_id"
+          },
+          {
+            "name": "state",
+            "optional": false,
+            "spelling": "workflow.definition.Workflow.State",
+            "type": {
+              "kind": "declared",
+              "name": "workflow.definition.Workflow.State"
+            },
+            "wire": "state"
+          }
+        ],
+        "filter": null,
+        "name": "workflow.definition.Workflows",
+        "served": {
+          "contract": "a query answering `workflow.definition.Workflows` with rows projected from `workflow.definition.Workflow` at `read_your_writes` consistency",
+          "disposition": "obligation",
+          "why": "how the projection is kept current is a storage decision"
+        },
+        "summary": null
+      }
+    ]
+  },
+  "authentication": {
+    "source": "session",
+    "realm_policy": "optional"
+  },
+  "operations": [
+    {
+      "name": "activate_revision",
+      "operation_ref": "workflow.activate_revision",
+      "semantic_ref": "workflow.definition.ActivateRevision",
+      "kind": "intent",
+      "effect": "write",
+      "input_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "expected_version": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "idempotency_key": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "revision_id": {
+            "title": "workflow.definition.RevisionId"
+          },
+          "workflow_id": {
+            "title": "workflow.definition.WorkflowId"
+          }
+        },
+        "required": [
+          "expected_version",
+          "idempotency_key",
+          "revision_id",
+          "workflow_id"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "events": {
+            "type": "array"
+          },
+          "outcome": {
+            "type": "string"
+          },
+          "replayed": {
+            "type": "boolean"
+          },
+          "through_version": {
+            "minimum": 1,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "outcome",
+          "events",
+          "through_version",
+          "replayed"
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "name": "add_node",
+      "operation_ref": "workflow.add_node",
+      "semantic_ref": "workflow.definition.AddNode",
+      "kind": "intent",
+      "effect": "write",
+      "input_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "definition": {
+            "title": "workflow.definition.NodeDefinition"
+          },
+          "draft_id": {
+            "title": "workflow.definition.DraftId"
+          },
+          "expected_version": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "idempotency_key": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "workflow_id": {
+            "title": "workflow.definition.WorkflowId"
+          }
+        },
+        "required": [
+          "definition",
+          "draft_id",
+          "expected_version",
+          "idempotency_key",
+          "workflow_id"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "events": {
+            "type": "array"
+          },
+          "outcome": {
+            "type": "string"
+          },
+          "replayed": {
+            "type": "boolean"
+          },
+          "through_version": {
+            "minimum": 1,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "outcome",
+          "events",
+          "through_version",
+          "replayed"
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "name": "connect_nodes",
+      "operation_ref": "workflow.connect_nodes",
+      "semantic_ref": "workflow.definition.ConnectNodes",
+      "kind": "intent",
+      "effect": "write",
+      "input_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "draft_id": {
+            "title": "workflow.definition.DraftId"
+          },
+          "expected_version": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "idempotency_key": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "source_node_id": {
+            "title": "workflow.definition.NodeId"
+          },
+          "target_node_id": {
+            "title": "workflow.definition.NodeId"
+          },
+          "workflow_id": {
+            "title": "workflow.definition.WorkflowId"
+          }
+        },
+        "required": [
+          "draft_id",
+          "expected_version",
+          "idempotency_key",
+          "source_node_id",
+          "target_node_id",
+          "workflow_id"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "events": {
+            "type": "array"
+          },
+          "outcome": {
+            "type": "string"
+          },
+          "replayed": {
+            "type": "boolean"
+          },
+          "through_version": {
+            "minimum": 1,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "outcome",
+          "events",
+          "through_version",
+          "replayed"
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "name": "create_draft",
+      "operation_ref": "workflow.create_draft",
+      "semantic_ref": "workflow.definition.CreateDraft",
+      "kind": "intent",
+      "effect": "write",
+      "input_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "based_on_revision_id": {
+            "title": "Optional<workflow.definition.RevisionId>"
+          },
+          "expected_version": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "idempotency_key": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "name": {
+            "title": "String"
+          },
+          "workflow_id": {
+            "title": "workflow.definition.WorkflowId"
+          }
+        },
+        "required": [
+          "expected_version",
+          "idempotency_key",
+          "name",
+          "workflow_id"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "events": {
+            "type": "array"
+          },
+          "outcome": {
+            "type": "string"
+          },
+          "replayed": {
+            "type": "boolean"
+          },
+          "through_version": {
+            "minimum": 1,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "outcome",
+          "events",
+          "through_version",
+          "replayed"
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "name": "create_workflow",
+      "operation_ref": "workflow.create_workflow",
+      "semantic_ref": "workflow.definition.CreateWorkflow",
+      "kind": "intent",
+      "effect": "write",
+      "input_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "idempotency_key": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "name": {
+            "title": "String"
+          },
+          "scopes": {
+            "additionalProperties": false,
+            "description": "Optional conjunctive visibility scopes; an empty object is private to the owner.",
+            "properties": {
+              "extension": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "additionalProperties": false,
+                    "properties": {
+                      "kind": {
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      "value": {
+                        "minLength": 1,
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "value"
+                    ],
+                    "type": "object"
+                  }
+                ]
+              },
+              "principal": {
+                "minLength": 1,
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "project": {
+                "minLength": 1,
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "team": {
+                "minLength": 1,
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "type": "object"
+          }
+        },
+        "required": [
+          "idempotency_key",
+          "name",
+          "scopes"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "events": {
+            "type": "array"
+          },
+          "outcome": {
+            "type": "string"
+          },
+          "replayed": {
+            "type": "boolean"
+          },
+          "through_version": {
+            "minimum": 1,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "outcome",
+          "events",
+          "through_version",
+          "replayed"
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "name": "discard_draft",
+      "operation_ref": "workflow.discard_draft",
+      "semantic_ref": "workflow.definition.DiscardDraft",
+      "kind": "intent",
+      "effect": "write",
+      "input_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "draft_id": {
+            "title": "workflow.definition.DraftId"
+          },
+          "expected_version": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "idempotency_key": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "workflow_id": {
+            "title": "workflow.definition.WorkflowId"
+          }
+        },
+        "required": [
+          "draft_id",
+          "expected_version",
+          "idempotency_key",
+          "workflow_id"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "events": {
+            "type": "array"
+          },
+          "outcome": {
+            "type": "string"
+          },
+          "replayed": {
+            "type": "boolean"
+          },
+          "through_version": {
+            "minimum": 1,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "outcome",
+          "events",
+          "through_version",
+          "replayed"
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "name": "disconnect_nodes",
+      "operation_ref": "workflow.disconnect_nodes",
+      "semantic_ref": "workflow.definition.DisconnectNodes",
+      "kind": "intent",
+      "effect": "write",
+      "input_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "draft_id": {
+            "title": "workflow.definition.DraftId"
+          },
+          "edge_id": {
+            "title": "workflow.definition.EdgeId"
+          },
+          "expected_version": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "idempotency_key": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "workflow_id": {
+            "title": "workflow.definition.WorkflowId"
+          }
+        },
+        "required": [
+          "draft_id",
+          "edge_id",
+          "expected_version",
+          "idempotency_key",
+          "workflow_id"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "events": {
+            "type": "array"
+          },
+          "outcome": {
+            "type": "string"
+          },
+          "replayed": {
+            "type": "boolean"
+          },
+          "through_version": {
+            "minimum": 1,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "outcome",
+          "events",
+          "through_version",
+          "replayed"
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "name": "get_draft",
+      "operation_ref": "workflow.get_draft",
+      "semantic_ref": "workflow.definition.DraftById",
+      "kind": "query",
+      "effect": "read",
+      "input_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "$page": {
+            "additionalProperties": false,
+            "properties": {
+              "cursor": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "limit": {
+                "maximum": 1000,
+                "minimum": 1,
+                "type": "integer"
+              }
+            },
+            "required": [
+              "limit"
+            ],
+            "type": "object"
+          },
+          "draft_id": {
+            "title": "workflow.definition.DraftId"
+          },
+          "workflow_id": {
+            "title": "workflow.definition.WorkflowId"
+          }
+        },
+        "required": [
+          "draft_id",
+          "workflow_id"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "anyOf": [
+          {
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "based_on_revision_id": {},
+                "draft_id": {},
+                "name": {},
+                "owner": {},
+                "scopes": {},
+                "state": {},
+                "workflow_id": {}
+              },
+              "type": "object"
+            },
+            "type": "array"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "items": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "based_on_revision_id": {},
+                    "draft_id": {},
+                    "name": {},
+                    "owner": {},
+                    "scopes": {},
+                    "state": {},
+                    "workflow_id": {}
+                  },
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              "next_cursor": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "partial": {
+                "type": "boolean"
+              },
+              "through_version": {
+                "minimum": 1,
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "items",
+              "through_version",
+              "next_cursor",
+              "partial"
+            ],
+            "type": "object"
+          }
+        ]
+      }
+    },
+    {
+      "name": "get_revision",
+      "operation_ref": "workflow.get_revision",
+      "semantic_ref": "workflow.definition.RevisionById",
+      "kind": "query",
+      "effect": "read",
+      "input_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "$page": {
+            "additionalProperties": false,
+            "properties": {
+              "cursor": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "limit": {
+                "maximum": 1000,
+                "minimum": 1,
+                "type": "integer"
+              }
+            },
+            "required": [
+              "limit"
+            ],
+            "type": "object"
+          },
+          "revision_id": {
+            "title": "workflow.definition.RevisionId"
+          },
+          "workflow_id": {
+            "title": "workflow.definition.WorkflowId"
+          }
+        },
+        "required": [
+          "revision_id",
+          "workflow_id"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "anyOf": [
+          {
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "digest": {},
+                "draft_id": {},
+                "edge_count": {},
+                "edges": {},
+                "node_count": {},
+                "nodes": {},
+                "owner": {},
+                "revision_id": {},
+                "scopes": {},
+                "state": {},
+                "workflow_id": {}
+              },
+              "type": "object"
+            },
+            "type": "array"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "items": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "digest": {},
+                    "draft_id": {},
+                    "edge_count": {},
+                    "edges": {},
+                    "node_count": {},
+                    "nodes": {},
+                    "owner": {},
+                    "revision_id": {},
+                    "scopes": {},
+                    "state": {},
+                    "workflow_id": {}
+                  },
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              "next_cursor": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "partial": {
+                "type": "boolean"
+              },
+              "through_version": {
+                "minimum": 1,
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "items",
+              "through_version",
+              "next_cursor",
+              "partial"
+            ],
+            "type": "object"
+          }
+        ]
+      }
+    },
+    {
+      "name": "get_workflow",
+      "operation_ref": "workflow.get_workflow",
+      "semantic_ref": "workflow.definition.WorkflowById",
+      "kind": "query",
+      "effect": "read",
+      "input_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "$page": {
+            "additionalProperties": false,
+            "properties": {
+              "cursor": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "limit": {
+                "maximum": 1000,
+                "minimum": 1,
+                "type": "integer"
+              }
+            },
+            "required": [
+              "limit"
+            ],
+            "type": "object"
+          },
+          "workflow_id": {
+            "title": "workflow.definition.WorkflowId"
+          }
+        },
+        "required": [
+          "workflow_id"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "anyOf": [
+          {
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "active_revision_id": {},
+                "name": {},
+                "owner": {},
+                "scopes": {},
+                "state": {},
+                "workflow_id": {}
+              },
+              "type": "object"
+            },
+            "type": "array"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "items": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "active_revision_id": {},
+                    "name": {},
+                    "owner": {},
+                    "scopes": {},
+                    "state": {},
+                    "workflow_id": {}
+                  },
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              "next_cursor": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "partial": {
+                "type": "boolean"
+              },
+              "through_version": {
+                "minimum": 1,
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "items",
+              "through_version",
+              "next_cursor",
+              "partial"
+            ],
+            "type": "object"
+          }
+        ]
+      }
+    },
+    {
+      "name": "list_drafts",
+      "operation_ref": "workflow.list_drafts",
+      "semantic_ref": "workflow.definition.Drafts",
+      "kind": "query",
+      "effect": "read",
+      "input_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "$page": {
+            "additionalProperties": false,
+            "properties": {
+              "cursor": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "limit": {
+                "maximum": 1000,
+                "minimum": 1,
+                "type": "integer"
+              }
+            },
+            "required": [
+              "limit"
+            ],
+            "type": "object"
+          },
+          "workflow_id": {
+            "title": "workflow.definition.WorkflowId"
+          }
+        },
+        "required": [
+          "workflow_id"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "anyOf": [
+          {
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "based_on_revision_id": {},
+                "draft_id": {},
+                "name": {},
+                "owner": {},
+                "scopes": {},
+                "state": {},
+                "workflow_id": {}
+              },
+              "type": "object"
+            },
+            "type": "array"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "items": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "based_on_revision_id": {},
+                    "draft_id": {},
+                    "name": {},
+                    "owner": {},
+                    "scopes": {},
+                    "state": {},
+                    "workflow_id": {}
+                  },
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              "next_cursor": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "partial": {
+                "type": "boolean"
+              },
+              "through_version": {
+                "minimum": 1,
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "items",
+              "through_version",
+              "next_cursor",
+              "partial"
+            ],
+            "type": "object"
+          }
+        ]
+      }
+    },
+    {
+      "name": "list_revisions",
+      "operation_ref": "workflow.list_revisions",
+      "semantic_ref": "workflow.definition.Revisions",
+      "kind": "query",
+      "effect": "read",
+      "input_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "$page": {
+            "additionalProperties": false,
+            "properties": {
+              "cursor": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "limit": {
+                "maximum": 1000,
+                "minimum": 1,
+                "type": "integer"
+              }
+            },
+            "required": [
+              "limit"
+            ],
+            "type": "object"
+          },
+          "workflow_id": {
+            "title": "workflow.definition.WorkflowId"
+          }
+        },
+        "required": [
+          "workflow_id"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "anyOf": [
+          {
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "digest": {},
+                "draft_id": {},
+                "edge_count": {},
+                "edges": {},
+                "node_count": {},
+                "nodes": {},
+                "owner": {},
+                "revision_id": {},
+                "scopes": {},
+                "state": {},
+                "workflow_id": {}
+              },
+              "type": "object"
+            },
+            "type": "array"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "items": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "digest": {},
+                    "draft_id": {},
+                    "edge_count": {},
+                    "edges": {},
+                    "node_count": {},
+                    "nodes": {},
+                    "owner": {},
+                    "revision_id": {},
+                    "scopes": {},
+                    "state": {},
+                    "workflow_id": {}
+                  },
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              "next_cursor": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "partial": {
+                "type": "boolean"
+              },
+              "through_version": {
+                "minimum": 1,
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "items",
+              "through_version",
+              "next_cursor",
+              "partial"
+            ],
+            "type": "object"
+          }
+        ]
+      }
+    },
+    {
+      "name": "list_workflows",
+      "operation_ref": "workflow.list_workflows",
+      "semantic_ref": "workflow.definition.Workflows",
+      "kind": "query",
+      "effect": "read",
+      "input_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "$page": {
+            "additionalProperties": false,
+            "properties": {
+              "cursor": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "limit": {
+                "maximum": 1000,
+                "minimum": 1,
+                "type": "integer"
+              }
+            },
+            "required": [
+              "limit"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [],
+        "type": "object"
+      },
+      "output_schema": {
+        "anyOf": [
+          {
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "active_revision_id": {},
+                "name": {},
+                "owner": {},
+                "scopes": {},
+                "state": {},
+                "workflow_id": {}
+              },
+              "type": "object"
+            },
+            "type": "array"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "items": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "active_revision_id": {},
+                    "name": {},
+                    "owner": {},
+                    "scopes": {},
+                    "state": {},
+                    "workflow_id": {}
+                  },
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              "next_cursor": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "partial": {
+                "type": "boolean"
+              },
+              "through_version": {
+                "minimum": 1,
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "items",
+              "through_version",
+              "next_cursor",
+              "partial"
+            ],
+            "type": "object"
+          }
+        ]
+      }
+    },
+    {
+      "name": "publish_draft",
+      "operation_ref": "workflow.publish_draft",
+      "semantic_ref": "workflow.definition.PublishDraft",
+      "kind": "intent",
+      "effect": "write",
+      "input_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "draft_id": {
+            "title": "workflow.definition.DraftId"
+          },
+          "expected_version": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "idempotency_key": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "workflow_id": {
+            "title": "workflow.definition.WorkflowId"
+          }
+        },
+        "required": [
+          "draft_id",
+          "expected_version",
+          "idempotency_key",
+          "workflow_id"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "events": {
+            "type": "array"
+          },
+          "outcome": {
+            "type": "string"
+          },
+          "replayed": {
+            "type": "boolean"
+          },
+          "through_version": {
+            "minimum": 1,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "outcome",
+          "events",
+          "through_version",
+          "replayed"
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "name": "remove_node",
+      "operation_ref": "workflow.remove_node",
+      "semantic_ref": "workflow.definition.RemoveNode",
+      "kind": "intent",
+      "effect": "write",
+      "input_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "draft_id": {
+            "title": "workflow.definition.DraftId"
+          },
+          "expected_version": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "idempotency_key": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "node_id": {
+            "title": "workflow.definition.NodeId"
+          },
+          "workflow_id": {
+            "title": "workflow.definition.WorkflowId"
+          }
+        },
+        "required": [
+          "draft_id",
+          "expected_version",
+          "idempotency_key",
+          "node_id",
+          "workflow_id"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "events": {
+            "type": "array"
+          },
+          "outcome": {
+            "type": "string"
+          },
+          "replayed": {
+            "type": "boolean"
+          },
+          "through_version": {
+            "minimum": 1,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "outcome",
+          "events",
+          "through_version",
+          "replayed"
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "name": "replace_node",
+      "operation_ref": "workflow.replace_node",
+      "semantic_ref": "workflow.definition.ReplaceNode",
+      "kind": "intent",
+      "effect": "write",
+      "input_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "definition": {
+            "title": "workflow.definition.NodeDefinition"
+          },
+          "draft_id": {
+            "title": "workflow.definition.DraftId"
+          },
+          "expected_version": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "idempotency_key": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "node_id": {
+            "title": "workflow.definition.NodeId"
+          },
+          "workflow_id": {
+            "title": "workflow.definition.WorkflowId"
+          }
+        },
+        "required": [
+          "definition",
+          "draft_id",
+          "expected_version",
+          "idempotency_key",
+          "node_id",
+          "workflow_id"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "events": {
+            "type": "array"
+          },
+          "outcome": {
+            "type": "string"
+          },
+          "replayed": {
+            "type": "boolean"
+          },
+          "through_version": {
+            "minimum": 1,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "outcome",
+          "events",
+          "through_version",
+          "replayed"
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "name": "validate_draft",
+      "operation_ref": "workflow.validate_draft",
+      "semantic_ref": "workflow.definition.ValidateDraft",
+      "kind": "intent",
+      "effect": "write",
+      "input_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "draft_id": {
+            "title": "workflow.definition.DraftId"
+          },
+          "expected_version": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "idempotency_key": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "workflow_id": {
+            "title": "workflow.definition.WorkflowId"
+          }
+        },
+        "required": [
+          "draft_id",
+          "expected_version",
+          "idempotency_key",
+          "workflow_id"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "events": {
+            "type": "array"
+          },
+          "outcome": {
+            "type": "string"
+          },
+          "replayed": {
+            "type": "boolean"
+          },
+          "through_version": {
+            "minimum": 1,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "outcome",
+          "events",
+          "through_version",
+          "replayed"
+        ],
+        "type": "object"
+      }
+    }
+  ]
+}

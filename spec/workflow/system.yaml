@@ -1,0 +1,10 @@
+format: ess/1
+system: workflow
+version: v1
+
+summary: >-
+  Tenant-partitioned workflow definitions with mutable draft graphs, canonical immutable revisions,
+  and explicit activation.
+
+domains:
+  - workflow.definition

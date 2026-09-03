@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Create draft input",
+  "x-ess-name": "workflow.definition.CreateDraft",
+  "x-ess-kind": "command-input",
+  "type": "object",
+  "properties": {
+    "workflow_id": {
+      "$ref": "#/$defs/workflow.definition.WorkflowId"
+    },
+    "name": {
+      "type": "string"
+    },
+    "based_on_revision_id": {
+      "$ref": "#/$defs/workflow.definition.RevisionId"
+    }
+  },
+  "required": [
+    "workflow_id",
+    "name"
+  ],
+  "additionalProperties": false,
+  "x-ess-provenance": {
+    "system": "workflow",
+    "specification_version": "v1",
+    "source_digest": "6a79078047815754e0dda89f285e08689037af0adfd4277dfcc305f1d003df1b",
+    "contract_digest": "a13fffe4549b20e1d0a46d5e64bbbcbd2e81dfe7e45c688bc8ea210719f1c22f",
+    "regenerate": "ess generate"
+  },
+  "$defs": {
+    "workflow.definition.RevisionId": {
+      "title": "RevisionId",
+      "x-ess-name": "workflow.definition.RevisionId",
+      "x-ess-kind": "newtype",
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+    },
+    "workflow.definition.WorkflowId": {
+      "title": "WorkflowId",
+      "x-ess-name": "workflow.definition.WorkflowId",
+      "x-ess-kind": "newtype",
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+    }
+  }
+}

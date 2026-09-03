@@ -1,0 +1,491 @@
+domain: workflow.definition
+
+summary: Stable workflows, mutable draft DAGs, canonical published revisions, and activation.
+
+naming:
+  wire: workflows
+  display: Workflows
+
+types:
+  - { name: workflow.definition.WorkflowId, kind: newtype, of: Uuid }
+  - { name: workflow.definition.DraftId, kind: newtype, of: Uuid }
+  - { name: workflow.definition.NodeId, kind: newtype, of: Uuid }
+  - { name: workflow.definition.EdgeId, kind: newtype, of: Uuid }
+  - { name: workflow.definition.RevisionId, kind: newtype, of: Uuid }
+  - { name: workflow.definition.OwnerRef, kind: newtype, of: String }
+  - { name: workflow.definition.PrincipalRef, kind: newtype, of: String }
+  - { name: workflow.definition.TeamRef, kind: newtype, of: String }
+  - { name: workflow.definition.ProjectRef, kind: newtype, of: String }
+
+  - name: workflow.definition.ScopeBindings
+    kind: struct
+    fields:
+      - { name: principal, type: Optional<workflow.definition.PrincipalRef> }
+      - { name: team, type: Optional<workflow.definition.TeamRef> }
+      - { name: project, type: Optional<workflow.definition.ProjectRef> }
+
+  - name: workflow.definition.ComputeNode
+    kind: struct
+    fields:
+      - { name: expression, type: String }
+  - name: workflow.definition.ReadNode
+    kind: struct
+    fields:
+      - { name: connector, type: String }
+      - { name: operation, type: String }
+  - name: workflow.definition.CallNode
+    kind: struct
+    fields:
+      - { name: connector, type: String }
+      - { name: operation, type: String }
+  - name: workflow.definition.JudgeNode
+    kind: struct
+    fields:
+      - { name: condition, type: String }
+  - name: workflow.definition.WaitNode
+    kind: struct
+    fields:
+      - { name: duration, type: Duration }
+  - name: workflow.definition.InvokeNode
+    kind: struct
+    fields:
+      - { name: agent, type: String }
+      - { name: instruction, type: String }
+  - name: workflow.definition.EmitNode
+    kind: struct
+    fields:
+      - { name: event, type: String }
+  - name: workflow.definition.CompleteNode
+    kind: struct
+    fields:
+      - { name: result, type: String }
+
+  # This is the complete semantic node algebra. Presentation coordinates deliberately do not exist.
+  - name: workflow.definition.NodeDefinition
+    kind: union
+    tag: kind
+    variants:
+      compute: workflow.definition.ComputeNode
+      read: workflow.definition.ReadNode
+      call: workflow.definition.CallNode
+      judge: workflow.definition.JudgeNode
+      wait: workflow.definition.WaitNode
+      invoke: workflow.definition.InvokeNode
+      emit: workflow.definition.EmitNode
+      complete: workflow.definition.CompleteNode
+
+  - name: workflow.definition.NodeSnapshot
+    kind: struct
+    fields:
+      - { name: node_id, type: workflow.definition.NodeId }
+      - { name: draft_id, type: workflow.definition.DraftId }
+      - { name: definition, type: workflow.definition.NodeDefinition }
+
+  - name: workflow.definition.EdgeSnapshot
+    kind: struct
+    fields:
+      - { name: edge_id, type: workflow.definition.EdgeId }
+      - { name: draft_id, type: workflow.definition.DraftId }
+      - { name: source_node_id, type: workflow.definition.NodeId }
+      - { name: target_node_id, type: workflow.definition.NodeId }
+
+  - name: workflow.definition.WorkflowRow
+    kind: struct
+    fields:
+      - { name: workflow_id, type: workflow.definition.WorkflowId }
+      - { name: name, type: String }
+      - { name: owner, type: workflow.definition.OwnerRef }
+      - { name: scopes, type: workflow.definition.ScopeBindings }
+      - { name: active_revision_id, type: Optional<workflow.definition.RevisionId> }
+      - { name: state, type: workflow.definition.Workflow.State }
+
+  - name: workflow.definition.DraftRow
+    kind: struct
+    fields:
+      - { name: draft_id, type: workflow.definition.DraftId }
+      - { name: workflow_id, type: workflow.definition.WorkflowId }
+      - { name: name, type: String }
+      - { name: based_on_revision_id, type: Optional<workflow.definition.RevisionId> }
+      - { name: owner, type: workflow.definition.OwnerRef }
+      - { name: scopes, type: workflow.definition.ScopeBindings }
+      - { name: state, type: workflow.definition.WorkflowDraft.State }
+
+  - name: workflow.definition.RevisionRow
+    kind: struct
+    fields:
+      - { name: revision_id, type: workflow.definition.RevisionId }
+      - { name: workflow_id, type: workflow.definition.WorkflowId }
+      - { name: draft_id, type: workflow.definition.DraftId }
+      - { name: nodes, type: List<workflow.definition.NodeSnapshot> }
+      - { name: edges, type: List<workflow.definition.EdgeSnapshot> }
+      - { name: digest, type: String }
+      - { name: node_count, type: Integer }
+      - { name: edge_count, type: Integer }
+      - { name: owner, type: workflow.definition.OwnerRef }
+      - { name: scopes, type: workflow.definition.ScopeBindings }
+      - { name: state, type: workflow.definition.WorkflowRevision.State }
+
+entities:
+  - name: workflow.definition.Workflow
+    identity: { name: workflow_id, type: workflow.definition.WorkflowId }
+    fields:
+      - { name: name, type: String }
+      - { name: owner, type: workflow.definition.OwnerRef }
+      - { name: scopes, type: workflow.definition.ScopeBindings }
+      - { name: active_revision_id, type: Optional<workflow.definition.RevisionId> }
+    lifecycle:
+      initial: Active
+      states: [Active]
+      terminal: [Active]
+      transitions: []
+
+  - name: workflow.definition.WorkflowDraft
+    identity: { name: draft_id, type: workflow.definition.DraftId }
+    fields:
+      - { name: workflow_id, type: workflow.definition.WorkflowId }
+      - { name: name, type: String }
+      - { name: based_on_revision_id, type: Optional<workflow.definition.RevisionId> }
+      - { name: owner, type: workflow.definition.OwnerRef }
+      - { name: scopes, type: workflow.definition.ScopeBindings }
+    lifecycle:
+      initial: Active
+      states: [Active, Discarded]
+      terminal: [Discarded]
+      transitions:
+        - { name: discard, from: [Active], to: Discarded }
+
+  - name: workflow.definition.DraftNode
+    identity: { name: node_id, type: workflow.definition.NodeId }
+    fields:
+      - { name: draft_id, type: workflow.definition.DraftId }
+      - { name: definition, type: workflow.definition.NodeDefinition }
+    lifecycle:
+      initial: Active
+      states: [Active, Removed]
+      terminal: [Removed]
+      transitions:
+        - { name: remove, from: [Active], to: Removed }
+
+  - name: workflow.definition.DraftEdge
+    identity: { name: edge_id, type: workflow.definition.EdgeId }
+    fields:
+      - { name: draft_id, type: workflow.definition.DraftId }
+      - { name: source_node_id, type: workflow.definition.NodeId }
+      - { name: target_node_id, type: workflow.definition.NodeId }
+    lifecycle:
+      initial: Active
+      states: [Active, Disconnected]
+      terminal: [Disconnected]
+      transitions:
+        - { name: disconnect, from: [Active], to: Disconnected }
+
+  - name: workflow.definition.WorkflowRevision
+    identity: { name: revision_id, type: workflow.definition.RevisionId }
+    fields:
+      - { name: workflow_id, type: workflow.definition.WorkflowId }
+      - { name: draft_id, type: workflow.definition.DraftId }
+      - { name: nodes, type: List<workflow.definition.NodeSnapshot> }
+      - { name: edges, type: List<workflow.definition.EdgeSnapshot> }
+      - { name: digest, type: String }
+      - { name: node_count, type: Integer }
+      - { name: edge_count, type: Integer }
+      - { name: owner, type: workflow.definition.OwnerRef }
+      - { name: scopes, type: workflow.definition.ScopeBindings }
+    lifecycle:
+      initial: Published
+      states: [Published]
+      terminal: [Published]
+      transitions: []
+
+actors:
+  - name: workflow.definition.Author
+    may:
+      - workflow.definition.CreateWorkflow
+      - workflow.definition.CreateDraft
+      - workflow.definition.DiscardDraft
+      - workflow.definition.ValidateDraft
+      - workflow.definition.PublishDraft
+      - workflow.definition.ActivateRevision
+      - workflow.definition.AddNode
+      - workflow.definition.ReplaceNode
+      - workflow.definition.RemoveNode
+      - workflow.definition.ConnectNodes
+      - workflow.definition.DisconnectNodes
+    naming: { display: Workflow author }
+
+commands:
+  - name: workflow.definition.CreateWorkflow
+    input:
+      - { name: name, type: String }
+      - { name: scopes, type: workflow.definition.ScopeBindings }
+    outcomes:
+      - name: created
+        creates: workflow.definition.Workflow
+        instance: workflow_id
+        emits: [workflow.definition.WorkflowCreated]
+        payload:
+          workflow.definition.WorkflowCreated:
+            name: input.name
+            scopes: input.scopes
+    naming: { wire: create-workflow, display: Create workflow }
+
+  - name: workflow.definition.CreateDraft
+    input:
+      - { name: workflow_id, type: workflow.definition.WorkflowId }
+      - { name: name, type: String }
+      - { name: based_on_revision_id, type: Optional<workflow.definition.RevisionId> }
+    outcomes:
+      - name: created
+        creates: workflow.definition.WorkflowDraft
+        instance: draft_id
+        emits: [workflow.definition.DraftCreated]
+        payload:
+          workflow.definition.DraftCreated:
+            workflow_id: input.workflow_id
+            name: input.name
+            based_on_revision_id: input.based_on_revision_id
+    naming: { wire: create-draft, display: Create draft }
+
+  - name: workflow.definition.DiscardDraft
+    input:
+      - { name: workflow_id, type: workflow.definition.WorkflowId }
+      - { name: draft_id, type: workflow.definition.DraftId }
+    outcomes:
+      - name: discarded
+        moves: workflow.definition.WorkflowDraft.discard
+        instance: draft_id
+        emits: [workflow.definition.DraftDiscarded]
+        payload:
+          workflow.definition.DraftDiscarded:
+            workflow_id: input.workflow_id
+            draft_id: input.draft_id
+    naming: { wire: discard-draft, display: Discard draft }
+
+  - name: workflow.definition.ValidateDraft
+    input:
+      - { name: workflow_id, type: workflow.definition.WorkflowId }
+      - { name: draft_id, type: workflow.definition.DraftId }
+    outcomes:
+      - name: validated
+        updates: workflow.definition.WorkflowDraft
+        instance: draft_id
+        emits: [workflow.definition.DraftValidated]
+        payload:
+          workflow.definition.DraftValidated:
+            workflow_id: input.workflow_id
+            draft_id: input.draft_id
+    naming: { wire: validate-draft, display: Validate draft }
+
+  - name: workflow.definition.PublishDraft
+    input:
+      - { name: workflow_id, type: workflow.definition.WorkflowId }
+      - { name: draft_id, type: workflow.definition.DraftId }
+    outcomes:
+      - name: published
+        creates: workflow.definition.WorkflowRevision
+        instance: revision_id
+        emits: [workflow.definition.RevisionPublished]
+        payload:
+          workflow.definition.RevisionPublished:
+            workflow_id: input.workflow_id
+            draft_id: input.draft_id
+    naming: { wire: publish-draft, display: Publish draft }
+
+  - name: workflow.definition.ActivateRevision
+    input:
+      - { name: workflow_id, type: workflow.definition.WorkflowId }
+      - { name: revision_id, type: workflow.definition.RevisionId }
+    outcomes:
+      - name: activated
+        updates: workflow.definition.Workflow
+        instance: workflow_id
+        emits: [workflow.definition.RevisionActivated]
+        payload:
+          workflow.definition.RevisionActivated:
+            workflow_id: input.workflow_id
+            active_revision_id: input.revision_id
+    naming: { wire: activate-revision, display: Activate revision }
+
+  - name: workflow.definition.AddNode
+    input:
+      - { name: workflow_id, type: workflow.definition.WorkflowId }
+      - { name: draft_id, type: workflow.definition.DraftId }
+      - { name: definition, type: workflow.definition.NodeDefinition }
+    outcomes:
+      - name: added
+        creates: workflow.definition.DraftNode
+        instance: node_id
+        emits: [workflow.definition.NodeAdded]
+        payload:
+          workflow.definition.NodeAdded:
+            workflow_id: input.workflow_id
+            draft_id: input.draft_id
+            definition: input.definition
+    naming: { wire: add-node, display: Add node }
+
+  - name: workflow.definition.ReplaceNode
+    input:
+      - { name: workflow_id, type: workflow.definition.WorkflowId }
+      - { name: draft_id, type: workflow.definition.DraftId }
+      - { name: node_id, type: workflow.definition.NodeId }
+      - { name: definition, type: workflow.definition.NodeDefinition }
+    outcomes:
+      - name: replaced
+        updates: workflow.definition.DraftNode
+        instance: node_id
+        emits: [workflow.definition.NodeReplaced]
+        payload:
+          workflow.definition.NodeReplaced:
+            workflow_id: input.workflow_id
+            draft_id: input.draft_id
+            node_id: input.node_id
+            definition: input.definition
+    naming: { wire: replace-node, display: Replace node }
+
+  - name: workflow.definition.RemoveNode
+    input:
+      - { name: workflow_id, type: workflow.definition.WorkflowId }
+      - { name: draft_id, type: workflow.definition.DraftId }
+      - { name: node_id, type: workflow.definition.NodeId }
+    outcomes:
+      - name: removed
+        moves: workflow.definition.DraftNode.remove
+        instance: node_id
+        emits: [workflow.definition.NodeRemoved]
+        payload:
+          workflow.definition.NodeRemoved:
+            workflow_id: input.workflow_id
+            draft_id: input.draft_id
+            node_id: input.node_id
+    naming: { wire: remove-node, display: Remove node }
+
+  - name: workflow.definition.ConnectNodes
+    input:
+      - { name: workflow_id, type: workflow.definition.WorkflowId }
+      - { name: draft_id, type: workflow.definition.DraftId }
+      - { name: source_node_id, type: workflow.definition.NodeId }
+      - { name: target_node_id, type: workflow.definition.NodeId }
+    outcomes:
+      - name: connected
+        creates: workflow.definition.DraftEdge
+        instance: edge_id
+        emits: [workflow.definition.NodesConnected]
+        payload:
+          workflow.definition.NodesConnected:
+            workflow_id: input.workflow_id
+            draft_id: input.draft_id
+            source_node_id: input.source_node_id
+            target_node_id: input.target_node_id
+    naming: { wire: connect-nodes, display: Connect nodes }
+
+  - name: workflow.definition.DisconnectNodes
+    input:
+      - { name: workflow_id, type: workflow.definition.WorkflowId }
+      - { name: draft_id, type: workflow.definition.DraftId }
+      - { name: edge_id, type: workflow.definition.EdgeId }
+    outcomes:
+      - name: disconnected
+        moves: workflow.definition.DraftEdge.disconnect
+        instance: edge_id
+        emits: [workflow.definition.NodesDisconnected]
+        payload:
+          workflow.definition.NodesDisconnected:
+            workflow_id: input.workflow_id
+            draft_id: input.draft_id
+            edge_id: input.edge_id
+    naming: { wire: disconnect-nodes, display: Disconnect nodes }
+
+events:
+  - name: workflow.definition.WorkflowCreated
+    fields:
+      - { name: workflow_id, type: workflow.definition.WorkflowId }
+      - { name: name, type: String }
+      - { name: owner, type: workflow.definition.OwnerRef }
+      - { name: scopes, type: workflow.definition.ScopeBindings }
+  - name: workflow.definition.DraftCreated
+    fields:
+      - { name: draft_id, type: workflow.definition.DraftId }
+      - { name: workflow_id, type: workflow.definition.WorkflowId }
+      - { name: name, type: String }
+      - { name: based_on_revision_id, type: Optional<workflow.definition.RevisionId> }
+      - { name: owner, type: workflow.definition.OwnerRef }
+      - { name: scopes, type: workflow.definition.ScopeBindings }
+  - name: workflow.definition.DraftDiscarded
+    fields:
+      - { name: workflow_id, type: workflow.definition.WorkflowId }
+      - { name: draft_id, type: workflow.definition.DraftId }
+  - name: workflow.definition.DraftValidated
+    fields:
+      - { name: workflow_id, type: workflow.definition.WorkflowId }
+      - { name: draft_id, type: workflow.definition.DraftId }
+  - name: workflow.definition.RevisionPublished
+    fields:
+      - { name: revision_id, type: workflow.definition.RevisionId }
+      - { name: workflow_id, type: workflow.definition.WorkflowId }
+      - { name: draft_id, type: workflow.definition.DraftId }
+      - { name: nodes, type: List<workflow.definition.NodeSnapshot> }
+      - { name: edges, type: List<workflow.definition.EdgeSnapshot> }
+      - { name: digest, type: String }
+      - { name: node_count, type: Integer }
+      - { name: edge_count, type: Integer }
+      - { name: owner, type: workflow.definition.OwnerRef }
+      - { name: scopes, type: workflow.definition.ScopeBindings }
+  - name: workflow.definition.RevisionActivated
+    fields:
+      - { name: workflow_id, type: workflow.definition.WorkflowId }
+      - { name: active_revision_id, type: workflow.definition.RevisionId }
+  - name: workflow.definition.NodeAdded
+    fields:
+      - { name: node_id, type: workflow.definition.NodeId }
+      - { name: workflow_id, type: workflow.definition.WorkflowId }
+      - { name: draft_id, type: workflow.definition.DraftId }
+      - { name: definition, type: workflow.definition.NodeDefinition }
+  - name: workflow.definition.NodeReplaced
+    fields:
+      - { name: workflow_id, type: workflow.definition.WorkflowId }
+      - { name: draft_id, type: workflow.definition.DraftId }
+      - { name: node_id, type: workflow.definition.NodeId }
+      - { name: definition, type: workflow.definition.NodeDefinition }
+  - name: workflow.definition.NodeRemoved
+    fields:
+      - { name: workflow_id, type: workflow.definition.WorkflowId }
+      - { name: draft_id, type: workflow.definition.DraftId }
+      - { name: node_id, type: workflow.definition.NodeId }
+  - name: workflow.definition.NodesConnected
+    fields:
+      - { name: edge_id, type: workflow.definition.EdgeId }
+      - { name: workflow_id, type: workflow.definition.WorkflowId }
+      - { name: draft_id, type: workflow.definition.DraftId }
+      - { name: source_node_id, type: workflow.definition.NodeId }
+      - { name: target_node_id, type: workflow.definition.NodeId }
+  - name: workflow.definition.NodesDisconnected
+    fields:
+      - { name: workflow_id, type: workflow.definition.WorkflowId }
+      - { name: draft_id, type: workflow.definition.DraftId }
+      - { name: edge_id, type: workflow.definition.EdgeId }
+
+views:
+  - name: workflow.definition.WorkflowById
+    source: workflow.definition.Workflow
+    shape: workflow.definition.WorkflowRow
+    consistency: read_your_writes
+  - name: workflow.definition.Workflows
+    source: workflow.definition.Workflow
+    shape: workflow.definition.WorkflowRow
+    consistency: read_your_writes
+  - name: workflow.definition.DraftById
+    source: workflow.definition.WorkflowDraft
+    shape: workflow.definition.DraftRow
+    consistency: read_your_writes
+  - name: workflow.definition.Drafts
+    source: workflow.definition.WorkflowDraft
+    shape: workflow.definition.DraftRow
+    consistency: read_your_writes
+  - name: workflow.definition.RevisionById
+    source: workflow.definition.WorkflowRevision
+    shape: workflow.definition.RevisionRow
+    consistency: read_your_writes
+  - name: workflow.definition.Revisions
+    source: workflow.definition.WorkflowRevision
+    shape: workflow.definition.RevisionRow
+    consistency: read_your_writes

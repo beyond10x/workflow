@@ -1,0 +1,33 @@
+components:
+  - component: workflow-service
+    summary: Owns workflow definitions, draft graphs, immutable revisions, and activation.
+    owns:
+      domains:
+        - workflow.definition
+    accepts:
+      commands:
+        - workflow.definition.CreateWorkflow
+        - workflow.definition.CreateDraft
+        - workflow.definition.DiscardDraft
+        - workflow.definition.ValidateDraft
+        - workflow.definition.PublishDraft
+        - workflow.definition.ActivateRevision
+        - workflow.definition.AddNode
+        - workflow.definition.ReplaceNode
+        - workflow.definition.RemoveNode
+        - workflow.definition.ConnectNodes
+        - workflow.definition.DisconnectNodes
+    publishes:
+      events:
+        - workflow.definition.WorkflowCreated
+        - workflow.definition.DraftCreated
+        - workflow.definition.DraftDiscarded
+        - workflow.definition.DraftValidated
+        - workflow.definition.RevisionPublished
+        - workflow.definition.RevisionActivated
+        - workflow.definition.NodeAdded
+        - workflow.definition.NodeReplaced
+        - workflow.definition.NodeRemoved
+        - workflow.definition.NodesConnected
+        - workflow.definition.NodesDisconnected
+    reached_by: network

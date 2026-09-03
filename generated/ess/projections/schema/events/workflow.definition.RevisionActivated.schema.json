@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RevisionActivated payload",
+  "x-ess-name": "workflow.definition.RevisionActivated",
+  "x-ess-kind": "event-payload",
+  "type": "object",
+  "properties": {
+    "workflow_id": {
+      "$ref": "#/$defs/workflow.definition.WorkflowId"
+    },
+    "active_revision_id": {
+      "$ref": "#/$defs/workflow.definition.RevisionId"
+    }
+  },
+  "required": [
+    "workflow_id",
+    "active_revision_id"
+  ],
+  "additionalProperties": false,
+  "x-ess-provenance": {
+    "system": "workflow",
+    "specification_version": "v1",
+    "source_digest": "6a79078047815754e0dda89f285e08689037af0adfd4277dfcc305f1d003df1b",
+    "contract_digest": "f39e32c91beaab99a0d1e1c9fd6e735b5fc28dc61a17a3e5351aa38b01c5892d",
+    "regenerate": "ess generate"
+  },
+  "$defs": {
+    "workflow.definition.RevisionId": {
+      "title": "RevisionId",
+      "x-ess-name": "workflow.definition.RevisionId",
+      "x-ess-kind": "newtype",
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+    },
+    "workflow.definition.WorkflowId": {
+      "title": "WorkflowId",
+      "x-ess-name": "workflow.definition.WorkflowId",
+      "x-ess-kind": "newtype",
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+    }
+  }
+}

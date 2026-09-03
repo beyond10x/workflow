@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/workflow.definition.DraftRow",
+  "x-ess-provenance": {
+    "system": "workflow",
+    "specification_version": "v1",
+    "source_digest": "6a79078047815754e0dda89f285e08689037af0adfd4277dfcc305f1d003df1b",
+    "contract_digest": "35efd23a7b29f71f521509caba5fac88bc533b93b919d7d0bc2c66373d6c370e",
+    "regenerate": "ess generate"
+  },
+  "$defs": {
+    "workflow.definition.DraftId": {
+      "title": "DraftId",
+      "x-ess-name": "workflow.definition.DraftId",
+      "x-ess-kind": "newtype",
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+    },
+    "workflow.definition.DraftRow": {
+      "title": "DraftRow",
+      "x-ess-name": "workflow.definition.DraftRow",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "draft_id": {
+          "$ref": "#/$defs/workflow.definition.DraftId"
+        },
+        "workflow_id": {
+          "$ref": "#/$defs/workflow.definition.WorkflowId"
+        },
+        "name": {
+          "type": "string"
+        },
+        "based_on_revision_id": {
+          "$ref": "#/$defs/workflow.definition.RevisionId"
+        },
+        "owner": {
+          "$ref": "#/$defs/workflow.definition.OwnerRef"
+        },
+        "scopes": {
+          "$ref": "#/$defs/workflow.definition.ScopeBindings"
+        },
+        "state": {
+          "$ref": "#/$defs/workflow.definition.WorkflowDraft.State"
+        }
+      },
+      "required": [
+        "draft_id",
+        "workflow_id",
+        "name",
+        "owner",
+        "scopes",
+        "state"
+      ],
+      "additionalProperties": false
+    },
+    "workflow.definition.OwnerRef": {
+      "title": "OwnerRef",
+      "x-ess-name": "workflow.definition.OwnerRef",
+      "x-ess-kind": "newtype",
+      "type": "string"
+    },
+    "workflow.definition.PrincipalRef": {
+      "title": "PrincipalRef",
+      "x-ess-name": "workflow.definition.PrincipalRef",
+      "x-ess-kind": "newtype",
+      "type": "string"
+    },
+    "workflow.definition.ProjectRef": {
+      "title": "ProjectRef",
+      "x-ess-name": "workflow.definition.ProjectRef",
+      "x-ess-kind": "newtype",
+      "type": "string"
+    },
+    "workflow.definition.RevisionId": {
+      "title": "RevisionId",
+      "x-ess-name": "workflow.definition.RevisionId",
+      "x-ess-kind": "newtype",
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+    },
+    "workflow.definition.ScopeBindings": {
+      "title": "ScopeBindings",
+      "x-ess-name": "workflow.definition.ScopeBindings",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "principal": {
+          "$ref": "#/$defs/workflow.definition.PrincipalRef"
+        },
+        "team": {
+          "$ref": "#/$defs/workflow.definition.TeamRef"
+        },
+        "project": {
+          "$ref": "#/$defs/workflow.definition.ProjectRef"
+        }
+      },
+      "additionalProperties": false
+    },
+    "workflow.definition.TeamRef": {
+      "title": "TeamRef",
+      "x-ess-name": "workflow.definition.TeamRef",
+      "x-ess-kind": "newtype",
+      "type": "string"
+    },
+    "workflow.definition.WorkflowDraft.State": {
+      "title": "State",
+      "x-ess-name": "workflow.definition.WorkflowDraft.State",
+      "x-ess-kind": "enum",
+      "type": "string",
+      "enum": [
+        "Active",
+        "Discarded"
+      ]
+    },
+    "workflow.definition.WorkflowId": {
+      "title": "WorkflowId",
+      "x-ess-name": "workflow.definition.WorkflowId",
+      "x-ess-kind": "newtype",
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+    }
+  }
+}

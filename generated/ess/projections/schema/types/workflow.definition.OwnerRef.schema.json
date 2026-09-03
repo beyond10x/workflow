@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/workflow.definition.OwnerRef",
+  "x-ess-provenance": {
+    "system": "workflow",
+    "specification_version": "v1",
+    "source_digest": "6a79078047815754e0dda89f285e08689037af0adfd4277dfcc305f1d003df1b",
+    "contract_digest": "cf7244da1d953b356b2198babc10c83264a0905339b5caa4e340d7db7cac0b33",
+    "regenerate": "ess generate"
+  },
+  "$defs": {
+    "workflow.definition.OwnerRef": {
+      "title": "OwnerRef",
+      "x-ess-name": "workflow.definition.OwnerRef",
+      "x-ess-kind": "newtype",
+      "type": "string"
+    }
+  }
+}

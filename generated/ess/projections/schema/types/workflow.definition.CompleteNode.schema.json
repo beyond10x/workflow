@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/workflow.definition.CompleteNode",
+  "x-ess-provenance": {
+    "system": "workflow",
+    "specification_version": "v1",
+    "source_digest": "6a79078047815754e0dda89f285e08689037af0adfd4277dfcc305f1d003df1b",
+    "contract_digest": "6946a472f8403fbc8e5db112cdc6dfd46f7dc10d78b04a8ee25497fbc430afa4",
+    "regenerate": "ess generate"
+  },
+  "$defs": {
+    "workflow.definition.CompleteNode": {
+      "title": "CompleteNode",
+      "x-ess-name": "workflow.definition.CompleteNode",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

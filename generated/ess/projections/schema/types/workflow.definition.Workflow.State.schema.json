@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/workflow.definition.Workflow.State",
+  "x-ess-provenance": {
+    "system": "workflow",
+    "specification_version": "v1",
+    "source_digest": "6a79078047815754e0dda89f285e08689037af0adfd4277dfcc305f1d003df1b",
+    "contract_digest": "8fb75ccd8a6ced4846ede6ad0494470365923a9b85456a239da3cbdf52d39f07",
+    "regenerate": "ess generate"
+  },
+  "$defs": {
+    "workflow.definition.Workflow.State": {
+      "title": "State",
+      "x-ess-name": "workflow.definition.Workflow.State",
+      "x-ess-kind": "enum",
+      "type": "string",
+      "enum": [
+        "Active"
+      ]
+    }
+  }
+}
