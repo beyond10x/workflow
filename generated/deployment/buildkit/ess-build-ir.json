@@ -1,0 +1,116 @@
+{
+  "format": "ess-build-ir/1",
+  "build": "workflow-build",
+  "platforms": [
+    {
+      "os": "linux",
+      "architecture": "amd64"
+    }
+  ],
+  "nodes": {
+    "build-base": {
+      "kind": "oci_base",
+      "reference": "docker.io/library/rust",
+      "digest": "sha256:8fa55b2f3ddf97471ab6a767bfa3f37e6bad0986ba823e75fea57e2a2a5c3073"
+    },
+    "build-source": {
+      "kind": "copy",
+      "base": "build-base",
+      "from": "repository",
+      "source": "/src",
+      "destination": "/src"
+    },
+    "chart-archive": {
+      "kind": "artifact",
+      "from": "chart-package",
+      "path": "/tmp/workflow-chart.tgz"
+    },
+    "chart-package": {
+      "kind": "run",
+      "base": "build-source",
+      "argv": [
+        "tar",
+        "--sort=name",
+        "--mtime=@0",
+        "--owner=0",
+        "--group=0",
+        "-czf",
+        "/tmp/workflow-chart.tgz",
+        "-C",
+        "generated/deployment/chart",
+        "."
+      ],
+      "workdir": "/src",
+      "network": "none"
+    },
+    "compile": {
+      "kind": "run",
+      "base": "build-source",
+      "argv": [
+        "cargo",
+        "build",
+        "--release",
+        "--manifest-path",
+        "/src/generated/rust/Cargo.toml"
+      ],
+      "workdir": "/src",
+      "environment": {
+        "CARGO_TARGET_DIR": "/build/target"
+      },
+      "network": "sandbox"
+    },
+    "repository": {
+      "kind": "source",
+      "path": ".",
+      "destination": "/src"
+    },
+    "runtime-base": {
+      "kind": "oci_base",
+      "reference": "gcr.io/distroless/cc-debian12",
+      "digest": "sha256:e5d81ddde149641e2a9ba55be4545bc125c67de07508b03ba4c22e6eb0ded5aa"
+    },
+    "runtime-image": {
+      "kind": "image",
+      "rootfs": "runtime-root",
+      "config": {
+        "entrypoint": [
+          "/usr/local/bin/workflow-generated-service"
+        ],
+        "workdir": "/var/lib/service"
+      }
+    },
+    "runtime-root": {
+      "kind": "copy",
+      "base": "runtime-base",
+      "from": "compile",
+      "source": "/build/target/release/workflow-generated-service",
+      "destination": "/usr/local/bin/workflow-generated-service"
+    }
+  },
+  "order": [
+    "build-base",
+    "repository",
+    "build-source",
+    "chart-package",
+    "chart-archive",
+    "compile",
+    "runtime-base",
+    "runtime-root",
+    "runtime-image"
+  ],
+  "outputs": {
+    "app": {
+      "name": "app",
+      "release_unit": "workflow-runtime",
+      "node": "runtime-image",
+      "kind": "oci_image",
+      "repository": "ghcr.io/beyond10x/workflow"
+    },
+    "chart": {
+      "name": "chart",
+      "release_unit": "workflow-chart",
+      "node": "chart-archive",
+      "kind": "helm_chart"
+    }
+  }
+}

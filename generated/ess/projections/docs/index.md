@@ -68,19 +68,19 @@ A command is accepted by the component that owns its context, emits the events o
 
 ## Bounded contexts
 
-- **[Workflows](domains/workflow.definition.md)** (`workflow.definition`) — Stable workflows, mutable draft DAGs, canonical published revisions, and activation. 24 types, five entities, six views, 11 commands, 11 events, no errors and one actor.
+- **[Workflows](domains/workflow-definition.md)** (`workflow.definition`) — Stable workflows, mutable draft DAGs, canonical published revisions, and activation. 24 types, five entities, six views, 11 commands, 11 events, no errors and one actor.
 
 ## Components
 
 A component is a unit of ownership, not a deployment. How many of each runs, and what each needs, is [the topology](topology.md).
 
-**`workflow-service`** — Owns workflow definitions, draft graphs, immutable revisions, and activation. It owns [`workflow.definition`](domains/workflow.definition.md). It accepts `workflow.definition.ActivateRevision`, `workflow.definition.AddNode`, `workflow.definition.ConnectNodes`, `workflow.definition.CreateDraft`, `workflow.definition.CreateWorkflow`, `workflow.definition.DiscardDraft`, `workflow.definition.DisconnectNodes`, `workflow.definition.PublishDraft`, `workflow.definition.RemoveNode`, `workflow.definition.ReplaceNode` and `workflow.definition.ValidateDraft`. It publishes `workflow.definition.DraftCreated`, `workflow.definition.DraftDiscarded`, `workflow.definition.DraftValidated`, `workflow.definition.NodeAdded`, `workflow.definition.NodeRemoved`, `workflow.definition.NodeReplaced`, `workflow.definition.NodesConnected`, `workflow.definition.NodesDisconnected`, `workflow.definition.RevisionActivated`, `workflow.definition.RevisionPublished` and `workflow.definition.WorkflowCreated`.
+**`workflow-service`** — Owns workflow definitions, draft graphs, immutable revisions, and activation. It owns [`workflow.definition`](domains/workflow-definition.md). It accepts `workflow.definition.ActivateRevision`, `workflow.definition.AddNode`, `workflow.definition.ConnectNodes`, `workflow.definition.CreateDraft`, `workflow.definition.CreateWorkflow`, `workflow.definition.DiscardDraft`, `workflow.definition.DisconnectNodes`, `workflow.definition.PublishDraft`, `workflow.definition.RemoveNode`, `workflow.definition.ReplaceNode` and `workflow.definition.ValidateDraft`. It publishes `workflow.definition.DraftCreated`, `workflow.definition.DraftDiscarded`, `workflow.definition.DraftValidated`, `workflow.definition.NodeAdded`, `workflow.definition.NodeRemoved`, `workflow.definition.NodeReplaced`, `workflow.definition.NodesConnected`, `workflow.definition.NodesDisconnected`, `workflow.definition.RevisionActivated`, `workflow.definition.RevisionPublished` and `workflow.definition.WorkflowCreated`.
 
 ## The other pages
 
 | page | what is on it |
 |---|---|
-| [Workflows](domains/workflow.definition.md) | the `workflow.definition` vocabulary: its types, entities, views, commands, events, errors and actors |
+| [Workflows](domains/workflow-definition.md) | the `workflow.definition` vocabulary: its types, entities, views, commands, events, errors and actors |
 | [Interactions](interactions.md) | every binding, with what it guarantees and what happens when it fails |
 | [Type crossings](crossings.md) | every conversion this system permits, and the reason someone gave for it |
 | [Topology](topology.md) | what each component needs in order to run |

@@ -18,10 +18,15 @@ tasks:
   check:
     desc: Validate ESS, refuse generated drift, and test every generated Workflow surface.
     cmds:
-      - ess validate --path spec/workflow
       - |
         set -eu
         repo_root="{{.TASKFILE_DIR}}"
+        ess_revision="c739a2afb0647714d18ba194b904ee92c96703f4"
+        ess_root="$repo_root/target/ess/$ess_revision"
+        cargo install --locked --git https://github.com/beyond10x/ess.git \
+          --rev "$ess_revision" --root "$ess_root" --bin ess ess-cli
+        ess_bin="$ess_root/bin/ess"
+        "$ess_bin" specify validate --path "$repo_root/spec/workflow"
         sdk_repository="$(awk '$1 == "repository:" { print $2; exit }' "$repo_root/service.yaml")"
         sdk_revision="$(awk '$1 == "revision:" { print $2; exit }' "$repo_root/service.yaml")"
         tool_root="$repo_root/target/service-builder/$sdk_revision"
@@ -40,7 +45,17 @@ tasks:
         )
         rustfmt --edition 2024 --check \
           "$repo_root/generated/rust/src/lib.rs" \
+          "$repo_root/generated/rust/src/main.rs" \
           "$repo_root/generated/rust/tests/generated_scenarios.rs"
+        "$ess_bin" generate component compile \
+          --path "$repo_root/generated/deployment/component.yaml" \
+          --out "$check_root/component.ir.json"
+        "$ess_bin" generate build compile \
+          --path "$repo_root/generated/deployment/build.yaml" \
+          --out "$check_root/build.ir.json"
+        cmp "$check_root/component.ir.json" "$repo_root/generated/deployment/component.ir.json"
+        cmp "$check_root/build.ir.json" "$repo_root/generated/deployment/build.ir.json"
+        helm lint "$repo_root/generated/deployment/chart"
         rg -q 'pub struct WorkflowClient' "$repo_root/generated/rust/src/lib.rs"
         rg -q 'pub async fn http_router' "$repo_root/generated/rust/src/lib.rs"
         rg -q 'urn:b10x:workflow' "$repo_root/generated/http/openapi.json"

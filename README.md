@@ -6,11 +6,12 @@ activate an owned revision. Tenant, authority, and optional realm come only from
 
 ## Current status
 
-Version 0.2.0 replaces the former `WorkflowId` placeholder. The ESS model, runtime annotations,
+Version 0.3.0 replaces the former `WorkflowId` placeholder. The ESS model, runtime annotations,
 generated `WorkflowClient`, Identity-authenticated HTTP server, OpenAPI, Connector contribution,
 and conformance scenarios are one deterministic package rooted at [`service.yaml`](service.yaml).
-There is no handwritten service/client adapter and no compatibility path for the predecessor or
-the 0.1.0 crate.
+Service SDK also generates the executable host, durable SQLite lifecycle, ESS component/build/
+runtime IR, BuildKit graph, and configuration-neutral Helm chart. There is no handwritten host,
+Dockerfile, service/client adapter, or compatibility path for the predecessor or the 0.1.0 crate.
 
 Semantic node kinds are closed to `compute`, `read`, `call`, `judge`, `wait`, `invoke`, `emit`, and
 `complete`. Layout coordinates remain a product concern and are not persisted in semantic graphs.

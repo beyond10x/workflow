@@ -1,0 +1,30 @@
+# syntax=docker/dockerfile:1.12
+FROM docker.io/library/rust@sha256:8fa55b2f3ddf97471ab6a767bfa3f37e6bad0986ba823e75fea57e2a2a5c3073 AS build_base
+
+FROM scratch AS repository
+COPY [".","/src"]
+
+FROM build_base AS build_source
+COPY --from=repository ["/src","/src"]
+
+FROM build_source AS chart_package
+WORKDIR /src
+RUN --network=none ["tar","--sort=name","--mtime=@0","--owner=0","--group=0","-czf","/tmp/workflow-chart.tgz","-C","generated/deployment/chart","."]
+
+FROM scratch AS chart_archive
+COPY --from=chart_package ["/tmp/workflow-chart.tgz","/out/"]
+
+FROM build_source AS compile
+WORKDIR /src
+ENV CARGO_TARGET_DIR="/build/target"
+RUN --network=default ["cargo","build","--release","--manifest-path","/src/generated/rust/Cargo.toml"]
+
+FROM gcr.io/distroless/cc-debian12@sha256:e5d81ddde149641e2a9ba55be4545bc125c67de07508b03ba4c22e6eb0ded5aa AS runtime_base
+
+FROM runtime_base AS runtime_root
+COPY --from=compile ["/build/target/release/workflow-generated-service","/usr/local/bin/workflow-generated-service"]
+
+FROM runtime_root AS runtime_image
+ENTRYPOINT ["/usr/local/bin/workflow-generated-service"]
+WORKDIR /var/lib/service
+

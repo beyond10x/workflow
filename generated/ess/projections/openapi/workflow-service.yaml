@@ -1135,3 +1135,488 @@ components:
       required:
       - rows
       type: object
+x-ess-entities:
+  workflow.definition.CallNode:
+    title: CallNode
+    x-ess-name: workflow.definition.CallNode
+    x-ess-kind: struct
+    type: object
+    properties:
+      connector:
+        type: string
+      operation:
+        type: string
+    required:
+    - connector
+    - operation
+    additionalProperties: false
+  workflow.definition.CompleteNode:
+    title: CompleteNode
+    x-ess-name: workflow.definition.CompleteNode
+    x-ess-kind: struct
+    type: object
+    properties:
+      result:
+        type: string
+    required:
+    - result
+    additionalProperties: false
+  workflow.definition.ComputeNode:
+    title: ComputeNode
+    x-ess-name: workflow.definition.ComputeNode
+    x-ess-kind: struct
+    type: object
+    properties:
+      expression:
+        type: string
+    required:
+    - expression
+    additionalProperties: false
+  workflow.definition.DraftEdge:
+    title: DraftEdge
+    x-ess-name: workflow.definition.DraftEdge
+    x-ess-kind: entity
+    type: object
+    properties:
+      edge_id:
+        $ref: '#/x-ess-entities/workflow.definition.EdgeId'
+      draft_id:
+        $ref: '#/x-ess-entities/workflow.definition.DraftId'
+      source_node_id:
+        $ref: '#/x-ess-entities/workflow.definition.NodeId'
+      target_node_id:
+        $ref: '#/x-ess-entities/workflow.definition.NodeId'
+      state:
+        $ref: '#/x-ess-entities/workflow.definition.DraftEdge.State'
+    required:
+    - edge_id
+    - draft_id
+    - source_node_id
+    - target_node_id
+    - state
+    additionalProperties: false
+  workflow.definition.DraftEdge.State:
+    title: State
+    x-ess-name: workflow.definition.DraftEdge.State
+    x-ess-kind: enum
+    type: string
+    enum:
+    - Active
+    - Disconnected
+  workflow.definition.DraftId:
+    title: DraftId
+    x-ess-name: workflow.definition.DraftId
+    x-ess-kind: newtype
+    type: string
+    format: uuid
+    pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+  workflow.definition.DraftNode:
+    title: DraftNode
+    x-ess-name: workflow.definition.DraftNode
+    x-ess-kind: entity
+    type: object
+    properties:
+      node_id:
+        $ref: '#/x-ess-entities/workflow.definition.NodeId'
+      draft_id:
+        $ref: '#/x-ess-entities/workflow.definition.DraftId'
+      definition:
+        $ref: '#/x-ess-entities/workflow.definition.NodeDefinition'
+      state:
+        $ref: '#/x-ess-entities/workflow.definition.DraftNode.State'
+    required:
+    - node_id
+    - draft_id
+    - definition
+    - state
+    additionalProperties: false
+  workflow.definition.DraftNode.State:
+    title: State
+    x-ess-name: workflow.definition.DraftNode.State
+    x-ess-kind: enum
+    type: string
+    enum:
+    - Active
+    - Removed
+  workflow.definition.EdgeId:
+    title: EdgeId
+    x-ess-name: workflow.definition.EdgeId
+    x-ess-kind: newtype
+    type: string
+    format: uuid
+    pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+  workflow.definition.EdgeSnapshot:
+    title: EdgeSnapshot
+    x-ess-name: workflow.definition.EdgeSnapshot
+    x-ess-kind: struct
+    type: object
+    properties:
+      edge_id:
+        $ref: '#/x-ess-entities/workflow.definition.EdgeId'
+      draft_id:
+        $ref: '#/x-ess-entities/workflow.definition.DraftId'
+      source_node_id:
+        $ref: '#/x-ess-entities/workflow.definition.NodeId'
+      target_node_id:
+        $ref: '#/x-ess-entities/workflow.definition.NodeId'
+    required:
+    - edge_id
+    - draft_id
+    - source_node_id
+    - target_node_id
+    additionalProperties: false
+  workflow.definition.EmitNode:
+    title: EmitNode
+    x-ess-name: workflow.definition.EmitNode
+    x-ess-kind: struct
+    type: object
+    properties:
+      event:
+        type: string
+    required:
+    - event
+    additionalProperties: false
+  workflow.definition.InvokeNode:
+    title: InvokeNode
+    x-ess-name: workflow.definition.InvokeNode
+    x-ess-kind: struct
+    type: object
+    properties:
+      agent:
+        type: string
+      instruction:
+        type: string
+    required:
+    - agent
+    - instruction
+    additionalProperties: false
+  workflow.definition.JudgeNode:
+    title: JudgeNode
+    x-ess-name: workflow.definition.JudgeNode
+    x-ess-kind: struct
+    type: object
+    properties:
+      condition:
+        type: string
+    required:
+    - condition
+    additionalProperties: false
+  workflow.definition.NodeDefinition:
+    title: NodeDefinition
+    x-ess-name: workflow.definition.NodeDefinition
+    x-ess-kind: union
+    oneOf:
+    - title: call
+      type: object
+      properties:
+        kind:
+          type: string
+          const: call
+        value:
+          $ref: '#/x-ess-entities/workflow.definition.CallNode'
+      required:
+      - kind
+      - value
+      additionalProperties: false
+    - title: complete
+      type: object
+      properties:
+        kind:
+          type: string
+          const: complete
+        value:
+          $ref: '#/x-ess-entities/workflow.definition.CompleteNode'
+      required:
+      - kind
+      - value
+      additionalProperties: false
+    - title: compute
+      type: object
+      properties:
+        kind:
+          type: string
+          const: compute
+        value:
+          $ref: '#/x-ess-entities/workflow.definition.ComputeNode'
+      required:
+      - kind
+      - value
+      additionalProperties: false
+    - title: emit
+      type: object
+      properties:
+        kind:
+          type: string
+          const: emit
+        value:
+          $ref: '#/x-ess-entities/workflow.definition.EmitNode'
+      required:
+      - kind
+      - value
+      additionalProperties: false
+    - title: invoke
+      type: object
+      properties:
+        kind:
+          type: string
+          const: invoke
+        value:
+          $ref: '#/x-ess-entities/workflow.definition.InvokeNode'
+      required:
+      - kind
+      - value
+      additionalProperties: false
+    - title: judge
+      type: object
+      properties:
+        kind:
+          type: string
+          const: judge
+        value:
+          $ref: '#/x-ess-entities/workflow.definition.JudgeNode'
+      required:
+      - kind
+      - value
+      additionalProperties: false
+    - title: read
+      type: object
+      properties:
+        kind:
+          type: string
+          const: read
+        value:
+          $ref: '#/x-ess-entities/workflow.definition.ReadNode'
+      required:
+      - kind
+      - value
+      additionalProperties: false
+    - title: wait
+      type: object
+      properties:
+        kind:
+          type: string
+          const: wait
+        value:
+          $ref: '#/x-ess-entities/workflow.definition.WaitNode'
+      required:
+      - kind
+      - value
+      additionalProperties: false
+    x-ess-union-tag: kind
+  workflow.definition.NodeId:
+    title: NodeId
+    x-ess-name: workflow.definition.NodeId
+    x-ess-kind: newtype
+    type: string
+    format: uuid
+    pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+  workflow.definition.NodeSnapshot:
+    title: NodeSnapshot
+    x-ess-name: workflow.definition.NodeSnapshot
+    x-ess-kind: struct
+    type: object
+    properties:
+      node_id:
+        $ref: '#/x-ess-entities/workflow.definition.NodeId'
+      draft_id:
+        $ref: '#/x-ess-entities/workflow.definition.DraftId'
+      definition:
+        $ref: '#/x-ess-entities/workflow.definition.NodeDefinition'
+    required:
+    - node_id
+    - draft_id
+    - definition
+    additionalProperties: false
+  workflow.definition.OwnerRef:
+    title: OwnerRef
+    x-ess-name: workflow.definition.OwnerRef
+    x-ess-kind: newtype
+    type: string
+  workflow.definition.PrincipalRef:
+    title: PrincipalRef
+    x-ess-name: workflow.definition.PrincipalRef
+    x-ess-kind: newtype
+    type: string
+  workflow.definition.ProjectRef:
+    title: ProjectRef
+    x-ess-name: workflow.definition.ProjectRef
+    x-ess-kind: newtype
+    type: string
+  workflow.definition.ReadNode:
+    title: ReadNode
+    x-ess-name: workflow.definition.ReadNode
+    x-ess-kind: struct
+    type: object
+    properties:
+      connector:
+        type: string
+      operation:
+        type: string
+    required:
+    - connector
+    - operation
+    additionalProperties: false
+  workflow.definition.RevisionId:
+    title: RevisionId
+    x-ess-name: workflow.definition.RevisionId
+    x-ess-kind: newtype
+    type: string
+    format: uuid
+    pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+  workflow.definition.ScopeBindings:
+    title: ScopeBindings
+    x-ess-name: workflow.definition.ScopeBindings
+    x-ess-kind: struct
+    type: object
+    properties:
+      principal:
+        $ref: '#/x-ess-entities/workflow.definition.PrincipalRef'
+      team:
+        $ref: '#/x-ess-entities/workflow.definition.TeamRef'
+      project:
+        $ref: '#/x-ess-entities/workflow.definition.ProjectRef'
+    additionalProperties: false
+  workflow.definition.TeamRef:
+    title: TeamRef
+    x-ess-name: workflow.definition.TeamRef
+    x-ess-kind: newtype
+    type: string
+  workflow.definition.WaitNode:
+    title: WaitNode
+    x-ess-name: workflow.definition.WaitNode
+    x-ess-kind: struct
+    type: object
+    properties:
+      duration:
+        type: string
+        format: duration
+    required:
+    - duration
+    additionalProperties: false
+  workflow.definition.Workflow:
+    title: Workflow
+    x-ess-name: workflow.definition.Workflow
+    x-ess-kind: entity
+    type: object
+    properties:
+      workflow_id:
+        $ref: '#/x-ess-entities/workflow.definition.WorkflowId'
+      name:
+        type: string
+      owner:
+        $ref: '#/x-ess-entities/workflow.definition.OwnerRef'
+      scopes:
+        $ref: '#/x-ess-entities/workflow.definition.ScopeBindings'
+      active_revision_id:
+        $ref: '#/x-ess-entities/workflow.definition.RevisionId'
+      state:
+        $ref: '#/x-ess-entities/workflow.definition.Workflow.State'
+    required:
+    - workflow_id
+    - name
+    - owner
+    - scopes
+    - state
+    additionalProperties: false
+  workflow.definition.Workflow.State:
+    title: State
+    x-ess-name: workflow.definition.Workflow.State
+    x-ess-kind: enum
+    type: string
+    enum:
+    - Active
+  workflow.definition.WorkflowDraft:
+    title: WorkflowDraft
+    x-ess-name: workflow.definition.WorkflowDraft
+    x-ess-kind: entity
+    type: object
+    properties:
+      draft_id:
+        $ref: '#/x-ess-entities/workflow.definition.DraftId'
+      workflow_id:
+        $ref: '#/x-ess-entities/workflow.definition.WorkflowId'
+      name:
+        type: string
+      based_on_revision_id:
+        $ref: '#/x-ess-entities/workflow.definition.RevisionId'
+      owner:
+        $ref: '#/x-ess-entities/workflow.definition.OwnerRef'
+      scopes:
+        $ref: '#/x-ess-entities/workflow.definition.ScopeBindings'
+      state:
+        $ref: '#/x-ess-entities/workflow.definition.WorkflowDraft.State'
+    required:
+    - draft_id
+    - workflow_id
+    - name
+    - owner
+    - scopes
+    - state
+    additionalProperties: false
+  workflow.definition.WorkflowDraft.State:
+    title: State
+    x-ess-name: workflow.definition.WorkflowDraft.State
+    x-ess-kind: enum
+    type: string
+    enum:
+    - Active
+    - Discarded
+  workflow.definition.WorkflowId:
+    title: WorkflowId
+    x-ess-name: workflow.definition.WorkflowId
+    x-ess-kind: newtype
+    type: string
+    format: uuid
+    pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+  workflow.definition.WorkflowRevision:
+    title: WorkflowRevision
+    x-ess-name: workflow.definition.WorkflowRevision
+    x-ess-kind: entity
+    type: object
+    properties:
+      revision_id:
+        $ref: '#/x-ess-entities/workflow.definition.RevisionId'
+      workflow_id:
+        $ref: '#/x-ess-entities/workflow.definition.WorkflowId'
+      draft_id:
+        $ref: '#/x-ess-entities/workflow.definition.DraftId'
+      nodes:
+        type: array
+        items:
+          $ref: '#/x-ess-entities/workflow.definition.NodeSnapshot'
+      edges:
+        type: array
+        items:
+          $ref: '#/x-ess-entities/workflow.definition.EdgeSnapshot'
+      digest:
+        type: string
+      node_count:
+        type: integer
+      edge_count:
+        type: integer
+      owner:
+        $ref: '#/x-ess-entities/workflow.definition.OwnerRef'
+      scopes:
+        $ref: '#/x-ess-entities/workflow.definition.ScopeBindings'
+      state:
+        $ref: '#/x-ess-entities/workflow.definition.WorkflowRevision.State'
+    required:
+    - revision_id
+    - workflow_id
+    - draft_id
+    - nodes
+    - edges
+    - digest
+    - node_count
+    - edge_count
+    - owner
+    - scopes
+    - state
+    additionalProperties: false
+  workflow.definition.WorkflowRevision.State:
+    title: State
+    x-ess-name: workflow.definition.WorkflowRevision.State
+    x-ess-kind: enum
+    type: string
+    enum:
+    - Published

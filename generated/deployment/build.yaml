@@ -1,0 +1,79 @@
+build: workflow-build
+format: ess-build/1
+nodes:
+- digest: sha256:8fa55b2f3ddf97471ab6a767bfa3f37e6bad0986ba823e75fea57e2a2a5c3073
+  id: build-base
+  kind: oci_base
+  reference: docker.io/library/rust
+- destination: /src
+  id: repository
+  kind: source
+  path: .
+- base: build-base
+  destination: /src
+  from: repository
+  id: build-source
+  kind: copy
+  source: /src
+- argv:
+  - cargo
+  - build
+  - --release
+  - --manifest-path
+  - /src/generated/rust/Cargo.toml
+  base: build-source
+  environment:
+    CARGO_TARGET_DIR: /build/target
+  id: compile
+  kind: run
+  network: sandbox
+  workdir: /src
+- digest: sha256:e5d81ddde149641e2a9ba55be4545bc125c67de07508b03ba4c22e6eb0ded5aa
+  id: runtime-base
+  kind: oci_base
+  reference: gcr.io/distroless/cc-debian12
+- base: runtime-base
+  destination: /usr/local/bin/workflow-generated-service
+  from: compile
+  id: runtime-root
+  kind: copy
+  source: /build/target/release/workflow-generated-service
+- config:
+    entrypoint:
+    - /usr/local/bin/workflow-generated-service
+    workdir: /var/lib/service
+  id: runtime-image
+  kind: image
+  rootfs: runtime-root
+- argv:
+  - tar
+  - --sort=name
+  - --mtime=@0
+  - --owner=0
+  - --group=0
+  - -czf
+  - /tmp/workflow-chart.tgz
+  - -C
+  - generated/deployment/chart
+  - .
+  base: build-source
+  id: chart-package
+  kind: run
+  workdir: /src
+- from: chart-package
+  id: chart-archive
+  kind: artifact
+  path: /tmp/workflow-chart.tgz
+outputs:
+- kind: oci_image
+  name: app
+  node: runtime-image
+  release_unit: workflow-runtime
+  repository: ghcr.io/beyond10x/workflow
+- kind: helm_chart
+  name: chart
+  node: chart-archive
+  release_unit: workflow-chart
+platforms:
+- architecture: amd64
+  os: linux
