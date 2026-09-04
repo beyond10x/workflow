@@ -20,11 +20,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
-      - uses: beyond10x/ess/.github/actions/release-component@3042a4417ac6cda5a2a4ed85b92a7d4aeac50e2c
+      - uses: beyond10x/ess/.github/actions/release-component@ceb67b6b79ce3790cf705a6ad79ad6ee246f6b81
         with:
           service: workflow
           version: ${{ github.ref_name }}
-          ess-revision: 3042a4417ac6cda5a2a4ed85b92a7d4aeac50e2c
+          ess-revision: ceb67b6b79ce3790cf705a6ad79ad6ee246f6b81
           component-path: generated/deployment/component.yaml
           build-path: generated/deployment/build.yaml
           build-ir: generated/deployment/build.ir.json
