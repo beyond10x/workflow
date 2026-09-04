@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.4 - 2026-09-04
+
+- Regenerate the runnable Workflow service with Service SDK 0.5.6 and Connectors 0.5.11, and use
+  ESS 0.13.5's component-owned release toolchains so the repository publishes its runtime, chart,
+  evidence, and component bundle without a Devcenter rebuild.
+
 ## 0.3.3 - 2026-09-04
 
 - Pin ESS 0.13.4 so the generic component action executes portably from a clean checkout.

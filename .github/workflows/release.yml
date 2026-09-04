@@ -20,11 +20,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
-      - uses: beyond10x/ess/.github/actions/release-component@ceb67b6b79ce3790cf705a6ad79ad6ee246f6b81
+      - uses: beyond10x/ess/.github/actions/release-component@22a98a4c793bbb9ba2007e4d2ae81b2dc3a2c53a
         with:
           service: workflow
           version: ${{ github.ref_name }}
-          ess-revision: ceb67b6b79ce3790cf705a6ad79ad6ee246f6b81
+          ess-revision: 22a98a4c793bbb9ba2007e4d2ae81b2dc3a2c53a
+          rust-toolchain: "1.91.0"
+          node-version: "22"
+          pnpm-version: "10.17.1"
           component-path: generated/deployment/component.yaml
           build-path: generated/deployment/build.yaml
           build-ir: generated/deployment/build.ir.json
