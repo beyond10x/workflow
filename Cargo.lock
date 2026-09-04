@@ -1663,7 +1663,7 @@ dependencies = [
 [[package]]
 name = "service-builder"
 version = "0.5.7"
-source = "git+https://github.com/beyond10x/service-sdk.git?rev=3ac9f30a5e49015d2c61d6ca292c8889f90403c4#3ac9f30a5e49015d2c61d6ca292c8889f90403c4"
+source = "git+https://github.com/beyond10x/service-sdk.git?rev=c32b534e721deaa158bc3b93a0e7a19a9af009a9#c32b534e721deaa158bc3b93a0e7a19a9af009a9"
 dependencies = [
  "anyhow",
  "clap",
@@ -1690,7 +1690,7 @@ dependencies = [
 [[package]]
 name = "service-catalog"
 version = "0.5.7"
-source = "git+https://github.com/beyond10x/service-sdk.git?rev=3ac9f30a5e49015d2c61d6ca292c8889f90403c4#3ac9f30a5e49015d2c61d6ca292c8889f90403c4"
+source = "git+https://github.com/beyond10x/service-sdk.git?rev=c32b534e721deaa158bc3b93a0e7a19a9af009a9#c32b534e721deaa158bc3b93a0e7a19a9af009a9"
 dependencies = [
  "async-trait",
  "hex",
@@ -1705,7 +1705,7 @@ dependencies = [
 [[package]]
 name = "service-conformance"
 version = "0.5.7"
-source = "git+https://github.com/beyond10x/service-sdk.git?rev=3ac9f30a5e49015d2c61d6ca292c8889f90403c4#3ac9f30a5e49015d2c61d6ca292c8889f90403c4"
+source = "git+https://github.com/beyond10x/service-sdk.git?rev=c32b534e721deaa158bc3b93a0e7a19a9af009a9#c32b534e721deaa158bc3b93a0e7a19a9af009a9"
 dependencies = [
  "async-trait",
  "eventlog-sqlite",
@@ -1723,7 +1723,7 @@ dependencies = [
 [[package]]
 name = "service-connectors"
 version = "0.5.7"
-source = "git+https://github.com/beyond10x/service-sdk.git?rev=3ac9f30a5e49015d2c61d6ca292c8889f90403c4#3ac9f30a5e49015d2c61d6ca292c8889f90403c4"
+source = "git+https://github.com/beyond10x/service-sdk.git?rev=c32b534e721deaa158bc3b93a0e7a19a9af009a9#c32b534e721deaa158bc3b93a0e7a19a9af009a9"
 dependencies = [
  "async-trait",
  "eventlog-core",
@@ -1742,7 +1742,7 @@ dependencies = [
 [[package]]
 name = "service-definition"
 version = "0.5.7"
-source = "git+https://github.com/beyond10x/service-sdk.git?rev=3ac9f30a5e49015d2c61d6ca292c8889f90403c4#3ac9f30a5e49015d2c61d6ca292c8889f90403c4"
+source = "git+https://github.com/beyond10x/service-sdk.git?rev=c32b534e721deaa158bc3b93a0e7a19a9af009a9#c32b534e721deaa158bc3b93a0e7a19a9af009a9"
 dependencies = [
  "ess-compiler",
  "serde",
@@ -1753,7 +1753,7 @@ dependencies = [
 [[package]]
 name = "service-engine"
 version = "0.5.7"
-source = "git+https://github.com/beyond10x/service-sdk.git?rev=3ac9f30a5e49015d2c61d6ca292c8889f90403c4#3ac9f30a5e49015d2c61d6ca292c8889f90403c4"
+source = "git+https://github.com/beyond10x/service-sdk.git?rev=c32b534e721deaa158bc3b93a0e7a19a9af009a9#c32b534e721deaa158bc3b93a0e7a19a9af009a9"
 dependencies = [
  "hex",
  "serde",
@@ -1767,7 +1767,7 @@ dependencies = [
 [[package]]
 name = "service-eventlog"
 version = "0.5.7"
-source = "git+https://github.com/beyond10x/service-sdk.git?rev=3ac9f30a5e49015d2c61d6ca292c8889f90403c4#3ac9f30a5e49015d2c61d6ca292c8889f90403c4"
+source = "git+https://github.com/beyond10x/service-sdk.git?rev=c32b534e721deaa158bc3b93a0e7a19a9af009a9#c32b534e721deaa158bc3b93a0e7a19a9af009a9"
 dependencies = [
  "eventlog-core",
  "hex",
@@ -1784,7 +1784,7 @@ dependencies = [
 [[package]]
 name = "service-host"
 version = "0.5.7"
-source = "git+https://github.com/beyond10x/service-sdk.git?rev=3ac9f30a5e49015d2c61d6ca292c8889f90403c4#3ac9f30a5e49015d2c61d6ca292c8889f90403c4"
+source = "git+https://github.com/beyond10x/service-sdk.git?rev=c32b534e721deaa158bc3b93a0e7a19a9af009a9#c32b534e721deaa158bc3b93a0e7a19a9af009a9"
 dependencies = [
  "anyhow",
  "axum",
@@ -1797,7 +1797,7 @@ dependencies = [
 [[package]]
 name = "service-http"
 version = "0.5.7"
-source = "git+https://github.com/beyond10x/service-sdk.git?rev=3ac9f30a5e49015d2c61d6ca292c8889f90403c4#3ac9f30a5e49015d2c61d6ca292c8889f90403c4"
+source = "git+https://github.com/beyond10x/service-sdk.git?rev=c32b534e721deaa158bc3b93a0e7a19a9af009a9#c32b534e721deaa158bc3b93a0e7a19a9af009a9"
 dependencies = [
  "axum",
  "bytes",
@@ -1815,7 +1815,7 @@ dependencies = [
 [[package]]
 name = "service-obligations"
 version = "0.5.7"
-source = "git+https://github.com/beyond10x/service-sdk.git?rev=3ac9f30a5e49015d2c61d6ca292c8889f90403c4#3ac9f30a5e49015d2c61d6ca292c8889f90403c4"
+source = "git+https://github.com/beyond10x/service-sdk.git?rev=c32b534e721deaa158bc3b93a0e7a19a9af009a9#c32b534e721deaa158bc3b93a0e7a19a9af009a9"
 dependencies = [
  "serde",
  "serde_json",
@@ -1827,7 +1827,7 @@ dependencies = [
 [[package]]
 name = "service-runtime"
 version = "0.5.7"
-source = "git+https://github.com/beyond10x/service-sdk.git?rev=3ac9f30a5e49015d2c61d6ca292c8889f90403c4#3ac9f30a5e49015d2c61d6ca292c8889f90403c4"
+source = "git+https://github.com/beyond10x/service-sdk.git?rev=c32b534e721deaa158bc3b93a0e7a19a9af009a9#c32b534e721deaa158bc3b93a0e7a19a9af009a9"
 dependencies = [
  "serde",
  "serde_json",
@@ -1838,7 +1838,7 @@ dependencies = [
 [[package]]
 name = "service-runtime-ir"
 version = "0.5.7"
-source = "git+https://github.com/beyond10x/service-sdk.git?rev=3ac9f30a5e49015d2c61d6ca292c8889f90403c4#3ac9f30a5e49015d2c61d6ca292c8889f90403c4"
+source = "git+https://github.com/beyond10x/service-sdk.git?rev=c32b534e721deaa158bc3b93a0e7a19a9af009a9#c32b534e721deaa158bc3b93a0e7a19a9af009a9"
 dependencies = [
  "ess-compiler",
  "ess-synth",

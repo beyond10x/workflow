@@ -2,7 +2,7 @@ format: service/1
 service: workflow
 sdk:
   repository: https://github.com/beyond10x/service-sdk.git
-  revision: 3ac9f30a5e49015d2c61d6ca292c8889f90403c4
+  revision: c32b534e721deaa158bc3b93a0e7a19a9af009a9
 semantic:
   root: spec/workflow
   sources:

@@ -29,7 +29,7 @@ provided_endpoints:
   name: api
   scheme: http
   workload: workflow
-realization_digest: sha256:49e116fa693a2eed5eeb90f2a2499df917412e1cc563742ea778deab9bb3ac36
+realization_digest: sha256:36170f5235428d8ab9f7a1e0b832c6a9dc082733bbbec72514f1c37210cc81a1
 runtime: workflow-runtime
 semantic_digest: sha256:6a79078047815754e0dda89f285e08689037af0adfd4277dfcc305f1d003df1b
 workloads:

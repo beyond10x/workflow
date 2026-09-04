@@ -60,7 +60,7 @@ entrypoints:
 id: workflow-generated
 implementations:
 - artifact:
-    identity: sha256:7b66c5d3c0313a3fa7303100bf9cc51f616fea49b3d53c6829ece0fe0ddc0502
+    identity: sha256:00c2afd9d34722c326ccdbf16f8359484cba564433cb64e4d8c8c2ee06ccf182
     kind: source
     locator: generated/rust
   components:
