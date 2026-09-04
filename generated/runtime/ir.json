@@ -11,7 +11,7 @@
     "capabilities": 82
   },
   "obligation_catalog": {
-    "digest": "12e8b6adb5b214031bd1c101f71e91a666d19674d844683e35f32b67f966ecb3",
+    "digest": "5adc69ef103e574429595146d76de0908b3152cadec028212c82a25794dda9aa",
     "providers": [
       "sdk.aggregate.event-sourced/v1",
       "sdk.aggregate.nested-entity/v1",
@@ -23,7 +23,7 @@
       "sdk.graph.node-unreferenced/v1",
       "sdk.graph.publish-snapshot/v1",
       "sdk.lifecycle.require-state/v1",
-      "sdk.projection.auth-partitioned-visibility/v1"
+      "sdk.projection.conjunctive-scopes-visibility/v1"
     ]
   },
   "admission": [
@@ -1260,27 +1260,24 @@
       },
       {
         "name": "partition_projection_by_auth",
-        "provider": "sdk.projection.auth-partitioned-visibility/v1",
+        "provider": "sdk.projection.conjunctive-scopes-visibility/v1",
         "bindings": {
-          "owner": "owner",
           "scopes": "scopes"
         },
-        "description": "Materialize hidden tenant and exact optional-realm partitions."
+        "description": "Materialize hidden tenant and exact optional-realm partitions with scoped reads."
       },
       {
         "name": "filter_visible_workflows",
-        "provider": "sdk.projection.auth-partitioned-visibility/v1",
+        "provider": "sdk.projection.conjunctive-scopes-visibility/v1",
         "bindings": {
-          "owner": "owner",
           "scopes": "scopes"
         },
-        "description": "Filter workflow rows by verified authority."
+        "description": "Filter workflow rows by verified scope facts without conferring ownership."
       },
       {
         "name": "filter_visible_drafts",
-        "provider": "sdk.projection.auth-partitioned-visibility/v1",
+        "provider": "sdk.projection.conjunctive-scopes-visibility/v1",
         "bindings": {
-          "owner": "owner",
           "parent": "workflow.definition.Workflow",
           "scopes": "scopes"
         },
@@ -1288,9 +1285,8 @@
       },
       {
         "name": "filter_visible_revisions",
-        "provider": "sdk.projection.auth-partitioned-visibility/v1",
+        "provider": "sdk.projection.conjunctive-scopes-visibility/v1",
         "bindings": {
-          "owner": "owner",
           "parent": "workflow.definition.Workflow",
           "scopes": "scopes"
         },
@@ -1377,35 +1373,31 @@
     },
     "filter_visible_drafts": {
       "name": "filter_visible_drafts",
-      "provider": "sdk.projection.auth-partitioned-visibility/v1",
+      "provider": "sdk.projection.conjunctive-scopes-visibility/v1",
       "bindings": {
-        "owner": "owner",
         "parent": "workflow.definition.Workflow",
         "scopes": "scopes"
       }
     },
     "filter_visible_revisions": {
       "name": "filter_visible_revisions",
-      "provider": "sdk.projection.auth-partitioned-visibility/v1",
+      "provider": "sdk.projection.conjunctive-scopes-visibility/v1",
       "bindings": {
-        "owner": "owner",
         "parent": "workflow.definition.Workflow",
         "scopes": "scopes"
       }
     },
     "filter_visible_workflows": {
       "name": "filter_visible_workflows",
-      "provider": "sdk.projection.auth-partitioned-visibility/v1",
+      "provider": "sdk.projection.conjunctive-scopes-visibility/v1",
       "bindings": {
-        "owner": "owner",
         "scopes": "scopes"
       }
     },
     "partition_projection_by_auth": {
       "name": "partition_projection_by_auth",
-      "provider": "sdk.projection.auth-partitioned-visibility/v1",
+      "provider": "sdk.projection.conjunctive-scopes-visibility/v1",
       "bindings": {
-        "owner": "owner",
         "scopes": "scopes"
       }
     },

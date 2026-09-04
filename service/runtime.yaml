@@ -170,23 +170,23 @@ obligations:
     description: Only a published revision already owned by this workflow stream can be activated.
 
   - name: partition_projection_by_auth
-    provider: sdk.projection.auth-partitioned-visibility/v1
-    bindings: { owner: owner, scopes: scopes }
-    description: Materialize hidden tenant and exact optional-realm partitions.
+    provider: sdk.projection.conjunctive-scopes-visibility/v1
+    bindings: { scopes: scopes }
+    description: Materialize hidden tenant and exact optional-realm partitions with scoped reads.
 
   - name: filter_visible_workflows
-    provider: sdk.projection.auth-partitioned-visibility/v1
-    bindings: { owner: owner, scopes: scopes }
-    description: Filter workflow rows by verified authority.
+    provider: sdk.projection.conjunctive-scopes-visibility/v1
+    bindings: { scopes: scopes }
+    description: Filter workflow rows by verified scope facts without conferring ownership.
 
   - name: filter_visible_drafts
-    provider: sdk.projection.auth-partitioned-visibility/v1
-    bindings: { owner: owner, scopes: scopes, parent: workflow.definition.Workflow }
+    provider: sdk.projection.conjunctive-scopes-visibility/v1
+    bindings: { scopes: scopes, parent: workflow.definition.Workflow }
     description: Filter draft rows by inherited workflow authority.
 
   - name: filter_visible_revisions
-    provider: sdk.projection.auth-partitioned-visibility/v1
-    bindings: { owner: owner, scopes: scopes, parent: workflow.definition.Workflow }
+    provider: sdk.projection.conjunctive-scopes-visibility/v1
+    bindings: { scopes: scopes, parent: workflow.definition.Workflow }
     description: Filter revision rows by inherited workflow authority.
 
 projections:

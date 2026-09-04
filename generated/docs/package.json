@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {"dev": "vite", "build": "vue-tsc --noEmit && vite build"},
   "dependencies": {
-    "@b10x/service-console-vue": "git+https://github.com/beyond10x/service-sdk.git#68618abac0ddc4f9363fec8315bd2d9c87113b88",
+    "@b10x/service-console-vue": "git+https://github.com/beyond10x/service-sdk.git#2a513d1547376ba02dc16099da00ff3fcce04a84",
     "vue": "^3.5.0"
   },
   "devDependencies": {

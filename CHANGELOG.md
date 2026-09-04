@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.5 - 2026-09-04
+
+- Let authorized engineers read tenant-shared reusable definitions and immutable revisions without
+  granting them owner-only authoring, publishing, or activation authority.
+
 ## 0.3.4 - 2026-09-04
 
 - Regenerate the runnable Workflow service with Service SDK 0.5.6 and Connectors 0.5.11, and use

@@ -72,3 +72,51 @@ scenarios:
         input: { workflow_id: $create_workflow.workflow_id }
         count: 0
       - partitions_are_distinct: [auth, other_auth]
+
+  - name: tenant_library_is_readable_without_aggregate_ownership
+    given:
+      auth: { tenant: tenant-a, realm: null, authority: person-a, user: person-a }
+      other_auth: { tenant: tenant-a, realm: null, authority: person-b, user: person-b }
+    when:
+      - intent: create_workflow
+        input:
+          name: Shared review workflow
+          scopes: { principal: null, team: null, project: null }
+          idempotency_key: create-shared-workflow
+      - intent: create_draft
+        input:
+          workflow_id: $create_workflow.workflow_id
+          name: Published graph
+          based_on_revision_id: null
+          expected_version: 1
+          idempotency_key: create-shared-draft
+      - intent: add_node
+        input:
+          workflow_id: $create_workflow.workflow_id
+          draft_id: $create_draft.draft_id
+          definition: { kind: complete, value: { result: reviewed } }
+          expected_version: 2
+          idempotency_key: add-shared-node
+      - intent: validate_draft
+        input:
+          workflow_id: $create_workflow.workflow_id
+          draft_id: $create_draft.draft_id
+          expected_version: 3
+          idempotency_key: validate-shared-draft
+      - intent: publish_draft
+        input:
+          workflow_id: $create_workflow.workflow_id
+          draft_id: $create_draft.draft_id
+          expected_version: 4
+          idempotency_key: publish-shared-draft
+      - intent: activate_revision
+        input:
+          workflow_id: $create_workflow.workflow_id
+          revision_id: $publish_draft.revision_id
+          expected_version: 5
+          idempotency_key: activate-shared-revision
+    then:
+      - query: get_workflow
+        using: other_auth
+        input: { workflow_id: $create_workflow.workflow_id }
+        count: 1

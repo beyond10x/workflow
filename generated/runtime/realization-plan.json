@@ -7,7 +7,7 @@
   },
   "realm": "optional",
   "ess_source_digest": "6a79078047815754e0dda89f285e08689037af0adfd4277dfcc305f1d003df1b",
-  "obligation_catalog_digest": "12e8b6adb5b214031bd1c101f71e91a666d19674d844683e35f32b67f966ecb3",
+  "obligation_catalog_digest": "5adc69ef103e574429595146d76de0908b3152cadec028212c82a25794dda9aa",
   "content": {},
   "intents": {
     "activate_revision": {
@@ -1648,16 +1648,14 @@
       ],
       "obligations": [
         {
-          "provider": "sdk.projection.auth-partitioned-visibility/v1",
+          "provider": "sdk.projection.conjunctive-scopes-visibility/v1",
           "bindings": {
-            "owner": "owner",
             "scopes": "scopes"
           }
         },
         {
-          "provider": "sdk.projection.auth-partitioned-visibility/v1",
+          "provider": "sdk.projection.conjunctive-scopes-visibility/v1",
           "bindings": {
-            "owner": "owner",
             "parent": "workflow.definition.Workflow",
             "scopes": "scopes"
           }
@@ -1689,16 +1687,14 @@
       ],
       "obligations": [
         {
-          "provider": "sdk.projection.auth-partitioned-visibility/v1",
+          "provider": "sdk.projection.conjunctive-scopes-visibility/v1",
           "bindings": {
-            "owner": "owner",
             "scopes": "scopes"
           }
         },
         {
-          "provider": "sdk.projection.auth-partitioned-visibility/v1",
+          "provider": "sdk.projection.conjunctive-scopes-visibility/v1",
           "bindings": {
-            "owner": "owner",
             "parent": "workflow.definition.Workflow",
             "scopes": "scopes"
           }
@@ -1721,16 +1717,14 @@
       ],
       "obligations": [
         {
-          "provider": "sdk.projection.auth-partitioned-visibility/v1",
+          "provider": "sdk.projection.conjunctive-scopes-visibility/v1",
           "bindings": {
-            "owner": "owner",
             "scopes": "scopes"
           }
         },
         {
-          "provider": "sdk.projection.auth-partitioned-visibility/v1",
+          "provider": "sdk.projection.conjunctive-scopes-visibility/v1",
           "bindings": {
-            "owner": "owner",
             "scopes": "scopes"
           }
         }
@@ -1752,16 +1746,14 @@
       ],
       "obligations": [
         {
-          "provider": "sdk.projection.auth-partitioned-visibility/v1",
+          "provider": "sdk.projection.conjunctive-scopes-visibility/v1",
           "bindings": {
-            "owner": "owner",
             "scopes": "scopes"
           }
         },
         {
-          "provider": "sdk.projection.auth-partitioned-visibility/v1",
+          "provider": "sdk.projection.conjunctive-scopes-visibility/v1",
           "bindings": {
-            "owner": "owner",
             "parent": "workflow.definition.Workflow",
             "scopes": "scopes"
           }
@@ -1784,16 +1776,14 @@
       ],
       "obligations": [
         {
-          "provider": "sdk.projection.auth-partitioned-visibility/v1",
+          "provider": "sdk.projection.conjunctive-scopes-visibility/v1",
           "bindings": {
-            "owner": "owner",
             "scopes": "scopes"
           }
         },
         {
-          "provider": "sdk.projection.auth-partitioned-visibility/v1",
+          "provider": "sdk.projection.conjunctive-scopes-visibility/v1",
           "bindings": {
-            "owner": "owner",
             "parent": "workflow.definition.Workflow",
             "scopes": "scopes"
           }
@@ -1806,16 +1796,14 @@
       "inputs": [],
       "obligations": [
         {
-          "provider": "sdk.projection.auth-partitioned-visibility/v1",
+          "provider": "sdk.projection.conjunctive-scopes-visibility/v1",
           "bindings": {
-            "owner": "owner",
             "scopes": "scopes"
           }
         },
         {
-          "provider": "sdk.projection.auth-partitioned-visibility/v1",
+          "provider": "sdk.projection.conjunctive-scopes-visibility/v1",
           "bindings": {
-            "owner": "owner",
             "scopes": "scopes"
           }
         }
@@ -2012,9 +2000,8 @@
       ],
       "obligations": [
         {
-          "provider": "sdk.projection.auth-partitioned-visibility/v1",
+          "provider": "sdk.projection.conjunctive-scopes-visibility/v1",
           "bindings": {
-            "owner": "owner",
             "scopes": "scopes"
           }
         },
@@ -2030,9 +2017,8 @@
           }
         },
         {
-          "provider": "sdk.projection.auth-partitioned-visibility/v1",
+          "provider": "sdk.projection.conjunctive-scopes-visibility/v1",
           "bindings": {
-            "owner": "owner",
             "parent": "workflow.definition.Workflow",
             "scopes": "scopes"
           }
@@ -2052,9 +2038,8 @@
       ],
       "obligations": [
         {
-          "provider": "sdk.projection.auth-partitioned-visibility/v1",
+          "provider": "sdk.projection.conjunctive-scopes-visibility/v1",
           "bindings": {
-            "owner": "owner",
             "scopes": "scopes"
           }
         },
@@ -2070,9 +2055,8 @@
           }
         },
         {
-          "provider": "sdk.projection.auth-partitioned-visibility/v1",
+          "provider": "sdk.projection.conjunctive-scopes-visibility/v1",
           "bindings": {
-            "owner": "owner",
             "parent": "workflow.definition.Workflow",
             "scopes": "scopes"
           }
@@ -2096,9 +2080,8 @@
       ],
       "obligations": [
         {
-          "provider": "sdk.projection.auth-partitioned-visibility/v1",
+          "provider": "sdk.projection.conjunctive-scopes-visibility/v1",
           "bindings": {
-            "owner": "owner",
             "scopes": "scopes"
           }
         },
@@ -2114,9 +2097,8 @@
           }
         },
         {
-          "provider": "sdk.projection.auth-partitioned-visibility/v1",
+          "provider": "sdk.projection.conjunctive-scopes-visibility/v1",
           "bindings": {
-            "owner": "owner",
             "parent": "workflow.definition.Workflow",
             "scopes": "scopes"
           }
@@ -2140,9 +2122,8 @@
       ],
       "obligations": [
         {
-          "provider": "sdk.projection.auth-partitioned-visibility/v1",
+          "provider": "sdk.projection.conjunctive-scopes-visibility/v1",
           "bindings": {
-            "owner": "owner",
             "scopes": "scopes"
           }
         },
@@ -2158,9 +2139,8 @@
           }
         },
         {
-          "provider": "sdk.projection.auth-partitioned-visibility/v1",
+          "provider": "sdk.projection.conjunctive-scopes-visibility/v1",
           "bindings": {
-            "owner": "owner",
             "parent": "workflow.definition.Workflow",
             "scopes": "scopes"
           }
@@ -2179,9 +2159,8 @@
       ],
       "obligations": [
         {
-          "provider": "sdk.projection.auth-partitioned-visibility/v1",
+          "provider": "sdk.projection.conjunctive-scopes-visibility/v1",
           "bindings": {
-            "owner": "owner",
             "scopes": "scopes"
           }
         }
@@ -2199,16 +2178,14 @@
       ],
       "obligations": [
         {
-          "provider": "sdk.projection.auth-partitioned-visibility/v1",
+          "provider": "sdk.projection.conjunctive-scopes-visibility/v1",
           "bindings": {
-            "owner": "owner",
             "scopes": "scopes"
           }
         },
         {
-          "provider": "sdk.projection.auth-partitioned-visibility/v1",
+          "provider": "sdk.projection.conjunctive-scopes-visibility/v1",
           "bindings": {
-            "owner": "owner",
             "scopes": "scopes"
           }
         }
