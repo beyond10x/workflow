@@ -6,15 +6,15 @@ edition = "2024"
 publish = false
 
 [dependencies]
-service-engine = { git = "https://github.com/beyond10x/service-sdk.git", rev = "932249b6710a6ae494d1a7a94673166554b0f011" }
-service-connectors = { git = "https://github.com/beyond10x/service-sdk.git", rev = "932249b6710a6ae494d1a7a94673166554b0f011" }
-service-catalog = { git = "https://github.com/beyond10x/service-sdk.git", rev = "932249b6710a6ae494d1a7a94673166554b0f011" }
-service-http = { git = "https://github.com/beyond10x/service-sdk.git", rev = "932249b6710a6ae494d1a7a94673166554b0f011" }
-service-host = { git = "https://github.com/beyond10x/service-sdk.git", rev = "932249b6710a6ae494d1a7a94673166554b0f011" }
+service-engine = { git = "https://github.com/beyond10x/service-sdk.git", rev = "c1051c1cd228ea397ce2de8ef36789fbfa8199d8" }
+service-connectors = { git = "https://github.com/beyond10x/service-sdk.git", rev = "c1051c1cd228ea397ce2de8ef36789fbfa8199d8" }
+service-catalog = { git = "https://github.com/beyond10x/service-sdk.git", rev = "c1051c1cd228ea397ce2de8ef36789fbfa8199d8" }
+service-http = { git = "https://github.com/beyond10x/service-sdk.git", rev = "c1051c1cd228ea397ce2de8ef36789fbfa8199d8" }
+service-host = { git = "https://github.com/beyond10x/service-sdk.git", rev = "c1051c1cd228ea397ce2de8ef36789fbfa8199d8" }
 anyhow = "1"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 
 [dev-dependencies]
-service-conformance = { git = "https://github.com/beyond10x/service-sdk.git", rev = "932249b6710a6ae494d1a7a94673166554b0f011" }
+service-conformance = { git = "https://github.com/beyond10x/service-sdk.git", rev = "c1051c1cd228ea397ce2de8ef36789fbfa8199d8" }
 tokio = { version = "1", features = ["macros", "rt-multi-thread"] }

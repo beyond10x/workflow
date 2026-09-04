@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.1 - 2026-09-04
+
+- Invoke the reusable Service SDK component-release action and keep the component gate portable on
+  a clean GitHub runner.
+
 ## 0.3.0 - 2026-09-04
 
 - Generate the executable Identity HTTP host and durable SQLite lifecycle from Service SDK 0.5.0.
