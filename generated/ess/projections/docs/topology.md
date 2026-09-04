@@ -15,7 +15,7 @@ Declared as a unit of ownership, with nothing in the topology running it. That i
 
 - `workflow-service`
 
-[Back to the index](README.md).
+[Back to the index](index.md).
 
 ---
 

@@ -1,0 +1,16 @@
+serviceAccount:
+  name: default
+images:
+  app:
+    repository: ""
+    digest: ""
+config: {}
+secrets: {}
+endpoints: {}
+workloads:
+  workflow:
+    replicas: 1
+    volumes:
+      data:
+        class: ""
+        size: "1Gi"

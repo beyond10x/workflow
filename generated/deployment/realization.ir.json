@@ -1,0 +1,129 @@
+{
+  "type": "ess-realization-ir/1",
+  "id": "workflow-generated",
+  "realization_digest": "sha256:d3c372ddfad183a69063e7798a85ac1fa4c33697a7945b59aed517526dc74fb7",
+  "specification": {
+    "system": "workflow",
+    "version": 1,
+    "source_digest": "sha256:6a79078047815754e0dda89f285e08689037af0adfd4277dfcc305f1d003df1b"
+  },
+  "synthesis": {
+    "target": "rust-linux-amd64/1",
+    "generator": "service-builder/1"
+  },
+  "components": [
+    "workflow-service"
+  ],
+  "actors": [],
+  "implementations": {
+    "workflow-binary": {
+      "components": [
+        "workflow-service"
+      ],
+      "artifact": {
+        "kind": "source",
+        "locator": "generated/rust",
+        "identity": "sha256:d5422737c8aa5412823f40b7b22e3b8e7ca411fd795fc8375fd5cf9e9e5bf8e1"
+      }
+    }
+  },
+  "entrypoints": {
+    "http-api": {
+      "title": "workflow HTTP API",
+      "summary": "Invoke the generated workflow service.",
+      "primary": true,
+      "interaction": "invoke",
+      "attachment": "network",
+      "availability": "internal",
+      "support": "preview",
+      "implementation": "workflow-binary",
+      "actors": [],
+      "surfaces": [
+        {
+          "kind": "command",
+          "name": "workflow.definition.ActivateRevision"
+        },
+        {
+          "kind": "command",
+          "name": "workflow.definition.AddNode"
+        },
+        {
+          "kind": "command",
+          "name": "workflow.definition.ConnectNodes"
+        },
+        {
+          "kind": "command",
+          "name": "workflow.definition.CreateDraft"
+        },
+        {
+          "kind": "command",
+          "name": "workflow.definition.CreateWorkflow"
+        },
+        {
+          "kind": "command",
+          "name": "workflow.definition.DiscardDraft"
+        },
+        {
+          "kind": "command",
+          "name": "workflow.definition.DisconnectNodes"
+        },
+        {
+          "kind": "command",
+          "name": "workflow.definition.PublishDraft"
+        },
+        {
+          "kind": "command",
+          "name": "workflow.definition.RemoveNode"
+        },
+        {
+          "kind": "command",
+          "name": "workflow.definition.ReplaceNode"
+        },
+        {
+          "kind": "command",
+          "name": "workflow.definition.ValidateDraft"
+        },
+        {
+          "kind": "view",
+          "name": "workflow.definition.DraftById"
+        },
+        {
+          "kind": "view",
+          "name": "workflow.definition.Drafts"
+        },
+        {
+          "kind": "view",
+          "name": "workflow.definition.RevisionById"
+        },
+        {
+          "kind": "view",
+          "name": "workflow.definition.Revisions"
+        },
+        {
+          "kind": "view",
+          "name": "workflow.definition.WorkflowById"
+        },
+        {
+          "kind": "view",
+          "name": "workflow.definition.Workflows"
+        }
+      ],
+      "invocation": {
+        "kind": "url",
+        "url": "http://127.0.0.1:8080"
+      },
+      "requires": [
+        {
+          "kind": "environment_variable",
+          "name": "WORKFLOW_IDENTITY_ORIGIN",
+          "summary": "Identity service origin."
+        },
+        {
+          "kind": "filesystem",
+          "name": "/var/lib/workflow",
+          "summary": "Durable Eventlog storage."
+        }
+      ]
+    }
+  }
+}

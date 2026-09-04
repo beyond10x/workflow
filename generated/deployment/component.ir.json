@@ -1,0 +1,16 @@
+{
+  "format": "ess-component-ir/1",
+  "component": "workflow",
+  "system": "workflow",
+  "semantic_version": "v1",
+  "inputs": {
+    "specification": "spec/workflow",
+    "realization": "generated/deployment/realization.yaml",
+    "build": "generated/deployment/build.yaml",
+    "runtime": "generated/deployment/runtime.yaml"
+  },
+  "release_units": {
+    "runtime": "workflow-runtime",
+    "chart": "workflow-chart"
+  }
+}

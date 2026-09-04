@@ -1,0 +1,290 @@
+name: Release ESS component
+
+on:
+  push:
+    tags:
+      - "*.*.*"
+
+permissions:
+  contents: read
+  id-token: write
+  packages: write
+
+concurrency:
+  group: release-ess-component-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.repository == 'beyond10x/workflow'
+    runs-on: ubuntu-latest
+    env:
+      ESS_REVISION: c739a2afb0647714d18ba194b904ee92c96703f4
+      CHART_NAMESPACE: oci://ghcr.io/beyond10x/charts
+      EVIDENCE_REPOSITORY: ghcr.io/beyond10x/workflow-evidence
+      BUNDLE_REPOSITORY: ghcr.io/beyond10x/workflow-component
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: dtolnay/rust-toolchain@d1031067263f94b142dd6c0ce24c5eb9d02d52a0
+        with:
+          toolchain: "1.97.0"
+          components: rustfmt
+      - uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f
+      - uses: oras-project/setup-oras@22ce207df3b08e061f537244349aac6ae1d214f6
+      - uses: sigstore/cosign-installer@398d4b0eeef1380460a10c8013a76f728fb906ac
+      - uses: anchore/sbom-action/download-syft@f8bdd1d8ac5e901a77a92f111440fdb1b593736b
+      - uses: arduino/setup-task@c0bc642852239c2689f73f4ea6459c29405f3c52
+      - uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Verify generated source and conformance
+        run: |
+          set -o pipefail
+          corepack enable
+          corepack prepare pnpm@10.15.0 --activate
+          mkdir -p target/release
+          task check 2>&1 | tee target/release/conformance.log
+
+      - name: Build, attest, bundle, and publish
+        shell: bash
+        run: |
+          set -euo pipefail
+          version="$(awk '$1 == "version:" { print $2; exit }' service.yaml)"
+          image_repository="$(awk '$1 == "image_repository:" { print $2; exit }' service.yaml)"
+          test -n "$version"
+          test -n "$image_repository"
+          test "$GITHUB_REF_NAME" = "$version"
+
+          ess_bin="$PWD/target/ess/$ESS_REVISION/bin/ess"
+          build_path=generated/deployment/build.yaml
+          build_ir=generated/deployment/build.ir.json
+          component_ir=generated/deployment/component.ir.json
+          runtime_ir=generated/deployment/runtime.ir.json
+          image_tag="$image_repository:$version"
+
+          "$ess_bin" generate build execute \
+            --path "$build_path" \
+            --workdir . \
+            --projection-out target/release/app-buildkit \
+            --target app \
+            --set "app.tags=$image_tag" \
+            --push
+          image_digest="$(
+            docker buildx imagetools inspect "$image_tag" \
+              --format '{{json .Manifest.Digest}}' | jq -r .
+          )"
+          image_raw="$(docker buildx imagetools inspect "$image_tag" --raw)"
+          image_platform_digest="$(
+            jq -r '
+              if has("manifests") then
+                first(.manifests[] | select(.platform.os == "linux" and .platform.architecture == "amd64") | .digest)
+              else empty
+              end
+            ' <<<"$image_raw"
+          )"
+          if [ -z "$image_platform_digest" ]; then
+            image_platform_digest="$image_digest"
+          fi
+
+          "$ess_bin" generate build execute \
+            --path "$build_path" \
+            --workdir . \
+            --projection-out target/release/chart-buildkit \
+            --target chart
+          chart_archive="$(find out/chart -type f -name '*-chart.tgz' -print -quit)"
+          test -n "$chart_archive"
+          chart_name="$(helm show chart "$chart_archive" | awk '$1 == "name:" { print $2; exit }')"
+          chart_push="$(helm push "$chart_archive" "$CHART_NAMESPACE")"
+          printf '%s\n' "$chart_push"
+          chart_digest="$(sed -n 's/^Digest: //p' <<<"$chart_push" | tail -1)"
+          chart_reference="${CHART_NAMESPACE#oci://}/$chart_name"
+          test -n "$chart_digest"
+
+          cosign sign --yes "${image_repository}@${image_digest}"
+          cosign sign --yes "${chart_reference}@${chart_digest}"
+          image_signature_reference="$(cosign triangulate "${image_repository}@${image_digest}")"
+          chart_signature_reference="$(cosign triangulate "${chart_reference}@${chart_digest}")"
+          image_signature_digest="$(
+            docker buildx imagetools inspect "$image_signature_reference" \
+              --format '{{json .Manifest.Digest}}' | jq -r .
+          )"
+          chart_signature_digest="$(
+            docker buildx imagetools inspect "$chart_signature_reference" \
+              --format '{{json .Manifest.Digest}}' | jq -r .
+          )"
+
+          syft scan "${image_repository}@${image_digest}" \
+            -o cyclonedx-json=target/release/sbom.json
+          semantic_digest="$(jq -r .semantic_digest "$runtime_ir")"
+          build_digest="$(jq -r .build_digest "$runtime_ir")"
+          runtime_digest="sha256:$(sha256sum "$runtime_ir" | awk '{print $1}')"
+          jq -n \
+            --arg source_commit "$GITHUB_SHA" \
+            --arg run "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" \
+            --arg image "${image_repository}@${image_digest}" \
+            --arg chart "${chart_reference}@${chart_digest}" \
+            --arg semantic_digest "$semantic_digest" \
+            --arg build_digest "$build_digest" \
+            --arg runtime_digest "$runtime_digest" \
+            '{
+              format: "slsa-provenance-summary/1",
+              source_commit: $source_commit,
+              run: $run,
+              subjects: [$image, $chart],
+              ess: {
+                semantic_digest: $semantic_digest,
+                build_digest: $build_digest,
+                runtime_digest: $runtime_digest
+              }
+            }' > target/release/provenance.json
+          jq -n \
+            --arg image_reference "$image_signature_reference" \
+            --arg image_digest "$image_signature_digest" \
+            --arg chart_reference "$chart_signature_reference" \
+            --arg chart_digest "$chart_signature_digest" \
+            '{
+              format: "sigstore-signature-set/1",
+              signatures: [
+                {subject: "runtime", reference: $image_reference, digest: $image_digest},
+                {subject: "chart", reference: $chart_reference, digest: $chart_digest}
+              ]
+            }' > target/release/signatures.json
+
+          publish_evidence() {
+            local kind="$1"
+            local path="$2"
+            local media_type="$3"
+            local destination="$EVIDENCE_REPOSITORY:$version-$kind"
+            local digest
+            digest="$(
+              oras push \
+                --no-tty \
+                --artifact-type "application/vnd.beyond10x.ess.evidence.$kind.v1" \
+                --format 'go-template={{.digest}}' \
+                "$destination" \
+                "$path:$media_type"
+            )"
+            printf '%s\t%s\n' "$destination" "$digest"
+          }
+
+          IFS=$'\t' read -r provenance_reference provenance_digest < <(
+            publish_evidence provenance target/release/provenance.json application/json
+          )
+          IFS=$'\t' read -r sbom_reference sbom_digest < <(
+            publish_evidence sbom target/release/sbom.json application/vnd.cyclonedx+json
+          )
+          IFS=$'\t' read -r signature_reference signature_digest < <(
+            publish_evidence signature target/release/signatures.json application/json
+          )
+          IFS=$'\t' read -r conformance_reference conformance_digest < <(
+            publish_evidence conformance target/release/conformance.log text/plain
+          )
+
+          evidence="$(
+            jq -n \
+              --arg provenance_reference "$provenance_reference" \
+              --arg provenance_digest "$provenance_digest" \
+              --arg sbom_reference "$sbom_reference" \
+              --arg sbom_digest "$sbom_digest" \
+              --arg signature_reference "$signature_reference" \
+              --arg signature_digest "$signature_digest" \
+              --arg conformance_reference "$conformance_reference" \
+              --arg conformance_digest "$conformance_digest" \
+              '{
+                provenance: {reference: $provenance_reference, digest: $provenance_digest},
+                sbom: {reference: $sbom_reference, digest: $sbom_digest},
+                signature: {reference: $signature_reference, digest: $signature_digest},
+                conformance: {reference: $conformance_reference, digest: $conformance_digest}
+              }'
+          )"
+
+          jq -n \
+            --arg version "$version" \
+            --arg source_commit "$GITHUB_SHA" \
+            --arg semantic_digest "$semantic_digest" \
+            --arg build_digest "$build_digest" \
+            --arg runtime_digest "$runtime_digest" \
+            --arg reference "$image_repository" \
+            --arg digest "$image_digest" \
+            --arg platform_digest "$image_platform_digest" \
+            --argjson evidence "$evidence" \
+            '{
+              format: "ess-release/1",
+              release_unit: "workflow-runtime",
+              system: "workflow",
+              version: $version,
+              source_commit: $source_commit,
+              semantic_digest: $semantic_digest,
+              build_digest: $build_digest,
+              runtime_digest: $runtime_digest,
+              artifacts: {
+                app: {
+                  build_output: "app",
+                  kind: "oci_image",
+                  reference: $reference,
+                  digest: $digest,
+                  platforms: {"linux/amd64": $platform_digest}
+                }
+              },
+              evidence: $evidence
+            }' > target/release/runtime-release.json
+          jq -n \
+            --arg version "$version" \
+            --arg source_commit "$GITHUB_SHA" \
+            --arg semantic_digest "$semantic_digest" \
+            --arg build_digest "$build_digest" \
+            --arg runtime_digest "$runtime_digest" \
+            --arg reference "$chart_reference" \
+            --arg digest "$chart_digest" \
+            --argjson evidence "$evidence" \
+            '{
+              format: "ess-release/1",
+              release_unit: "workflow-chart",
+              system: "workflow",
+              version: $version,
+              source_commit: $source_commit,
+              semantic_digest: $semantic_digest,
+              build_digest: $build_digest,
+              runtime_digest: $runtime_digest,
+              artifacts: {
+                chart: {
+                  build_output: "chart",
+                  kind: "helm_chart",
+                  reference: $reference,
+                  digest: $digest
+                }
+              },
+              evidence: $evidence
+            }' > target/release/chart-release.json
+
+          "$ess_bin" generate release verify \
+            --path target/release/runtime-release.json \
+            --build-ir "$build_ir" \
+            --runtime-ir "$runtime_ir"
+          "$ess_bin" generate release verify \
+            --path target/release/chart-release.json \
+            --build-ir "$build_ir" \
+            --runtime-ir "$runtime_ir"
+          "$ess_bin" generate release bundle \
+            --component-ir "$component_ir" \
+            --build-ir "$build_ir" \
+            --runtime-ir "$runtime_ir" \
+            --release target/release/runtime-release.json \
+            --release target/release/chart-release.json \
+            --out target/release/ess-release-bundle.json
+          publish_output="$(
+            "$ess_bin" generate release publish \
+              --path target/release/ess-release-bundle.json \
+              --to "$BUNDLE_REPOSITORY:$version"
+          )"
+          printf '%s\n' "$publish_output"
+          bundle_digest="${publish_output##* }"
+          {
+            printf '### Workflow ESS component %s\n\n' "$version"
+            printf -- '- Bundle: %s@%s\n' "$BUNDLE_REPOSITORY" "$bundle_digest"
+            printf -- '- Runtime: %s@%s\n' "$image_repository" "$image_digest"
+            printf -- '- Chart: %s@%s\n' "$chart_reference" "$chart_digest"
+          } >> "$GITHUB_STEP_SUMMARY"

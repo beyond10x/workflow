@@ -9,7 +9,7 @@ do not edit: regenerate with `ess generate`
 
 Stable workflows, mutable draft DAGs, canonical published revisions, and activation.
 
-`workflow.definition` is one of workflow's bounded contexts. [Back to the index](../README.md).
+`workflow.definition` is one of workflow's bounded contexts. [Back to the index](../index.md).
 
 ## Types
 
@@ -195,6 +195,8 @@ It holds:
 - `source_node_id` — `workflow.definition.NodeId`
 - `target_node_id` — `workflow.definition.NodeId`
 
+It declares no relation to another entity, and no other entity names it.
+
 No invariant is declared, so nothing here constrains an instance at rest.
 
 Its state is a `workflow.definition.DraftEdge.State`, one of `Active` and `Disconnected`. That enum is synthesised from the lifecycle rather than declared beside it, so the states a view's filter compares and the states drawn below cannot disagree.
@@ -230,6 +232,8 @@ It holds:
 
 - `draft_id` — `workflow.definition.DraftId`
 - `definition` — `workflow.definition.NodeDefinition`
+
+It declares no relation to another entity, and no other entity names it.
 
 No invariant is declared, so nothing here constrains an instance at rest.
 
@@ -269,6 +273,8 @@ It holds:
 - `scopes` — `workflow.definition.ScopeBindings`
 - `active_revision_id` — `Optional<workflow.definition.RevisionId>`, which may be absent
 
+It declares no relation to another entity, and no other entity names it.
+
 No invariant is declared, so nothing here constrains an instance at rest.
 
 Its state is a `workflow.definition.Workflow.State`, one of `Active`. That enum is synthesised from the lifecycle rather than declared beside it, so the states a view's filter compares and the states drawn below cannot disagree.
@@ -300,6 +306,8 @@ It holds:
 - `based_on_revision_id` — `Optional<workflow.definition.RevisionId>`, which may be absent
 - `owner` — `workflow.definition.OwnerRef`
 - `scopes` — `workflow.definition.ScopeBindings`
+
+It declares no relation to another entity, and no other entity names it.
 
 No invariant is declared, so nothing here constrains an instance at rest.
 
@@ -344,6 +352,8 @@ It holds:
 - `owner` — `workflow.definition.OwnerRef`
 - `scopes` — `workflow.definition.ScopeBindings`
 
+It declares no relation to another entity, and no other entity names it.
+
 No invariant is declared, so nothing here constrains an instance at rest.
 
 Its state is a `workflow.definition.WorkflowRevision.State`, one of `Published`. That enum is synthesised from the lifecycle rather than declared beside it, so the states a view's filter compares and the states drawn below cannot disagree.
@@ -384,6 +394,8 @@ It exposes:
 - `scopes` — `workflow.definition.ScopeBindings`
 - `state` — `workflow.definition.WorkflowDraft.State`
 
+It declares no order, so the rows come back in whatever order the implementation has, and two reads may disagree.
+
 **Read-your-writes**: it is current the moment the command that changed it returns. A caller that has just created an invoice and cannot see it in here has been told a lie about what it did.
 
 A generated scenario asserts it once, immediately after the command: a view promising this and not keeping the promise has to fail the suite rather than be retried until it passes.
@@ -405,6 +417,8 @@ It exposes:
 - `owner` — `workflow.definition.OwnerRef`
 - `scopes` — `workflow.definition.ScopeBindings`
 - `state` — `workflow.definition.WorkflowDraft.State`
+
+It declares no order, so the rows come back in whatever order the implementation has, and two reads may disagree.
 
 **Read-your-writes**: it is current the moment the command that changed it returns. A caller that has just created an invoice and cannot see it in here has been told a lie about what it did.
 
@@ -432,6 +446,8 @@ It exposes:
 - `scopes` — `workflow.definition.ScopeBindings`
 - `state` — `workflow.definition.WorkflowRevision.State`
 
+It declares no order, so the rows come back in whatever order the implementation has, and two reads may disagree.
+
 **Read-your-writes**: it is current the moment the command that changed it returns. A caller that has just created an invoice and cannot see it in here has been told a lie about what it did.
 
 A generated scenario asserts it once, immediately after the command: a view promising this and not keeping the promise has to fail the suite rather than be retried until it passes.
@@ -458,6 +474,8 @@ It exposes:
 - `scopes` — `workflow.definition.ScopeBindings`
 - `state` — `workflow.definition.WorkflowRevision.State`
 
+It declares no order, so the rows come back in whatever order the implementation has, and two reads may disagree.
+
 **Read-your-writes**: it is current the moment the command that changed it returns. A caller that has just created an invoice and cannot see it in here has been told a lie about what it did.
 
 A generated scenario asserts it once, immediately after the command: a view promising this and not keeping the promise has to fail the suite rather than be retried until it passes.
@@ -479,6 +497,8 @@ It exposes:
 - `active_revision_id` — `Optional<workflow.definition.RevisionId>`, which may be absent
 - `state` — `workflow.definition.Workflow.State`
 
+It declares no order, so the rows come back in whatever order the implementation has, and two reads may disagree.
+
 **Read-your-writes**: it is current the moment the command that changed it returns. A caller that has just created an invoice and cannot see it in here has been told a lie about what it did.
 
 A generated scenario asserts it once, immediately after the command: a view promising this and not keeping the promise has to fail the suite rather than be retried until it passes.
@@ -499,6 +519,8 @@ It exposes:
 - `scopes` — `workflow.definition.ScopeBindings`
 - `active_revision_id` — `Optional<workflow.definition.RevisionId>`, which may be absent
 - `state` — `workflow.definition.Workflow.State`
+
+It declares no order, so the rows come back in whatever order the implementation has, and two reads may disagree.
 
 **Read-your-writes**: it is current the moment the command that changed it returns. A caller that has just created an invoice and cannot see it in here has been told a lie about what it did.
 

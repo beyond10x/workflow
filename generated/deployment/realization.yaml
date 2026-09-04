@@ -1,0 +1,76 @@
+actors: []
+components:
+- workflow-service
+entrypoints:
+- actors: []
+  attachment: network
+  availability: internal
+  id: http-api
+  implementation: workflow-binary
+  interaction: invoke
+  invocation:
+    kind: url
+    url: http://127.0.0.1:8080
+  primary: true
+  requires:
+  - kind: environment_variable
+    name: WORKFLOW_IDENTITY_ORIGIN
+    summary: Identity service origin.
+  - kind: filesystem
+    name: /var/lib/workflow
+    summary: Durable Eventlog storage.
+  summary: Invoke the generated workflow service.
+  support: preview
+  surfaces:
+  - kind: command
+    name: workflow.definition.ActivateRevision
+  - kind: command
+    name: workflow.definition.AddNode
+  - kind: command
+    name: workflow.definition.ConnectNodes
+  - kind: command
+    name: workflow.definition.CreateDraft
+  - kind: command
+    name: workflow.definition.CreateWorkflow
+  - kind: command
+    name: workflow.definition.DiscardDraft
+  - kind: command
+    name: workflow.definition.DisconnectNodes
+  - kind: command
+    name: workflow.definition.PublishDraft
+  - kind: command
+    name: workflow.definition.RemoveNode
+  - kind: command
+    name: workflow.definition.ReplaceNode
+  - kind: command
+    name: workflow.definition.ValidateDraft
+  - kind: view
+    name: workflow.definition.DraftById
+  - kind: view
+    name: workflow.definition.Drafts
+  - kind: view
+    name: workflow.definition.RevisionById
+  - kind: view
+    name: workflow.definition.Revisions
+  - kind: view
+    name: workflow.definition.WorkflowById
+  - kind: view
+    name: workflow.definition.Workflows
+  title: workflow HTTP API
+id: workflow-generated
+implementations:
+- artifact:
+    identity: sha256:d5422737c8aa5412823f40b7b22e3b8e7ca411fd795fc8375fd5cf9e9e5bf8e1
+    kind: source
+    locator: generated/rust
+  components:
+  - workflow-service
+  id: workflow-binary
+specification:
+  source_digest: sha256:6a79078047815754e0dda89f285e08689037af0adfd4277dfcc305f1d003df1b
+  system: workflow
+  version: v1
+synthesis:
+  generator: service-builder/1
+  target: rust-linux-amd64/1
+type: ess-realization/1

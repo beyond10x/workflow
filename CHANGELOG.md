@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.0 - 2026-09-04
+
+- Generate the executable Identity HTTP host and durable SQLite lifecycle from Service SDK 0.5.0.
+- Publish canonical ESS component, realization, build, runtime, BuildKit, and Helm inputs for an
+  independently deployable Workflow release.
+- Keep every runtime and release input under the generated-tree drift gate; Workflow carries no
+  handwritten host or Dockerfile.
+
 ## 0.2.0 - 2026-09-03
 
 - Replace the ID-only 0.1.0 crate with a definition-only Service SDK package and generated Rust

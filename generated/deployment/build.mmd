@@ -1,0 +1,26 @@
+flowchart LR
+  subgraph build_graph["workflow-build build graph"]
+    n0["build-base<br/><small>pinned OCI base</small>"]
+    n1["repository<br/><small>source</small>"]
+    n2["build-source<br/><small>copy</small>"]
+    n3["chart-package<br/><small>run</small>"]
+    n4["chart-archive<br/><small>artifact</small>"]
+    n5["compile<br/><small>run</small>"]
+    n6["runtime-base<br/><small>pinned OCI base</small>"]
+    n7["runtime-root<br/><small>copy</small>"]
+    n8["runtime-image<br/><small>OCI image</small>"]
+    n0 --> n2
+    n1 --> n2
+    n2 --> n3
+    n3 --> n4
+    n2 --> n5
+    n5 --> n7
+    n6 --> n7
+    n7 --> n8
+  end
+  subgraph release_outputs["Independent release outputs"]
+    o0(["app<br/><small>OCI image · workflow-runtime</small>"])
+    o1(["chart<br/><small>Helm chart · workflow-chart</small>"])
+  end
+  n8 --> o0
+  n4 --> o1
