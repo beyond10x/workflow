@@ -21,7 +21,7 @@ tasks:
       - |
         set -eu
         repo_root="{{.TASKFILE_DIR}}"
-        ess_revision="c739a2afb0647714d18ba194b904ee92c96703f4"
+        ess_revision="3042a4417ac6cda5a2a4ed85b92a7d4aeac50e2c"
         ess_root="$repo_root/target/ess/$ess_revision"
         cargo install --locked --git https://github.com/beyond10x/ess.git \
           --rev "$ess_revision" --root "$ess_root" --bin ess ess-cli

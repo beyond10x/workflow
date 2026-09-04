@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.2 - 2026-09-04
+
+- Publish through the generic ESS 0.13.3 action, with robust Helm digest capture and no release
+  dependency on Service SDK internals.
+
 ## 0.3.1 - 2026-09-04
 
 - Invoke the reusable Service SDK component-release action and keep the component gate portable on
