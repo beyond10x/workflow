@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.3 - 2026-09-04
+
+- Pin ESS 0.13.4 so the generic component action executes portably from a clean checkout.
+
 ## 0.3.2 - 2026-09-04
 
 - Publish through the generic ESS 0.13.3 action, with robust Helm digest capture and no release
