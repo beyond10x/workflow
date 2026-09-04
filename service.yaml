@@ -2,7 +2,7 @@ format: service/1
 service: workflow
 sdk:
   repository: https://github.com/beyond10x/service-sdk.git
-  revision: 68618abac0ddc4f9363fec8315bd2d9c87113b88
+  revision: 3ac9f30a5e49015d2c61d6ca292c8889f90403c4
 semantic:
   root: spec/workflow
   sources:
@@ -15,7 +15,7 @@ scenarios:
 release:
   generated_root: generated
   image_repository: ghcr.io/beyond10x/workflow
-  version: 0.3.4
+  version: 0.3.5
   build_base:
     repository: docker.io/library/rust
     digest: sha256:8fa55b2f3ddf97471ab6a767bfa3f37e6bad0986ba823e75fea57e2a2a5c3073
