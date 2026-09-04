@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.6 - 2026-09-04
+
+- Regenerate with Service SDK 0.5.8 so absent optional projection fields remain valid and a
+  populated reusable Workflow library can be listed without returning `service_contract`.
+- Publish `service-realization-plan/3` while retaining runtime read compatibility for valid `/2`
+  plans already persisted by earlier releases.
+
 ## 0.3.5 - 2026-09-04
 
 - Let authorized engineers read tenant-shared reusable definitions and immutable revisions without

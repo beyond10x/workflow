@@ -1,5 +1,5 @@
 {
-  "format": "service-realization-plan/2",
+  "format": "service-realization-plan/3",
   "service": "workflow",
   "delivery": {
     "kind": "identity_http",
@@ -1998,6 +1998,18 @@
         "scopes",
         "state"
       ],
+      "field_types": {
+        "based_on_revision_id": "Optional<workflow.definition.RevisionId>",
+        "draft_id": "workflow.definition.DraftId",
+        "name": "String",
+        "owner": "workflow.definition.OwnerRef",
+        "scopes": "workflow.definition.ScopeBindings",
+        "state": "workflow.definition.WorkflowDraft.State",
+        "workflow_id": "workflow.definition.WorkflowId"
+      },
+      "optional_fields": [
+        "based_on_revision_id"
+      ],
       "obligations": [
         {
           "provider": "sdk.projection.conjunctive-scopes-visibility/v1",
@@ -2035,6 +2047,18 @@
         "owner",
         "scopes",
         "state"
+      ],
+      "field_types": {
+        "based_on_revision_id": "Optional<workflow.definition.RevisionId>",
+        "draft_id": "workflow.definition.DraftId",
+        "name": "String",
+        "owner": "workflow.definition.OwnerRef",
+        "scopes": "workflow.definition.ScopeBindings",
+        "state": "workflow.definition.WorkflowDraft.State",
+        "workflow_id": "workflow.definition.WorkflowId"
+      },
+      "optional_fields": [
+        "based_on_revision_id"
       ],
       "obligations": [
         {
@@ -2078,6 +2102,19 @@
         "scopes",
         "state"
       ],
+      "field_types": {
+        "digest": "String",
+        "draft_id": "workflow.definition.DraftId",
+        "edge_count": "Integer",
+        "edges": "List<workflow.definition.EdgeSnapshot>",
+        "node_count": "Integer",
+        "nodes": "List<workflow.definition.NodeSnapshot>",
+        "owner": "workflow.definition.OwnerRef",
+        "revision_id": "workflow.definition.RevisionId",
+        "scopes": "workflow.definition.ScopeBindings",
+        "state": "workflow.definition.WorkflowRevision.State",
+        "workflow_id": "workflow.definition.WorkflowId"
+      },
       "obligations": [
         {
           "provider": "sdk.projection.conjunctive-scopes-visibility/v1",
@@ -2120,6 +2157,19 @@
         "scopes",
         "state"
       ],
+      "field_types": {
+        "digest": "String",
+        "draft_id": "workflow.definition.DraftId",
+        "edge_count": "Integer",
+        "edges": "List<workflow.definition.EdgeSnapshot>",
+        "node_count": "Integer",
+        "nodes": "List<workflow.definition.NodeSnapshot>",
+        "owner": "workflow.definition.OwnerRef",
+        "revision_id": "workflow.definition.RevisionId",
+        "scopes": "workflow.definition.ScopeBindings",
+        "state": "workflow.definition.WorkflowRevision.State",
+        "workflow_id": "workflow.definition.WorkflowId"
+      },
       "obligations": [
         {
           "provider": "sdk.projection.conjunctive-scopes-visibility/v1",
@@ -2157,6 +2207,17 @@
         "active_revision_id",
         "state"
       ],
+      "field_types": {
+        "active_revision_id": "Optional<workflow.definition.RevisionId>",
+        "name": "String",
+        "owner": "workflow.definition.OwnerRef",
+        "scopes": "workflow.definition.ScopeBindings",
+        "state": "workflow.definition.Workflow.State",
+        "workflow_id": "workflow.definition.WorkflowId"
+      },
+      "optional_fields": [
+        "active_revision_id"
+      ],
       "obligations": [
         {
           "provider": "sdk.projection.conjunctive-scopes-visibility/v1",
@@ -2175,6 +2236,17 @@
         "scopes",
         "active_revision_id",
         "state"
+      ],
+      "field_types": {
+        "active_revision_id": "Optional<workflow.definition.RevisionId>",
+        "name": "String",
+        "owner": "workflow.definition.OwnerRef",
+        "scopes": "workflow.definition.ScopeBindings",
+        "state": "workflow.definition.Workflow.State",
+        "workflow_id": "workflow.definition.WorkflowId"
+      },
+      "optional_fields": [
+        "active_revision_id"
       ],
       "obligations": [
         {

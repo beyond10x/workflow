@@ -1,6 +1,24 @@
 format: service-scenarios/1
 service: workflow
 scenarios:
+  - name: newly_created_workflow_without_active_revision_is_listable
+    given:
+      auth:
+        tenant: tenant-a
+        realm: null
+        authority: person-a
+        user: person-a
+    when:
+      - intent: create_workflow
+        input:
+          name: Unactivated workflow
+          scopes: { principal: person-a, team: null, project: null }
+          idempotency_key: create-unactivated-workflow
+    then:
+      - query: list_workflows
+        input: {}
+        count: 1
+
   - name: draft_graph_publishes_then_activates
     given:
       auth:
