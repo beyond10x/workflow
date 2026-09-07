@@ -2,6 +2,29 @@
 #![forbid(unsafe_code)]
 
 fn main() -> anyhow::Result<()> {
+    let service = workflow_generated_service::service()?;
+    let services = [service.plan().service.as_str()];
+    let arguments = std::env::args().skip(1).collect::<Vec<_>>();
+    if arguments == ["--migrate"] {
+        return service_host::run_migrations("WORKFLOW", "workflow", &services);
+    }
+    if !arguments.is_empty() {
+        anyhow::bail!("only --migrate or the default serving invocation is supported");
+    }
+    match std::env::var(concat!("WORKFLOW", "_PERSISTENCE")).as_deref() {
+        Ok("postgres") => {
+            return service_host::run_postgres(
+                "WORKFLOW",
+                "workflow",
+                &services,
+                |store, identity_origin| async move {
+                    workflow_generated_service::http_router(store, &identity_origin).await
+                },
+            );
+        }
+        Ok("sqlite") | Err(std::env::VarError::NotPresent) => {}
+        _ => anyhow::bail!("unsupported persistence selection"),
+    }
     service_host::run_sqlite(
         "WORKFLOW",
         "/var/lib/workflow/workflow.sqlite3",

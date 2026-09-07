@@ -1,7 +1,7 @@
 {
   "type": "ess-realization-ir/1",
   "id": "workflow-generated",
-  "realization_digest": "sha256:fa9adebad141dd5b6563063249d0763308364b08cb3b00f70265ee85b96d01fb",
+  "realization_digest": "sha256:5f4479227ae9cb8b75eb4d647b3e0b8edbfc76e972d006e66b3dc79b3232ff2d",
   "specification": {
     "system": "workflow",
     "version": 1,
@@ -23,7 +23,7 @@
       "artifact": {
         "kind": "source",
         "locator": "generated/rust",
-        "identity": "sha256:09f36ab824c9bdf9a9589fb9f9593635ebbb01cdcf18757f932d2cdbac0087ff"
+        "identity": "sha256:fd25271097aed161050eab4921d9ef70b797c703ba289385e3bb473f3a9a54af"
       }
     }
   },
