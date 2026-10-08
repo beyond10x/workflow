@@ -44,9 +44,6 @@ surfaces:
     label: Runs product-neutral agent tasks
     target: agent-platform/docs
   - kind: uses
-    label: Executes governed external operations
-    target: connectors/docs
-  - kind: uses
     label: Resolves current attributable authority
     target: identity/docs
   - kind: uses
