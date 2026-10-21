@@ -41,9 +41,6 @@ surfaces:
     label: Governs engineering planning and execution artifacts
     target: aep/docs
   - kind: uses
-    label: Runs product-neutral agent tasks
-    target: agent-platform/docs
-  - kind: uses
     label: Resolves current attributable authority
     target: identity/docs
   - kind: uses
