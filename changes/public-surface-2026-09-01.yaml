@@ -11,5 +11,4 @@ source:
 journeys: [build-agents, operate-services]
 affectedSurfaces: [workflow/docs]
 relations:
-  - {target: surface:agent-platform/docs, kind: depends-on, label: Uses product-neutral agent tasks}
   - {target: surface:eventlog/docs, kind: depends-on, label: Persists durable run evidence}
