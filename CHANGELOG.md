@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Validate the specification and recompile the deployment IR with ESS 0.72.0 in `task check`.
+
 ## 0.3.6 - 2026-09-04
 
 - Regenerate with Service SDK 0.5.8 so absent optional projection fields remain valid and a
