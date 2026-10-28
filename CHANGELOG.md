@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-- Validate the specification and recompile the deployment IR with ESS 0.74.0 in `task check`.
+- Validate the specification and recompile the deployment IR with ESS 0.75.0 in `task check`.
 
 ## 0.3.6 - 2026-09-04
 
